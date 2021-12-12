@@ -1,130 +1,131 @@
 import tkinter as tk
-from tkinter import Frame, Label, filedialog, Text
 from tkinter.font import BOLD
 from datetime import date
-import os
 
-root = tk.Tk()
-root.attributes('-fullscreen', True)                                    # Attribute so app is fullscreen
-#root.state('zoomed')                                                    # Make window scalable
-root.rowconfigure(0, weight=1)
-root.columnconfigure(0, weight=1)
+LARGE_FONT= ("Calibri", 12)                                                                                     # Font Variable
+col = ['#003241','#ffffff','#2d96af','#e6f5fa','#ffffff']                                                       # Color pallette (for dark mode)
+dim = [0.12,0.2,0.25,0.8]                                                                                       # Frame Dimensions
+dim2 = [0.06]   
 
-col = []                                                                # Color pallette (for dark mode)
-day = ['#003241','#ffffff','#2d96af','#e6f5fa','#ffffff']
-night = ['#101010','#212121','#121212','#232323','#ffffff']
-darkMode = 'Day'
-
-dim = [0.12,0.2,0.25,0.8]                                               # Dimension for easy changes
-
-today = date.today()                                                    # Date for navigation
+today = date.today()                                                                                            # Date for navigation
 currentDate = today.strftime("%b %Y").upper()
 
-# Show correct frame an move over everything simular to visible frame
-def show_frame(frame):    
-    frame.tkraise()                                                     # Make correct frame visible
-    closeButton = tk.Button(frame, text="Quit", command=quit)           # Close Button
-    closeButton.place(relx=0.98, rely=0.01)
+class App(tk.Tk):                                                                                               # Main class, load on start
+
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+
+        tk.Tk.iconbitmap(self, default="src/Budget.ico")                                                        # App icon
+        tk.Tk.wm_title(self, "Based Budgetting")                                                                # App title
+        self.attributes('-fullscreen', True)                                                                    # Fullscreen mode
+
+        container = tk.Frame(self)                                                                              # Container that is scalable (when no fullscreen)
+        container.pack(side="top", fill="both", expand = True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}                                                                                        # Contains all frames
+
+        for F in (Budget, Reports, Accounts):                                                                   # Loop to show correct frame (window)
+            frame = F(container, self)
+            self.frames[F] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame(Budget)
+
+    def show_frame(self, cont):                                                                                 # Function to show correct frame and bring permanent items over
+
+        frame = self.frames[cont]                                                                               # Frame is what conroller reports
+        frame.tkraise()                                                                                         # Raise correct frame to front
+
+        self.menu()                                                                                             # Run menu function
+
+        closeButton = tk.Button(frame, text="Quit", command=quit)                                               # Close Button
+        closeButton.place(relx=0.98, rely=0.01)
+
+    def menu(self):                                                                                             # Menu needs to be loaded on every frame
+        accBudget = tk.Frame(self, bg=col[2])
+        accBudget.place(relwidth=1-dim[3], relheight=1, relx=0, rely=0)                                         # Place items
+
+        self.budgetBtn = tk.Button(self, text="Budget", font=("Calibi", 15, BOLD), anchor='w',
+                                          bg=col[0], fg=col[4],
+                                          activebackground=col[3], activeforeground=col[0],
+                                          highlightthickness = 0, bd = 0,
+                                          command=lambda: [self.show_frame(Budget), self.nav1()])               # Nav Button
+        self.reportsBtn = tk.Button(self, text="Reports", font=("Calibi", 15, BOLD), anchor='w',
+                                         bg=col[2], fg=col[4],
+                                         highlightthickness = 0, bd = 0,
+                                         command=lambda: [self.show_frame(Reports), self.nav2()])               # Nav Button
+        self.allAccBtn = tk.Button(self, text="All Accounts", font=("Calibi", 15, BOLD), anchor='w',
+                                         bg=col[2], fg=col[4],
+                                         highlightthickness = 0, bd = 0,
+                                         command=lambda: [self.show_frame(Accounts), self.nav3()])              # Nav Button
+        self.bla1="2"
+
+        self.budgetBtn.place(relx=0, rely=dim[0], relwidth=dim[1], relheight=dim2[0])                           # Place Nav Buttons
+        self.reportsBtn.place(relx=0, rely=dim[0]+dim2[0], relwidth=dim[1], relheight=dim2[0])
+        self.allAccBtn.place(relx=0, rely=dim[0]+2*dim2[0], relwidth=dim[1], relheight=dim2[0])
+
+        titleBudget = tk.Label(accBudget, text="My Budget", bg=col[2], fg=col[4], font=("Calibi", 35, BOLD))    # Title
+        titleBudget.place(relwidth=1, relheight=dim[0], relx=0, rely=0)
+
+    def nav1(self):                                                                                             # Change background of active frame navigation button
+        self.budgetBtn.config(bg=col[0])
+        self.reportsBtn.config(bg=col[2])
+        self.allAccBtn.config(bg=col[2])
+
+    def nav2(self):                                                                                             # Change background of active frame navigation button
+        self.budgetBtn.config(bg=col[2])
+        self.reportsBtn.config(bg=col[0])
+        self.allAccBtn.config(bg=col[2])
+
+    def nav3(self):                                                                                             # Change background of active frame navigation button
+        self.budgetBtn.config(bg=col[2])
+        self.reportsBtn.config(bg=col[2])
+        self.allAccBtn.config(bg=col[0])
+
+    def quit(self):                                                                                             # Close app
+        App.quit()
+
+class Budget(tk.Frame):                                                                                         # Budget frame
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        navBudget = tk.Frame(self, bg=col[0])                                                                   # Frame items            
+        catBudget = tk.Frame(self, bg=col[1])
+        allBudget = tk.Frame(self, bg=col[3])
+        navBudget.place(relwidth=dim[3], relheight=dim[0], relx=1-dim[3], rely=0)                               # Place items
+        catBudget.place(relwidth=1-dim[1]-dim[2], relheight=1-dim[0], relx=1-dim[3], rely=dim[0])
+        allBudget.place(relwidth=dim[2], relheight=1-dim[0], relx=1-dim[2], rely=dim[0])
+
+        #Content in top frame
+        dateBudget = tk.Label(navBudget, text=currentDate, bg=col[0], fg=col[4], font=("Calibi", 35, BOLD))     # Date
+        dateBudget.place(relwidth=0.5, relheight=1, relx=0, rely=0)
         
+class Reports(tk.Frame):                                                                                        # Reports frame
 
-# Check if there is a save and prints it if it exists
-if os.path.isfile('save.txt'):
-    with open('save.txt', 'r') as f:
-        darkMode = f.read()
-        if darkMode == 'Day':
-            col = day
-        elif darkMode == 'Night':
-            col = night
-else:
-    col = day
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
 
-# Closes app
-def quit():
-    global root
-    root.quit()
+        navReports = tk.Frame(self, bg=col[0])                                                                  # Frame items
+        catReports = tk.Frame(self, bg=col[1])
+        allReports = tk.Frame(self, bg=col[3])
+        navReports.place(relwidth=dim[3], relheight=dim[0], relx=1-dim[3], rely=0)                              # Place items
+        catReports.place(relwidth=1-dim[1]-dim[2], relheight=1-dim[0], relx=1-dim[3], rely=dim[0])
+        allReports.place(relwidth=dim[2], relheight=1-dim[0], relx=1-dim[2], rely=dim[0])
 
-#Dark mode
-def dark():
-    global darkMode                                                     # Makes darkMode variable available
-    if modeButton['text'] == 'Dark':                                    # Change button text to other option
-        modeButton['text'] = 'Light'
-        darkMode = 'Night'
-        col = night
-    elif modeButton['text'] == 'Light':
-        modeButton['text'] = 'Dark'
-        darkMode = 'Day'
-        col = day
-    navFrame.config(bg=col[0])                                          # Change color to current pallet
-    budgetFrame.config(bg=col[1])
-    accountFrame.config(bg=col[2])
-    overallFrame.config(bg=col[3])
+class Accounts(tk.Frame):
 
-    for widget in accountFrame.winfo_children():                        # Change background color of labels
-        if isinstance(widget, Label):
-            widget.config(bg=col[2], fg=col[4])
-    for widget in navFrame.winfo_children():
-        if isinstance(widget, Label):
-            widget.config(bg=col[0], fg=col[4])
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
 
-# Frames
-frame1 = tk.Frame(root)                                                 # List of all frames
-frame2 = tk.Frame(root)
-frame3 = tk.Frame(root)
-#canvas.pack(fill=tk.BOTH, expand=True)
-for frame in (frame1, frame2, frame3):                                  # Loop to place correct frame
-    frame.grid(row=0, column=0, sticky='nsew')
+        navAccounts = tk.Frame(self, bg=col[0])                                                                 # Frame items
+        catAccounts = tk.Frame(self, bg=col[1])
+        accAccounts = tk.Frame(self, bg=col[2])
+        navAccounts.place(relwidth=dim[3], relheight=dim[0], relx=1-dim[3], rely=0)                             # Place items
+        catAccounts.place(relwidth=1-dim[1], relheight=1-dim[0], relx=1-dim[3], rely=dim[0])
+        accAccounts.place(relwidth=1-dim[3], relheight=1, relx=0, rely=0)
 
-#================================================================ Frame 1
-
-# Top - Middle - Left - Right Frame
-navFrame = tk.Frame(frame1, bg=col[0])
-budgetFrame = tk.Frame(frame1, bg=col[1])
-accountFrame = tk.Frame(frame1, bg=col[2])
-overallFrame = tk.Frame(frame1, bg=col[3])
-navFrame.place(relwidth=dim[3], relheight=dim[0], relx=1-dim[3], rely=0)
-budgetFrame.place(relwidth=1-dim[1]-dim[2], relheight=1-dim[0], relx=1-dim[3], rely=dim[0])
-accountFrame.place(relwidth=1-dim[3], relheight=1, relx=0, rely=0)
-overallFrame.place(relwidth=dim[2], relheight=1-dim[0], relx=1-dim[2], rely=dim[0])
-
-# Dark Mode
-modeButton = tk.Button(frame1, text="Dark", command=dark)            # Mode Button
-modeButton.place(relx=0.95, rely=0.01)
-if darkMode == 'Night':
-    print('true')
-    modeButton['text'] = 'Light'
-
-# Content in left frame
-label = tk.Label(accountFrame, text="My Budget", bg=col[2], fg=col[4], font=("Calibi", 35, BOLD))
-label.place(relwidth=1, relheight=dim[0], relx=0, rely=0)
-
-frame1_btn = tk.Button(accountFrame, text="Reports", bg=col[2], fg=col[4], font=("Calibi", 25, BOLD), command=lambda:show_frame(frame2))
-frame1_btn.place(relx=0, rely=0.13)
-
-# Content in top frame
-label = tk.Label(navFrame, text=currentDate, bg=col[0], fg=col[4], font=("Calibi", 35, BOLD))
-label.place(relwidth=0.5, relheight=1, relx=0, rely=0)
-
-show_frame(frame1)
-
-#================================================================ Frame 2
-# Top - Middle - Left - Right Frame
-navFrame2 = tk.Frame(frame2, bg=col[0])
-budgetFrame2 = tk.Frame(frame2, bg=col[1])
-accountFrame2 = tk.Frame(frame2, bg=col[2])
-overallFrame2 = tk.Frame(frame2, bg=col[3])
-navFrame2.place(relwidth=dim[3], relheight=dim[0], relx=1-dim[3], rely=0)
-budgetFrame2.place(relwidth=1-dim[1]-dim[2], relheight=1-dim[0], relx=1-dim[3], rely=dim[0])
-accountFrame2.place(relwidth=1-dim[3], relheight=1, relx=0, rely=0)
-overallFrame2.place(relwidth=dim[2], relheight=1-dim[0], relx=1-dim[2], rely=dim[0])
-# Content in left frame
-label = tk.Label(accountFrame2, text="Reports", bg=col[2], fg=col[4], font=("Calibi", 35, BOLD))
-label.place(relwidth=1, relheight=dim[0], relx=0, rely=0)
-frame1_btn = tk.Button(accountFrame2, text="Budget", bg=col[2], fg=col[4], font=("Calibi", 25, BOLD), command=lambda:show_frame(frame1))
-frame1_btn.place(relx=0, rely=0.13)
-
-# End mainloop (startup)
-root.mainloop()
-
-# Writing values to a file
-with open('save.txt', 'w') as f:
-    f.write(darkMode)
+app = App()                                                                                                     # Run main loop on execution
+app.mainloop()
