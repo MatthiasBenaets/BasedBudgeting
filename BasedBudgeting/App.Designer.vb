@@ -22,9 +22,19 @@ Partial Class App
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.pnlMenu = New System.Windows.Forms.Panel()
+        Me.chNet = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.txtTitle = New System.Windows.Forms.TextBox()
         Me.btnAccounts = New System.Windows.Forms.Button()
         Me.btnReports = New System.Windows.Forms.Button()
@@ -82,13 +92,20 @@ Partial Class App
         Me.cbCategoryFilter = New System.Windows.Forms.ComboBox()
         Me.cbPayeeFilter = New System.Windows.Forms.ComboBox()
         Me.cbAccountFilter = New System.Windows.Forms.ComboBox()
+        Me.pnlReportsCharts = New System.Windows.Forms.Panel()
+        Me.chSpending = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.chTrend = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.pnlMenu.SuspendLayout()
+        CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlNavigation.SuspendLayout()
         Me.pnlBudgetStatistics.SuspendLayout()
         Me.pnlReportsStatistics.SuspendLayout()
         Me.pnlAccountsTransaction.SuspendLayout()
         CType(Me.dgvTransactions, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlAccountsFilter.SuspendLayout()
+        Me.pnlReportsCharts.SuspendLayout()
+        CType(Me.chSpending, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chTrend, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlMenu
@@ -104,6 +121,24 @@ Partial Class App
         Me.pnlMenu.Name = "pnlMenu"
         Me.pnlMenu.Size = New System.Drawing.Size(214, 608)
         Me.pnlMenu.TabIndex = 0
+        '
+        'chNet
+        '
+        ChartArea1.Name = "ChartArea1"
+        Me.chNet.ChartAreas.Add(ChartArea1)
+        Legend1.Name = "Legend1"
+        Me.chNet.Legends.Add(Legend1)
+        Me.chNet.Location = New System.Drawing.Point(0, 0)
+        Me.chNet.Margin = New System.Windows.Forms.Padding(0)
+        Me.chNet.Name = "chNet"
+        Me.chNet.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.chNet.Series.Add(Series1)
+        Me.chNet.Size = New System.Drawing.Size(596, 300)
+        Me.chNet.TabIndex = 10
+        Me.chNet.Text = "chNet"
         '
         'txtTitle
         '
@@ -803,6 +838,55 @@ Partial Class App
         Me.cbAccountFilter.Size = New System.Drawing.Size(76, 21)
         Me.cbAccountFilter.TabIndex = 0
         '
+        'pnlReportsCharts
+        '
+        Me.pnlReportsCharts.AutoScroll = True
+        Me.pnlReportsCharts.BackColor = System.Drawing.Color.White
+        Me.pnlReportsCharts.Controls.Add(Me.chTrend)
+        Me.pnlReportsCharts.Controls.Add(Me.chSpending)
+        Me.pnlReportsCharts.Controls.Add(Me.chNet)
+        Me.pnlReportsCharts.Location = New System.Drawing.Point(214, 87)
+        Me.pnlReportsCharts.Name = "pnlReportsCharts"
+        Me.pnlReportsCharts.Size = New System.Drawing.Size(613, 521)
+        Me.pnlReportsCharts.TabIndex = 10
+        Me.pnlReportsCharts.Visible = False
+        '
+        'chSpending
+        '
+        ChartArea3.Name = "ChartArea1"
+        Me.chSpending.ChartAreas.Add(ChartArea3)
+        Legend3.Name = "Legend1"
+        Me.chSpending.Legends.Add(Legend3)
+        Me.chSpending.Location = New System.Drawing.Point(0, 300)
+        Me.chSpending.Margin = New System.Windows.Forms.Padding(0)
+        Me.chSpending.Name = "chSpending"
+        Me.chSpending.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
+        Series3.ChartArea = "ChartArea1"
+        Series3.Legend = "Legend1"
+        Series3.Name = "Series1"
+        Me.chSpending.Series.Add(Series3)
+        Me.chSpending.Size = New System.Drawing.Size(596, 300)
+        Me.chSpending.TabIndex = 11
+        Me.chSpending.Text = "chSpending"
+        '
+        'chTrend
+        '
+        ChartArea2.Name = "ChartArea1"
+        Me.chTrend.ChartAreas.Add(ChartArea2)
+        Legend2.Name = "Legend1"
+        Me.chTrend.Legends.Add(Legend2)
+        Me.chTrend.Location = New System.Drawing.Point(0, 600)
+        Me.chTrend.Margin = New System.Windows.Forms.Padding(0)
+        Me.chTrend.Name = "chTrend"
+        Me.chTrend.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
+        Series2.ChartArea = "ChartArea1"
+        Series2.Legend = "Legend1"
+        Series2.Name = "Series1"
+        Me.chTrend.Series.Add(Series2)
+        Me.chTrend.Size = New System.Drawing.Size(596, 300)
+        Me.chTrend.TabIndex = 12
+        Me.chTrend.Text = "chTrend"
+        '
         'App
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -810,6 +894,7 @@ Partial Class App
         Me.AutoSize = True
         Me.BackColor = System.Drawing.SystemColors.Window
         Me.ClientSize = New System.Drawing.Size(1083, 608)
+        Me.Controls.Add(Me.pnlReportsCharts)
         Me.Controls.Add(Me.pnlAccountsTransaction)
         Me.Controls.Add(Me.pnlReportsStatistics)
         Me.Controls.Add(Me.pnlBudgetStatistics)
@@ -824,6 +909,7 @@ Partial Class App
         Me.Text = "Based Budgeting"
         Me.pnlMenu.ResumeLayout(False)
         Me.pnlMenu.PerformLayout()
+        CType(Me.chNet, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlNavigation.ResumeLayout(False)
         Me.pnlNavigation.PerformLayout()
         Me.pnlBudgetStatistics.ResumeLayout(False)
@@ -832,6 +918,9 @@ Partial Class App
         Me.pnlAccountsTransaction.PerformLayout()
         CType(Me.dgvTransactions, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlAccountsFilter.ResumeLayout(False)
+        Me.pnlReportsCharts.ResumeLayout(False)
+        CType(Me.chSpending, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chTrend, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -894,4 +983,8 @@ Partial Class App
     Friend WithEvents cbPayeeFilter As ComboBox
     Friend WithEvents cbSubcategoryFilter As ComboBox
     Friend WithEvents dtpDateFilter As DateTimePicker
+    Friend WithEvents chNet As DataVisualization.Charting.Chart
+    Friend WithEvents pnlReportsCharts As Panel
+    Friend WithEvents chSpending As DataVisualization.Charting.Chart
+    Friend WithEvents chTrend As DataVisualization.Charting.Chart
 End Class
