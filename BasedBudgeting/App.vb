@@ -129,7 +129,6 @@ Public Class App
                 traDate = Convert.ToDateTime(values(1))
                 If (traDate >= preDate) Then                                                    ' Check if date is not older than 30 days
                     xValue(j) = values(4)
-                    MsgBox(xValue(j))
                     yValue(j) = values(6)
                 Else
                     'i = rows.Length - 1                                                        ' Quit loop if month ends (will only work if csv is chronological
@@ -139,9 +138,8 @@ Public Class App
 
             chNet.Series.Clear()                                                                ' Clear chart before fill so no exceptions are generated
             chNet.Titles.Clear()
-            seriesName2 = "chNetWorth"                                                          ' Unique chart name
+            seriesName2 = "chNet"                                                               ' Unique chart name
             chNet.Series.Add(seriesName2)
-            MsgBox(xValue(1))
             chNet.Series(seriesName2).Points.DataBindXY(xValue, yValue)
             chNet.Series(seriesName2).ChartType = DataVisualization.Charting.SeriesChartType.Pie    ' Define chart type
             chNet.Legends(0).Enabled = True                                                     ' Chart legend
