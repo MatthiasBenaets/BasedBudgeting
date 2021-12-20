@@ -1,11 +1,9 @@
-﻿Imports System.IO
-Imports System.Windows.Forms.DataVisualization.Charting
+﻿Imports System.Windows.Forms.DataVisualization.Charting
 Public Class App
     Private Sub App_Load(sender As Object, e As EventArgs) Handles MyBase.Load                  ' When applications loads
         Me.lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()                           ' Print correct date
         Me.lblDateValue.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()
         Me.dtpDate.Value = DateTime.Now.ToString("dd MMM yyyy")                                 ' Update DateTimePicker to current date
-
 
         Dim rows() As String
         Dim values() As String
@@ -21,22 +19,14 @@ Public Class App
 
                 dgvTransactions.Rows.Add(row)                                                   ' Add row to datagridview
             Next i
+        Else
+            dgvTransactions.Rows.Insert(0, "START", "01 Jan 1900", "START", "START", "START", "START", "", "")
+            SaveTransaction()
         End If
     End Sub
 
     Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
-        Dim writer As New StreamWriter(".\transactions.csv")
-        For i As Integer = 0 To dgvTransactions.Rows.Count - 1 Step +1                          ' Loop through all rows
-            For j As Integer = 0 To dgvTransactions.Columns.Count - 1 Step +1                   ' Loop through all columns within the row
-                If j = dgvTransactions.Columns.Count - 1 Then                                   ' Print values with ","; except last column
-                    writer.Write(dgvTransactions.Rows(i).Cells(j).Value)
-                Else
-                    writer.Write(dgvTransactions.Rows(i).Cells(j).Value & ",")
-                End If
-            Next j
-            writer.WriteLine("")                                                                ' Next line
-        Next i
-        writer.Close()
+        SaveTransaction()
     End Sub
     Private Sub BtnBudget_Click(sender As Object, e As EventArgs) Handles btnBudget.Click       ' When Budget menu is selected
         btnBudget.BackColor = Color.FromArgb(0, 90, 120)                                        ' Change Button Colors depending on selected menu
@@ -80,19 +70,26 @@ Public Class App
     End Sub
 
     Private Sub btnAddTransaction_Click(sender As Object, e As EventArgs) Handles btnAddTransaction.Click   ' When transaction add button is clicked
+        Dim transactionDate As DateTime = dtpDate.Value.ToString("dd MMM yyyy")
+        Dim i = 0
+        While transactionDate < dgvTransactions.Rows(i).Cells(1).Value                          ' Loop to check where in DataGridView, data needs to be stored
+            i += 1
+        End While
+
         If cbAccount.Text = "" Or cbPayee.Text = "" Or cbCategory.Text = "" Or cbSubcategory.Text = "" Or tbMemo.Text = "" Then ' If labels are not filled
             MsgBox("not all information needed given")
         ElseIf tbOutflow.Text = "" And tbInflow.Text = "" Then                                  ' If outflow or inflow is not filled
             MsgBox("Either enter a inflow or outflow value")
         Else
-            If IsNumeric(tbOutflow.Text) Then                                                   ' Print data to DataGridView
-                dgvTransactions.Rows.Add(cbAccount.Text, dtpDate.Text, cbPayee.Text, cbCategory.Text, cbSubcategory.Text, tbMemo.Text, tbOutflow.Text, tbInflow.Text)
-            ElseIf IsNumeric(tbInflow.Text) Then
-                dgvTransactions.Rows.Add(cbAccount.Text, dtpDate.Text, cbPayee.Text, cbCategory.Text, cbSubcategory.Text, tbMemo.Text, tbOutflow.Text, tbInflow.Text)
+            If IsNumeric(tbOutflow.Text) Then                                                   ' Print data to DataGridView on correct row.
+                dgvTransactions.Rows.Insert(i, cbAccount.Text, dtpDate.Text, cbPayee.Text, cbCategory.Text, cbSubcategory.Text, tbMemo.Text, tbOutflow.Text, tbInflow.Text)
+            ElseIf IsNumeric(tbInflow.Text) Then                                                ' Thus no date filter required
+                dgvTransactions.Rows.Insert(i, cbAccount.Text, dtpDate.Text, cbPayee.Text, cbCategory.Text, cbSubcategory.Text, tbMemo.Text, tbOutflow.Text, tbInflow.Text)
             Else
                 MsgBox("Transaction value not a number")
             End If
         End If
+        SaveTransaction()
     End Sub
 
     Private Sub tbOutflow_TextChanged(sender As Object, e As EventArgs) Handles tbOutflow.TextChanged   ' When textinput from outflow changes
@@ -114,42 +111,42 @@ Public Class App
     Private Sub populatePieChart()                                                              ' Add value to charts in Reports
         Dim rows() As String
         Dim values() As String
-        If My.Computer.FileSystem.FileExists(".\transactions.csv") Then                         ' If saved transaction file exists
-            rows = File.ReadAllLines(".\transactions.csv")
+        rows = File.ReadAllLines(".\transactions.csv")
 
-            Dim preDate As DateTime = DateTime.Now.AddMonths(-1)                                ' Variables for looping
-            Dim traDate As DateTime
-            Dim xValue(rows.Length) As String
-            Dim yValue(rows.Length) As Double
-            Dim seriesName2 As String = Nothing
-            Dim j As Integer = 0
+        Dim preDate As DateTime = DateTime.Now.AddMonths(-1)                                    ' Variables for looping
+        Dim traDate As DateTime
+        Dim xValue(rows.Length) As String
+        Dim yValue(rows.Length) As Double
+        Dim seriesName2 As String = Nothing
+        Dim j As Integer = 0
 
-            For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Looping through all transactions
-                values = rows(j).ToString().Split(",")
-                traDate = Convert.ToDateTime(values(1))
-                If (traDate >= preDate) Then                                                    ' Check if date is not older than 30 days
-                    xValue(j) = values(4)
-                    yValue(j) = values(6)
-                Else
-                    'i = rows.Length - 1                                                        ' Quit loop if month ends (will only work if csv is chronological
-                End If
-                j += 1
-            Next i
+        For i As Integer = 0 To rows.Length - 1 Step +1                                         ' Looping through all transactions
+            values = rows(j).ToString().Split(",")
+            traDate = Convert.ToDateTime(values(1))
+            If (traDate >= preDate) Then                                                        ' Check if date is not older than 30 days
+                xValue(j) = values(4)
+                yValue(j) = values(6)
+            Else
+                'i = rows.Length - 1                                                            ' Quit loop if month ends (will only work if csv is chronological
+            End If
+            j += 1
+        Next i
 
-            chNet.Series.Clear()                                                                ' Clear chart before fill so no exceptions are generated
-            chNet.Titles.Clear()
-            seriesName2 = "chNet"                                                               ' Unique chart name
-            chNet.Series.Add(seriesName2)
-            chNet.Series(seriesName2).Points.DataBindXY(xValue, yValue)
-            chNet.Series(seriesName2).ChartType = DataVisualization.Charting.SeriesChartType.Pie    ' Define chart type
-            chNet.Legends(0).Enabled = True                                                     ' Chart legend
-            For Each dp As DataPoint In chNet.Series(seriesName2).Points
-                If dp.YValues(0) = 0.0 Then
-                    dp.LabelForeColor = Color.Transparent
-                End If
-            Next
-            chNet.Series("chNet").IsValueShownAsLabel = True                                    ' Show value instead of name for chart items
-        End If
+        chNet.Series.Clear()                                                                    ' Clear chart before fill so no exceptions are generated
+        chNet.Titles.Clear()
+        seriesName2 = "chNet"                                                                   ' Unique chart name
+        chNet.Series.Add(seriesName2)
+        chNet.Series(seriesName2).Points.DataBindXY(xValue, yValue)
+        chNet.Series(seriesName2).ChartType = DataVisualization.Charting.SeriesChartType.Pie    ' Define chart type
+        chNet.Legends(0).Enabled = True                                                         ' Chart legend
+        For Each dp As DataPoint In chNet.Series(seriesName2).Points
+            If dp.YValues(0) = 0.0 Then
+                dp.LabelForeColor = Color.Transparent
+            End If
+        Next
+        chNet.Series("chNet").IsValueShownAsLabel = True                                        ' Show value instead of name for chart items
+
+        ' SECOND CHART
 
         Dim yValues As Double() = {CDbl(20), CDbl(20), CDbl(20), CDbl(20), CDbl(20)}            ' Getting values from Textboxes
         Dim xValues As String() = {"Total Beneficiary", "Male", "Female", "Engaged in same activity before", "Material Support received"}   ' Headings
@@ -169,5 +166,20 @@ Public Class App
             End If
         Next
         chSpending.Series("chSpending").IsValueShownAsLabel = True                              ' Show value instead of name for chart items
+    End Sub
+
+    Private Sub SaveTransaction()
+        Dim writer As New StreamWriter(".\transactions.csv")
+        For i As Integer = 0 To dgvTransactions.Rows.Count - 1 Step +1                          ' Loop through all rows
+            For j As Integer = 0 To dgvTransactions.Columns.Count - 1 Step +1                   ' Loop through all columns within the row
+                If j = dgvTransactions.Columns.Count - 1 Then                                   ' Print values with ","; except last column
+                    writer.Write(dgvTransactions.Rows(i).Cells(j).Value)
+                Else
+                    writer.Write(dgvTransactions.Rows(i).Cells(j).Value & ",")
+                End If
+            Next j
+            writer.WriteLine("")                                                                ' Next line
+        Next i
+        writer.Close()
     End Sub
 End Class
