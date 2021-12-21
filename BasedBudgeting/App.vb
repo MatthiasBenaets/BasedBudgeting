@@ -1,4 +1,5 @@
-﻿Imports System.Windows.Forms.DataVisualization.Charting
+﻿Imports System.Globalization
+Imports System.Windows.Forms.DataVisualization.Charting
 Public Class App
     Private Sub App_Load(sender As Object, e As EventArgs) Handles MyBase.Load                  ' When applications loads
         Me.lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()                           ' Print correct date
@@ -7,8 +8,8 @@ Public Class App
 
         Dim rows() As String
         Dim values() As String
-        If My.Computer.FileSystem.FileExists(".\transactions.csv") Then                         ' If saved transaction file exists
-            rows = File.ReadAllLines(".\transactions.csv")
+        If My.Computer.FileSystem.FileExists(".\BasedData\transactions.csv") Then               ' If saved transaction file exists
+            rows = File.ReadAllLines(".\BasedData\transactions.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
                 values = rows(i).ToString().Split(",")                                          ' Split values at ","
                 Dim row(values.Length - 1) As String
@@ -20,8 +21,27 @@ Public Class App
                 dgvTransactions.Rows.Add(row)                                                   ' Add row to datagridview
             Next i
         Else
-            dgvTransactions.Rows.Insert(0, "START", "01 Jan 1900", "START", "START", "START", "START", "", "")
-            SaveTransaction()
+            dgvTransactions.Rows.Insert(0, "START", "01 Jan 1900", "START", "START", "START", "START", "", "")  'Baseline info, fixes OutOfRange when second transaction is earlier than first transaction
+            If System.IO.Directory.Exists(".\BasedData") Then                                   ' Check if BasedData exist, if not create it and run SaveTransaction
+                SaveTransaction()
+            Else
+                System.IO.Directory.CreateDirectory(".\BasedData")
+                SaveTransaction()
+            End If
+        End If
+
+        If My.Computer.FileSystem.FileExists(".\BasedData\accounts.csv") Then                   ' If saved transaction file exists
+            rows = File.ReadAllLines(".\BasedData\accounts.csv")
+            For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
+                values = rows(i).ToString().Split(",")                                          ' Split values at ","
+                Dim row(values.Length - 1) As String
+
+                For j As Integer = 0 To values.Length - 1 Step +1
+                    row(j) = values(j).Trim()
+                Next j
+
+                dgvAccounts.Rows.Add(row)                                                       ' Add row to datagridview
+            Next i
         End If
     End Sub
 
@@ -53,7 +73,7 @@ Public Class App
         dgvTransactions.Visible = False
         lblDate.Visible = False
 
-        populatePieChart()
+        populateCharts()
     End Sub
 
     Private Sub BtnAccounts_Click(sender As Object, e As EventArgs) Handles btnAccounts.Click   ' When Accounts button is selected
@@ -67,6 +87,17 @@ Public Class App
         pnlAccountsFilter.Visible = True
         dgvTransactions.Visible = True
         lblDate.Visible = False
+    End Sub
+    Private Sub btnAddAccount_Click(sender As Object, e As EventArgs) Handles btnAddAccount.Click   ' When Add Account buttin is clicked
+        Dim accounts(2)
+        accounts(0) = InputBox("Name of account")                                               ' Inputbox to get info from user
+        accounts(1) = InputBox("Balance of " & accounts(0) & ".")
+        dgvAccounts.Rows.Add(accounts)                                                          ' Add info to DataGridView
+
+        Dim curBalance = Double.Parse(lblTotalBalance.Text)
+        lblTotalBalance.Text = curBalance + accounts(1)
+
+        SaveAccounts()
     End Sub
 
     Private Sub btnAddTransaction_Click(sender As Object, e As EventArgs) Handles btnAddTransaction.Click   ' When transaction add button is clicked
@@ -107,60 +138,71 @@ Public Class App
             tbOutflow.Enabled = False
         End If
     End Sub
-
-    Private Sub populatePieChart()                                                              ' Add value to charts in Reports
-        Dim rows() As String
-        Dim values() As String
-        rows = File.ReadAllLines(".\transactions.csv")
-
-        Dim preDate As DateTime = DateTime.Now.AddMonths(-1)                                    ' Variables for looping
-        Dim traDate As DateTime
-        Dim xValue(rows.Length) As String
-        Dim yValue(rows.Length) As Double
-        Dim seriesName2 As String = Nothing
+    Private Sub populateCharts()
+        populateNetWorth()
+        populateSpending()
+        populateTrend()
+    End Sub
+    Private Sub populateNetWorth()                                                              ' Add values to chart one in reports
+        Dim rowsAcc() As String = File.ReadAllLines(".\BasedData\accounts.csv")
+        Dim accVal() As String
+        Dim xAcc(rowsAcc.Length) As String
+        Dim yAcc(rowsAcc.Length) As Double
+        Dim seriesAcc As String = Nothing
         Dim j As Integer = 0
 
-        For i As Integer = 0 To rows.Length - 1 Step +1                                         ' Looping through all transactions
-            values = rows(j).ToString().Split(",")
-            traDate = Convert.ToDateTime(values(1))
-            If (traDate >= preDate) Then                                                        ' Check if date is not older than 30 days
-                xValue(j) = values(4)
-                yValue(j) = values(6)
-            Else
-                'i = rows.Length - 1                                                            ' Quit loop if month ends (will only work if csv is chronological
-            End If
+        For i As Integer = 0 To rowsAcc.Length - 1 Step +1                                      ' Looping through all accounts
+            accVal = rowsAcc(j).ToString().Split(",")
+            xAcc(j) = accVal(0)
+            yAcc(j) = accVal(1)
             j += 1
         Next i
 
         chNet.Series.Clear()                                                                    ' Clear chart before fill so no exceptions are generated
         chNet.Titles.Clear()
-        seriesName2 = "chNet"                                                                   ' Unique chart name
-        chNet.Series.Add(seriesName2)
-        chNet.Series(seriesName2).Points.DataBindXY(xValue, yValue)
-        chNet.Series(seriesName2).ChartType = DataVisualization.Charting.SeriesChartType.Pie    ' Define chart type
+        seriesAcc = "chNet"                                                                     ' Unique chart name
+        chNet.Series.Add(seriesAcc)
+        chNet.Series(seriesAcc).Points.DataBindXY(xAcc, yAcc)
+        chNet.Series(seriesAcc).ChartType = DataVisualization.Charting.SeriesChartType.Pie      ' Define chart type
         chNet.Legends(0).Enabled = True                                                         ' Chart legend
-        For Each dp As DataPoint In chNet.Series(seriesName2).Points
+        For Each dp As DataPoint In chNet.Series(seriesAcc).Points
             If dp.YValues(0) = 0.0 Then
                 dp.LabelForeColor = Color.Transparent
             End If
         Next
-        chNet.Series("chNet").IsValueShownAsLabel = True                                        ' Show value instead of name for chart items
+        chNet.Series("chNet").IsValueShownAsLabel = True
+    End Sub
 
-        ' SECOND CHART
+    Private Sub populateSpending()                                                              ' Add values to chart two in reports
+        Dim rowsTra() As String = File.ReadAllLines(".\BasedData\transactions.csv")
+        Dim traVal() As String
+        Dim preMonth As DateTime = DateTime.Now.AddMonths(-1)
+        Dim traDate As DateTime
+        Dim xTra(rowsTra.Length) As String
+        Dim yTra(rowsTra.Length) As Double
+        Dim seriesTra As String = Nothing
+        Dim j As Integer = 0
 
-        Dim yValues As Double() = {CDbl(20), CDbl(20), CDbl(20), CDbl(20), CDbl(20)}            ' Getting values from Textboxes
-        Dim xValues As String() = {"Total Beneficiary", "Male", "Female", "Engaged in same activity before", "Material Support received"}   ' Headings
-        Dim seriesName As String = Nothing
+        For i As Integer = 0 To rowsTra.Length - 1 Step +1                                      ' Looping through all transactions
+            traVal = rowsTra(j).ToString().Split(",")
+            traDate = Convert.ToDateTime(traVal(1))
+            If (traDate >= preMonth) Then                                                       ' Check if date is not older than 30 days
+                xTra(j) = traVal(4)
+                yTra(j) = traVal(6)
+            Else
+                i = rowsTra.Length - 1                                                          ' Quit loop if month ends (will only work if csv is chronological
+            End If
+            j += 1
+        Next i
+
         chSpending.Series.Clear()                                                               ' Clear chart before fill so no exceptions are generated
         chSpending.Titles.Clear()
-        seriesName = "chSpending"                                                               ' Unique chart name
-        chSpending.Series.Add(seriesName)
-        chSpending.Series(seriesName).Points.DataBindXY(xValues, yValues)                       ' Bind X and Y value
-        'chSpending.Series(seriesName).Points(0).Color = Color.MediumSeaGreen                   ' Custom colors
-        chSpending.Series(seriesName).ChartType = DataVisualization.Charting.SeriesChartType.Pie    ' Define chart type
-        'chSpending.ChartAreas("ChartArea1").Area3DStyle.Enable3D = True
+        seriesTra = "chSpending"                                                                ' Unique chart name
+        chSpending.Series.Add(seriesTra)
+        chSpending.Series(seriesTra).Points.DataBindXY(xTra, yTra)
+        chSpending.Series(seriesTra).ChartType = DataVisualization.Charting.SeriesChartType.Pie ' Define chart type
         chSpending.Legends(0).Enabled = True                                                    ' Chart legend
-        For Each dp As DataPoint In chSpending.Series(seriesName).Points
+        For Each dp As DataPoint In chSpending.Series(seriesTra).Points
             If dp.YValues(0) = 0.0 Then
                 dp.LabelForeColor = Color.Transparent
             End If
@@ -168,8 +210,51 @@ Public Class App
         chSpending.Series("chSpending").IsValueShownAsLabel = True                              ' Show value instead of name for chart items
     End Sub
 
+    Private Sub populateTrend()                                                                 ' Add values to chart three in reports
+        Dim rowsTra() As String = File.ReadAllLines(".\BasedData\transactions.csv")
+        Dim traVal() As String
+        Dim preYear As DateTime = DateTime.Now.AddYears(-1)
+        Dim xTra(rowsTra.Length) As String
+        Dim yTra(rowsTra.Length) As Double
+        Dim seriesTra As String = Nothing
+        Dim j As Integer = 0
+
+        For i As Integer = 0 To rowsTra.Length - 1 Step +1                                      ' Looping through all transactions
+            traVal = rowsTra(j).ToString().Split(",")
+
+            Dim traDate2 As String = Convert.ToDateTime(traVal(1))
+            If (traDate2 >= preYear) Then                                                       ' Check if date is not older than 1 year
+                Dim conMonth As Date = CDate(traVal(1))
+                xTra(j) = conMonth.ToString("MMM")
+                yTra(j) = traVal(6)
+            Else
+                i = rowsTra.Length - 1                                                          ' Quit loop if year ends (will only work if csv is chronological
+            End If
+            j += 1
+        Next i
+        chTrend.Series.Clear()                                                                  ' Clear chart before fill so no exceptions are generated
+        chTrend.Titles.Clear()
+        seriesTra = "chTrend"                                                                   ' Unique chart name
+        chTrend.Series.Add(seriesTra)
+        chTrend.Series(seriesTra).Points.DataBindXY(xTra, yTra)                                 ' Bind X and Y value
+        'chTrend.Series(seriesName).Points(0).Color = Color.MediumSeaGreen                      ' Custom colors
+        'chTrend.Series(seriesName).ChartType = DataVisualization.Charting.SeriesChartType.Pie  ' Define chart type
+        'chTrend.ChartAreas("ChartArea1").Area3DStyle.Enable3D = True
+        chTrend.Series(seriesTra).ChartType = DataVisualization.Charting.SeriesChartType.Column
+        chTrend.Legends(0).Enabled = True                                                       ' Chart legend
+        For Each dp As DataPoint In chTrend.Series(seriesTra).Points
+            If dp.YValues(0) = 0.0 Then
+                dp.LabelForeColor = Color.Transparent
+            End If
+        Next
+        chTrend.Series("chTrend").IsValueShownAsLabel = True                                    ' Show value instead of name for chart items
+    End Sub
+    Private Sub SaveData()
+        SaveTransaction()
+        SaveAccounts()
+    End Sub
     Private Sub SaveTransaction()
-        Dim writer As New StreamWriter(".\transactions.csv")
+        Dim writer As New StreamWriter(".\BasedData\transactions.csv")
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1 Step +1                          ' Loop through all rows
             For j As Integer = 0 To dgvTransactions.Columns.Count - 1 Step +1                   ' Loop through all columns within the row
                 If j = dgvTransactions.Columns.Count - 1 Then                                   ' Print values with ","; except last column
@@ -182,4 +267,28 @@ Public Class App
         Next i
         writer.Close()
     End Sub
+
+    Private Sub SaveAccounts()
+        Dim writer As New StreamWriter(".\BasedData\accounts.csv")
+        For i As Integer = 0 To dgvAccounts.Rows.Count - 1 Step +1                              ' Loop through all rows
+            For j As Integer = 0 To dgvAccounts.Columns.Count - 1 Step +1                       ' Loop through all columns within the row
+                If j = dgvAccounts.Columns.Count - 1 Then                                       ' Print values with ","; except last column
+                    writer.Write(dgvAccounts.Rows(i).Cells(j).Value)
+                Else
+                    writer.Write(dgvAccounts.Rows(i).Cells(j).Value & ",")
+                End If
+            Next j
+            writer.WriteLine("")                                                                ' Next line
+        Next i
+        writer.Close()
+    End Sub
 End Class
+
+' TO DO
+' 
+' Fix total balance auto calculation on load (possibly change how it gets calculated when added at first)
+' Make chart 2 and 3
+' Make editable Datagridview for Budget menu 
+' Possibly link all saved files
+' Setup all calculations in menu
+' Functioning "To be budgeted button"
