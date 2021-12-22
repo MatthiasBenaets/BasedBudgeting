@@ -57,6 +57,7 @@ Public Class App
         pnlReportsCharts.Visible = False
         pnlAccountsTransaction.Visible = False
         pnlAccountsFilter.Visible = False
+        dgvBudget.Visible = True
         dgvTransactions.Visible = False
         lblDate.Visible = True
     End Sub
@@ -70,6 +71,7 @@ Public Class App
         pnlReportsCharts.Visible = True
         pnlAccountsTransaction.Visible = False
         pnlAccountsFilter.Visible = False
+        dgvBudget.Visible = False
         dgvTransactions.Visible = False
         lblDate.Visible = False
 
@@ -85,6 +87,7 @@ Public Class App
         pnlReportsCharts.Visible = False
         pnlAccountsTransaction.Visible = True
         pnlAccountsFilter.Visible = True
+        dgvBudget.Visible = False
         dgvTransactions.Visible = True
         lblDate.Visible = False
     End Sub
@@ -182,13 +185,28 @@ Public Class App
         Dim yTra(rowsTra.Length) As Double
         Dim seriesTra As String = Nothing
         Dim j As Integer = 0
+        Dim k As Integer
+        Dim l As Boolean
 
         For i As Integer = 0 To rowsTra.Length - 1 Step +1                                      ' Looping through all transactions
             traVal = rowsTra(j).ToString().Split(",")
             traDate = Convert.ToDateTime(traVal(1))
             If (traDate >= preMonth) Then                                                       ' Check if date is not older than 30 days
-                xTra(j) = traVal(4)
-                yTra(j) = traVal(6)
+                k = 0
+                l = False
+                While k < xTra.Length
+                    If xTra(k) = traVal(4) Then
+                        yTra(k) = yTra(k) + traVal(6)
+                        l = True
+                        k = xTra.Length
+                    End If
+                    k += 1
+                End While
+
+                If l = False Then
+                    xTra(j) = traVal(4)
+                    yTra(j) = traVal(6)
+                End If
             Else
                 i = rowsTra.Length - 1                                                          ' Quit loop if month ends (will only work if csv is chronological
             End If
@@ -200,7 +218,7 @@ Public Class App
         seriesTra = "chSpending"                                                                ' Unique chart name
         chSpending.Series.Add(seriesTra)
         chSpending.Series(seriesTra).Points.DataBindXY(xTra, yTra)
-        chSpending.Series(seriesTra).ChartType = DataVisualization.Charting.SeriesChartType.Pie ' Define chart type
+        chSpending.Series(seriesTra).ChartType = DataVisualization.Charting.SeriesChartType.Doughnut ' Define chart type
         chSpending.Legends(0).Enabled = True                                                    ' Chart legend
         For Each dp As DataPoint In chSpending.Series(seriesTra).Points
             If dp.YValues(0) = 0.0 Then
@@ -213,41 +231,93 @@ Public Class App
     Private Sub populateTrend()                                                                 ' Add values to chart three in reports
         Dim rowsTra() As String = File.ReadAllLines(".\BasedData\transactions.csv")
         Dim traVal() As String
-        Dim preYear As DateTime = DateTime.Now.AddYears(-1)
-        Dim xTra(rowsTra.Length) As String
-        Dim yTra(rowsTra.Length) As Double
-        Dim seriesTra As String = Nothing
-        Dim j As Integer = 0
+        Dim strCat As String = ""
+        Dim strDate As String = ""
+        Dim preYear As DateTime = DateTime.Now.AddYears(-1)                                     ' Start date for all visible transactions in chart
+        Dim dtTrend As DataTable = New DataTable
+        dtTrend.Columns.Add("outflow", GetType(Double))                                         ' Columns for DataTable
+        dtTrend.Columns.Add("date", GetType(String))
+        dtTrend.Columns.Add("category", GetType(String))
+        Dim valExist As Boolean
+        Dim l As Integer = 0
+        Dim m As Integer = 0
 
-        For i As Integer = 0 To rowsTra.Length - 1 Step +1                                      ' Looping through all transactions
-            traVal = rowsTra(j).ToString().Split(",")
+        For i As Integer = 0 To rowsTra.Length - 1 Step +1                                      ' Loop all transactions to add to DataTable and list all dates and categories
+            traVal = rowsTra(l).ToString().Split(",")
+            Dim traDate As String = Convert.ToDateTime(traVal(1))
+            Dim traMonth = CDate(traVal(1)).ToString("MMM yyyy")                                ' Convert to Month Year
+            If (traDate >= preYear) Then                                                        ' Check if date is not older than 1 year
+                If dtTrend.Rows.Count = 0 Then                                                  ' First transaction loop
+                    dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                            ' Add row to DataTable in order "outflow/date/category"
+                Else                                                                            ' If not first transaction
+                    m = 0
+                    valExist = False                                                            ' Reset valExist to false
+                    While m < dtTrend.Rows.Count                                                ' Loop DataTable, used to add outflow to existing categories
+                        If dtTrend.Rows(m)(1).ToString = traMonth And dtTrend.Rows(m)(2) = traVal(4) Then   ' Check if date and category match between DataTable and Transactions 
+                            dtTrend.Rows(m)(0) = dtTrend.Rows(m)(0) + traVal(6)                 ' Add outflow to existing DataTable row
+                            m = dtTrend.Rows.Count
+                            valExist = True
+                        End If
+                        m += 1
+                    End While
 
-            Dim traDate2 As String = Convert.ToDateTime(traVal(1))
-            If (traDate2 >= preYear) Then                                                       ' Check if date is not older than 1 year
-                Dim conMonth As Date = CDate(traVal(1))
-                xTra(j) = conMonth.ToString("MMM")
-                yTra(j) = traVal(6)
+                    If valExist = False Then                                                    ' If combo of date and subcategory does not exist:
+                        dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                        ' Add new line to DataTable
+                    End If
+                End If
+
+                If strCat = "" Then                                                             ' If string has no value (first loop). Used to create list of subcategories
+                    strCat = traVal(4)
+                ElseIf strCat.Contains(traVal(4)) Then                                          ' Check if category already exist in the string
+                Else
+                    strCat = strCat + "," + traVal(4)
+                End If
+                If strDate = "" Then                                                            ' Ditto about but for Date
+                    strDate = traMonth
+                ElseIf strDate.Contains(traMonth) Then
+                Else
+                    strDate = strDate + "," + traMonth
+                End If
             Else
                 i = rowsTra.Length - 1                                                          ' Quit loop if year ends (will only work if csv is chronological
             End If
-            j += 1
-        Next i
+            l += 1
+        Next
+
+        Dim arrCat() As String = strCat.Split(",")                                              ' Split string to use in array
+        Dim arrDate() As String = strDate.Split(",")
+        Dim tfMatch As Boolean
+        For i As Integer = 0 To arrCat.Length - 1 Step +1                                       ' Loop existing categories, used to add non existing row
+            For j As Integer = 0 To arrDate.Length - 1 Step +1                                  ' Loop existing dates, rows need to be added to get full series
+                Dim dtRows = dtTrend.Rows.Count
+                For k As Integer = 0 To dtRows - 1                                              ' Loop through original DataTable values
+                    If dtTrend.Rows(k)(1) = arrDate(j) And dtTrend.Rows(k)(2) = arrCat(i) Then  ' Check if date and categorys match anywhere in the DataTable
+                        tfMatch = True
+                    End If
+                Next
+                If tfMatch = True Then                                                          ' If match, reset and search with next date
+                    tfMatch = False
+                Else
+                    dtTrend.Rows.Add(0, arrDate(j), arrCat(i))                                  ' If no match, add as new row in DataTable
+                    tfMatch = False                                                             ' Reset, moving to next category
+                End If
+            Next
+        Next
+
+        Dim dv As DataView = New DataView(dtTrend)
+        dv.Sort = "date desc"
+
         chTrend.Series.Clear()                                                                  ' Clear chart before fill so no exceptions are generated
         chTrend.Titles.Clear()
-        seriesTra = "chTrend"                                                                   ' Unique chart name
-        chTrend.Series.Add(seriesTra)
-        chTrend.Series(seriesTra).Points.DataBindXY(xTra, yTra)                                 ' Bind X and Y value
-        'chTrend.Series(seriesName).Points(0).Color = Color.MediumSeaGreen                      ' Custom colors
-        'chTrend.Series(seriesName).ChartType = DataVisualization.Charting.SeriesChartType.Pie  ' Define chart type
-        'chTrend.ChartAreas("ChartArea1").Area3DStyle.Enable3D = True
-        chTrend.Series(seriesTra).ChartType = DataVisualization.Charting.SeriesChartType.Column
-        chTrend.Legends(0).Enabled = True                                                       ' Chart legend
-        For Each dp As DataPoint In chTrend.Series(seriesTra).Points
-            If dp.YValues(0) = 0.0 Then
-                dp.LabelForeColor = Color.Transparent
-            End If
+        chTrend.DataManipulator.FilterSetEmptyPoints = True                                     ' Filter to get correct stack
+        chTrend.DataManipulator.FilterMatchedPoints = True
+        chTrend.DataBindCrossTable(dv, "category", "date", "outflow", "Label=outflow")          ' Populate chart
+
+        For Each cs As Series In chTrend.Series                                                 ' Removes labels of newly added rows with value "0"
+            chTrend.DataManipulator.Filter(DataVisualization.Charting.CompareMethod.EqualTo, 0, cs)   'Compare if equal to zero, filter out
+            cs.ChartType = SeriesChartType.StackedColumn                                        ' Chart type
+            'Dim dpcp As DataPointCustomProperties = New DataPointCustomProperties
         Next
-        chTrend.Series("chTrend").IsValueShownAsLabel = True                                    ' Show value instead of name for chart items
     End Sub
     Private Sub SaveData()
         SaveTransaction()
@@ -286,8 +356,8 @@ End Class
 
 ' TO DO
 ' 
+' Fix chart 3
 ' Fix total balance auto calculation on load (possibly change how it gets calculated when added at first)
-' Make chart 2 and 3
 ' Make editable Datagridview for Budget menu 
 ' Possibly link all saved files
 ' Setup all calculations in menu
