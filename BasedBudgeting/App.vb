@@ -1,5 +1,4 @@
-﻿Imports System.Globalization
-Imports System.Windows.Forms.DataVisualization.Charting
+﻿Imports System.Windows.Forms.DataVisualization.Charting
 Public Class App
     Private Sub App_Load(sender As Object, e As EventArgs) Handles MyBase.Load                  ' When applications loads
         Me.lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()                           ' Print correct date
@@ -30,6 +29,25 @@ Public Class App
             End If
         End If
 
+        If My.Computer.FileSystem.FileExists(".\BasedData\budget.csv") Then                     ' If saved budget file exists
+            rows = File.ReadAllLines(".\BasedData\budget.csv")
+            For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
+                values = rows(i).ToString().Split(",")                                          ' Split values at ","
+                Dim row(values.Length - 1) As String
+
+                For j As Integer = 0 To values.Length - 1 Step +1
+                    row(j) = values(j).Trim()
+                Next j
+                dgvBudget.Rows.Add(row)                                                         ' Add row to datagridview
+            Next i
+        End If
+
+        For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Give category row a background color
+            If dgvBudget.Rows(i).Cells(4).Value = "C" Then
+                dgvBudget.Rows(i).DefaultCellStyle.BackColor = Color.FromArgb(230, 245, 250)
+            End If
+        Next
+
         If My.Computer.FileSystem.FileExists(".\BasedData\accounts.csv") Then                   ' If saved transaction file exists
             rows = File.ReadAllLines(".\BasedData\accounts.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
@@ -47,12 +65,14 @@ Public Class App
 
     Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
         SaveTransaction()
+        SaveBudget()
     End Sub
     Private Sub BtnBudget_Click(sender As Object, e As EventArgs) Handles btnBudget.Click       ' When Budget menu is selected
         btnBudget.BackColor = Color.FromArgb(0, 90, 120)                                        ' Change Button Colors depending on selected menu
         btnReports.BackColor = Color.FromArgb(45, 150, 175)
         btnAccounts.BackColor = Color.FromArgb(45, 150, 175)
         pnlBudgetStatistics.Visible = True                                                      ' Show correct panels for selected menu
+        pnlBudgetControl.Visible = True
         pnlReportsStatistics.Visible = False
         pnlReportsCharts.Visible = False
         pnlAccountsTransaction.Visible = False
@@ -67,6 +87,7 @@ Public Class App
         btnReports.BackColor = Color.FromArgb(0, 90, 120)
         btnAccounts.BackColor = Color.FromArgb(45, 150, 175)
         pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
+        pnlBudgetControl.Visible = False
         pnlReportsStatistics.Visible = True
         pnlReportsCharts.Visible = True
         pnlAccountsTransaction.Visible = False
@@ -83,6 +104,7 @@ Public Class App
         btnReports.BackColor = Color.FromArgb(45, 150, 175)
         btnAccounts.BackColor = Color.FromArgb(0, 90, 120)
         pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
+        pnlBudgetControl.Visible = False
         pnlReportsStatistics.Visible = False
         pnlReportsCharts.Visible = False
         pnlAccountsTransaction.Visible = True
@@ -90,6 +112,14 @@ Public Class App
         dgvBudget.Visible = False
         dgvTransactions.Visible = True
         lblDate.Visible = False
+    End Sub
+    Private Sub btnAddCategory_Click(sender As Object, e As EventArgs) Handles btnAddCategory.Click
+        Dim strCat As String
+        Dim test As Integer = dgvBudget.Rows.Count
+        strCat = InputBox("Please give a category name", "Category")
+        dgvBudget.Rows.Add(strCat, 0, 0, 0, "C")
+        dgvBudget.Rows(test).DefaultCellStyle.BackColor = Color.FromArgb(230, 245, 250)
+        dgvBudget.Rows.Add("", "", "", "", "S")
     End Sub
     Private Sub btnAddAccount_Click(sender As Object, e As EventArgs) Handles btnAddAccount.Click   ' When Add Account buttin is clicked
         Dim accounts(2)
@@ -101,6 +131,16 @@ Public Class App
         lblTotalBalance.Text = curBalance + accounts(1)
 
         SaveAccounts()
+    End Sub
+    Private Sub dgvBudget_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellEndEdit  ' Used to automatically add rows in dgvBudget
+        If dgvBudget.Rows(e.RowIndex).Cells(4).Value = "S" Then                                 ' If selected cell is a subcategory
+            If dgvBudget.Rows(e.RowIndex).Cells(0).Value = "" Then
+            ElseIf dgvBudget.CurrentRow.Index = dgvBudget.Rows.Count - 1 Then
+                dgvBudget.Rows.Add("", "", "", "", "S")
+            Else
+                dgvBudget.Rows.Insert(e.RowIndex + 1, "", "", "", "", "S")
+            End If
+        End If
     End Sub
 
     Private Sub btnAddTransaction_Click(sender As Object, e As EventArgs) Handles btnAddTransaction.Click   ' When transaction add button is clicked
@@ -320,17 +360,19 @@ Public Class App
         Next
     End Sub
     Private Sub SaveData()
-        SaveTransaction()
+        SaveBudget()
         SaveAccounts()
+        SaveTransaction()
     End Sub
-    Private Sub SaveTransaction()
-        Dim writer As New StreamWriter(".\BasedData\transactions.csv")
-        For i As Integer = 0 To dgvTransactions.Rows.Count - 1 Step +1                          ' Loop through all rows
-            For j As Integer = 0 To dgvTransactions.Columns.Count - 1 Step +1                   ' Loop through all columns within the row
-                If j = dgvTransactions.Columns.Count - 1 Then                                   ' Print values with ","; except last column
-                    writer.Write(dgvTransactions.Rows(i).Cells(j).Value)
+
+    Private Sub SaveBudget()
+        Dim writer As New StreamWriter(".\BasedData\budget.csv")
+        For i As Integer = 0 To dgvBudget.Rows.Count - 1 Step +1                                ' Loop through all rows
+            For j As Integer = 0 To dgvBudget.Columns.Count - 1 Step +1                         ' Loop through all columns within the row
+                If j = dgvBudget.Columns.Count - 1 Then                                         ' Print values with ","; except last column
+                    writer.Write(dgvBudget.Rows(i).Cells(j).Value)
                 Else
-                    writer.Write(dgvTransactions.Rows(i).Cells(j).Value & ",")
+                    writer.Write(dgvBudget.Rows(i).Cells(j).Value & ",")
                 End If
             Next j
             writer.WriteLine("")                                                                ' Next line
@@ -352,13 +394,27 @@ Public Class App
         Next i
         writer.Close()
     End Sub
+
+    Private Sub SaveTransaction()
+        Dim writer As New StreamWriter(".\BasedData\transactions.csv")
+        For i As Integer = 0 To dgvTransactions.Rows.Count - 1 Step +1                          ' Loop through all rows
+            For j As Integer = 0 To dgvTransactions.Columns.Count - 1 Step +1                   ' Loop through all columns within the row
+                If j = dgvTransactions.Columns.Count - 1 Then                                   ' Print values with ","; except last column
+                    writer.Write(dgvTransactions.Rows(i).Cells(j).Value)
+                Else
+                    writer.Write(dgvTransactions.Rows(i).Cells(j).Value & ",")
+                End If
+            Next j
+            writer.WriteLine("")                                                                ' Next line
+        Next i
+        writer.Close()
+    End Sub
 End Class
 
 ' TO DO
 ' 
-' Fix chart 3
-' Fix total balance auto calculation on load (possibly change how it gets calculated when added at first)
 ' Make editable Datagridview for Budget menu 
+' Fix total balance auto calculation on load (possibly change how it gets calculated when added at first)
 ' Possibly link all saved files
 ' Setup all calculations in menu
 ' Functioning "To be budgeted button"
