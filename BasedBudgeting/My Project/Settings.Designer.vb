@@ -53,30 +53,6 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property category() As Integer
-            Get
-                Return CType(Me("category"),Integer)
-            End Get
-            Set
-                Me("category") = value
-            End Set
-        End Property
-        
-        <Global.System.Configuration.UserScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
-        Public Property subcategory() As Integer
-            Get
-                Return CType(Me("subcategory"),Integer)
-            End Get
-            Set
-                Me("subcategory") = value
-            End Set
-        End Property
     End Class
 End Namespace
 
