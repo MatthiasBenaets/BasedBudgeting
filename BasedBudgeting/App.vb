@@ -114,7 +114,9 @@ Public Class App
         pnlAccountsFilter.Visible = False
         dgvBudget.Visible = True
         dgvTransactions.Visible = False
-        lblDate.Visible = True
+        pnlToBeBudgeted.Visible = True
+        pnlWorkingBalance.Visible = False
+        pnlReports.Visible = False
     End Sub
     Private Sub BtnReports_Click(sender As Object, e As EventArgs) Handles btnReports.Click     ' When Reports button is selected
         btnBudget.BackColor = Color.FromArgb(45, 150, 175)                                      ' Change Button Colors depending on selected menu
@@ -128,8 +130,9 @@ Public Class App
         pnlAccountsFilter.Visible = False
         dgvBudget.Visible = False
         dgvTransactions.Visible = False
-        lblDate.Visible = False
-
+        pnlToBeBudgeted.Visible = False
+        pnlWorkingBalance.Visible = False
+        pnlReports.Visible = True
 
         populateCharts()
     End Sub
@@ -145,7 +148,9 @@ Public Class App
         pnlAccountsFilter.Visible = True
         dgvBudget.Visible = False
         dgvTransactions.Visible = True
-        lblDate.Visible = False
+        pnlToBeBudgeted.Visible = False
+        pnlWorkingBalance.Visible = True
+        pnlReports.Visible = False
     End Sub
     Private Sub btnAddCategory_Click(sender As Object, e As EventArgs) Handles btnAddCategory.Click ' Add category at end of dgvBudget
         Dim strCat As String
@@ -239,6 +244,9 @@ Public Class App
         cbSubcategory.Enabled = True                                                            ' Enable cbSubcategory so it can be selected.
     End Sub
     Private Sub btnAddTransaction_Click(sender As Object, e As EventArgs) Handles btnAddTransaction.Click   ' When transaction add button is clicked
+        Dim traOutflow As Boolean = False
+        Dim traInflow As Boolean = False
+        Dim traTransfer As Boolean = False
         Dim i = 0
         If dgvTransactions.Rows.Count = 0 Then                                                  ' Loop to check where in DataGridView data needs to be stored
             i = 0                                                                               ' If no transactions, will inserted at x=0
@@ -250,19 +258,64 @@ Public Class App
             Next
         End If
 
-        If cbAccount.Text = "" Or cbPayee.Text = "" Or cbCategory.Text = "" Or cbSubcategory.Text = "" Or tbMemo.Text = "" Then ' If labels are not filled
+        If cbAccount.Text = "" Or cbPayee.Text = "" Or cbCategory.Text = "" Or cbSubcategory.Text = "" Then ' If labels are not filled
             MsgBox("not all information needed given")
         ElseIf tbOutflow.Text = "" And tbInflow.Text = "" Then                                  ' If outflow or inflow is not filled
             MsgBox("Either enter a inflow or outflow value")
         Else
             If IsNumeric(tbOutflow.Text) Then                                                   ' Print data to DataGridView on correct row.
                 dgvTransactions.Rows.Insert(i, cbAccount.Text, CType(dtpDate.Text, Date), cbPayee.Text, cbCategory.Text, cbSubcategory.Text, tbMemo.Text, CType(tbOutflow.Text, Decimal), tbInflow.Text)
+                traOutflow = True
             ElseIf IsNumeric(tbInflow.Text) Then                                                ' Thus no date filter required
                 dgvTransactions.Rows.Insert(i, cbAccount.Text, CType(dtpDate.Text, Date), cbPayee.Text, cbCategory.Text, cbSubcategory.Text, tbMemo.Text, tbOutflow.Text, CType(tbInflow.Text, Decimal))
+                traInflow = True
             Else
                 MsgBox("Transaction value not a number")
             End If
             btnReports.Visible = True
+        End If
+
+        For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+            If cbPayee.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then                  ' If cbPayee is a category, it is a transfer
+                traTransfer = True
+                j = dgvAccounts.Rows.Count - 1
+            Else
+                traTransfer = False
+            End If
+        Next
+
+        If traTransfer = True Then                                                              ' Check if normal transaction or transfer
+            For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+                If cbPayee.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then              ' Find correct account and add or subtract from account
+                    If traOutflow = True Then
+                        dgvAccounts.Rows(j).Cells(1).Value += CType(tbOutflow.Text, Decimal)
+                    ElseIf traInflow = True Then
+                        dgvAccounts.Rows(j).Cells(1).Value -= CType(tbOutflow.Text, Decimal)
+                    End If
+                End If
+                If cbAccount.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then
+                    If traOutflow = True Then
+                        dgvAccounts.Rows(j).Cells(1).Value -= CType(tbOutflow.Text, Decimal)
+                    ElseIf traInflow = True Then
+                        dgvAccounts.Rows(j).Cells(1).Value += CType(tbOutflow.Text, Decimal)
+                    End If
+                End If
+            Next
+        ElseIf traTransfer = False Then
+            Dim toDec As Decimal
+            For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+                If dgvAccounts.Rows(j).Cells(0).Value.ToString = cbAccount.Text Then            ' Add or subtract value and count total balance
+                    If traOutflow = True Then                                                   ' Check if its outflow or inflow
+                        dgvAccounts.Rows(j).Cells(1).Value -= CType(tbOutflow.Text, Decimal)
+                        toDec = CType(lblTotalBalance.Text, Decimal) - CType(tbOutflow.Text, Decimal)
+                        lblTotalBalance.Text = toDec.ToString("C")
+                    ElseIf traInflow = True Then
+                        dgvAccounts.Rows(j).Cells(1).Value += CType(tbInflow.Text, Decimal)
+                        toDec = CType(lblTotalBalance.Text, Decimal) + CType(tbInflow.Text, Decimal)
+                        lblTotalBalance.Text = toDec.ToString("C")
+                    End If
+                End If
+            Next
         End If
         SaveTransaction()
 
@@ -270,15 +323,45 @@ Public Class App
         dtpDate.Text = DateTime.Now
         cbPayee.Text = ""
         cbCategory.Items.Clear()
+        cbCategory.Enabled = True
         cbSubcategory.Items.Clear()
         cbSubcategory.Enabled = False
         tbMemo.Text = ""
         tbOutflow.Text = ""
         tbInflow.Text = ""
+        traOutflow = False
+        traInflow = False
+        traTransfer = False
 
-        For j As Integer = 0 To dgvAccounts.Rows.Count - 1                                      ' Add up total balance
-            lblTotalBalance.Text = lblTotalBalance.Text + dgvAccounts.Rows(j).Cells(1).Value
+    End Sub
+    Private Sub cbPayee_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayee.TextChanged  ' When text changes inside the Payee combobox
+        Dim traOutflow As Boolean = False
+        Dim traInflow As Boolean = False
+        Dim traTransfer As Boolean = False
+        For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+            If cbPayee.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then                  ' If cbPayee is a category, it is a transfer
+                traTransfer = True
+                j = dgvAccounts.Rows.Count - 1
+            Else
+                traTransfer = False
+            End If
         Next
+
+        If traTransfer = True Then                                                              ' Check if normal transaction or transfer
+            cbCategory.Items.Add("Transfer")                                                    ' Add extra items for combobox
+            cbCategory.Text = "Transfer"
+            cbCategory.Enabled = False
+            cbSubcategory.Items.Add("No subcategory needed")
+            cbSubcategory.Text = "No subcategory needed"
+            cbSubcategory.Enabled = False
+            tbMemo.Text = "Transfer"
+        Else                                                                                    ' Remove limitations if changing back to external payee
+            cbCategory.Enabled = True
+            cbCategory.Items.Remove("Transfer")
+            cbCategory.Text = ""
+            cbSubcategory.Items.Remove("No subcategory needed")
+            cbSubcategory.Text = ""
+        End If
     End Sub
     Private Sub tbOutflow_TextChanged(sender As Object, e As EventArgs) Handles tbOutflow.TextChanged   ' When textinput from outflow changes
         If tbOutflow.Text = "" Then                                                             ' If outflow textinput = empty, enable inflow
@@ -347,15 +430,17 @@ Public Class App
                 k = 0
                 l = False
                 While k < xTra.Length
-                    If traVal(6) = "" Then
-                        traVal(6) = 0
-                    End If
-                    If xTra(k) = traVal(4) Then
-                        yTra(k) = yTra(k) + traVal(6)
+                    If traVal(6) = "" Then                                                      ' If outflow does not exist (its probably inflow transaction), skip
+                        k += 1
                         l = True
-                        k = xTra.Length
+                    Else
+                        If xTra(k) = traVal(4) Then
+                            yTra(k) = yTra(k) + traVal(6)
+                            l = True
+                            k = xTra.Length
+                        End If
+                        k += 1
                     End If
-                    k += 1
                 End While
 
                 If l = False Then
@@ -402,41 +487,43 @@ Public Class App
             Dim traMonth = CDate(traVal(1)).ToString("MMM yyyy")                                ' Convert to Month Year
             If (traDate >= preYear) Then                                                        ' Check if date is not older than 1 year
                 If traVal(6) = "" Then                                                          ' Transactions are sometimes "", in this case, change to 0
-                    traVal(6) = 0
-                End If
-                If dtTrend.Rows.Count = 0 Then                                                  ' First transaction loop
-                    dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                            ' Add row to DataTable in order "outflow/date/category"
-                Else                                                                            ' If not first transaction
-                    m = 0
-                    valExist = False                                                            ' Reset valExist to false
-                    While m < dtTrend.Rows.Count                                                ' Loop DataTable, used to add outflow to existing categories
-                        If dtTrend.Rows(m)(1).ToString = traMonth And dtTrend.Rows(m)(2) = traVal(4) Then   ' Check if date and category match between DataTable and Transactions 
-                            dtTrend.Rows(m)(0) = dtTrend.Rows(m)(0) + traVal(6)                 ' Add outflow to existing DataTable row
-                            m = dtTrend.Rows.Count
-                            valExist = True
-                        End If
-                        m += 1
-                    End While
+                    'traVal(6) = 0
+                Else
+                    'End If
+                    If dtTrend.Rows.Count = 0 Then                                              ' First transaction loop
+                        dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                        ' Add row to DataTable in order "outflow/date/category"
+                    Else                                                                        ' If not first transaction
+                        m = 0
+                        valExist = False                                                        ' Reset valExist to false
+                        While m < dtTrend.Rows.Count                                            ' Loop DataTable, used to add outflow to existing categories
+                            If dtTrend.Rows(m)(1).ToString = traMonth And dtTrend.Rows(m)(2) = traVal(4) Then   ' Check if date and category match between DataTable and Transactions 
+                                dtTrend.Rows(m)(0) = dtTrend.Rows(m)(0) + traVal(6)             ' Add outflow to existing DataTable row
+                                m = dtTrend.Rows.Count
+                                valExist = True
+                            End If
+                            m += 1
+                        End While
 
-                    If valExist = False Then                                                    ' If combo of date and subcategory does not exist:
-                        dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                        ' Add new line to DataTable
+                        If valExist = False Then                                                ' If combo of date and subcategory does not exist:
+                            dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                    ' Add new line to DataTable
+                        End If
+                    End If
+
+                    If strCat = "" Then                                                         ' If string has no value (first loop). Used to create list of subcategories
+                        strCat = traVal(4)
+                    ElseIf strCat.Contains(traVal(4)) Then                                      ' Check if category already exist in the string
+                    Else
+                        strCat = strCat + ";" + traVal(4)
+                    End If
+                    If strDate = "" Then                                                        ' Ditto about but for Date
+                        strDate = traMonth
+                    ElseIf strDate.Contains(traMonth) Then
+                    Else
+                        strDate = strDate + ";" + traMonth
                     End If
                 End If
-
-                If strCat = "" Then                                                             ' If string has no value (first loop). Used to create list of subcategories
-                    strCat = traVal(4)
-                ElseIf strCat.Contains(traVal(4)) Then                                          ' Check if category already exist in the string
-                Else
-                    strCat = strCat + ";" + traVal(4)
-                End If
-                If strDate = "" Then                                                            ' Ditto about but for Date
-                    strDate = traMonth
-                ElseIf strDate.Contains(traMonth) Then
-                Else
-                    strDate = strDate + ";" + traMonth
-                End If
             Else
-                i = rowsTra.Length - 1                                                      ' Quit loop if year ends (will only work if csv is chronological
+                i = rowsTra.Length - 1                                                          ' Quit loop if year ends (will only work if csv is chronological
             End If
             l += 1
         Next
@@ -567,9 +654,9 @@ Public Class App
         End If
 
         If cbAccount.Text = "" Then
-            cbAccount.Items.Clear()
+            cbAccount.Items.Clear()                                                             ' Clear combobox
             For i As Integer = 0 To dgvAccounts.Rows.Count - 1                                  ' Add correct info to combobox account/payee
-                cbAccount.Items.Add(dgvAccounts.Rows(i).Cells(0).Value.ToString)
+                cbAccount.Items.Add(dgvAccounts.Rows(i).Cells(0).Value.ToString)                ' Add to combobox items
             Next
         End If
         If cbPayee.Text = "" Then
@@ -592,12 +679,12 @@ Public Class App
         End If
     End Sub
     Private Sub updateLabels_Tick(sender As Object, e As EventArgs) Handles updateLabels.Tick
-        Dim totValue As Double = 0
+        Dim totValue As Decimal = 0
         For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Total Budgeted label
-            If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" Then
-                If dgvBudget.Rows(i).Cells(1).Value.ToString <> "" Then
-                    totValue += dgvBudget.Rows(i).Cells(1).Value
-                    lblTotalBudgetedValue.Text = totValue.ToString("C")
+            If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" Then                             ' Loop through budget list and do if it is subcategory ...
+                If dgvBudget.Rows(i).Cells(1).Value.ToString <> "" Then                         ' If not empty
+                    totValue += dgvBudget.Rows(i).Cells(1).Value                                ' Add to total
+                    lblTotalBudgetedValue.Text = totValue.ToString("C")                         ' Convert to currency string and print on label
                 End If
             End If
         Next
@@ -616,6 +703,7 @@ Public Class App
                 If dgvBudget.Rows(i).Cells(3).Value.ToString <> "" Then
                     totValue += dgvBudget.Rows(i).Cells(3).Value
                     lblTotalAvailableValue.Text = totValue.ToString("C")
+                    lblWorkingBalanceValue.Text = totValue.ToString("C")
                 End If
             End If
         Next
@@ -624,7 +712,7 @@ Public Class App
         Dim preMonth As DateTime = DateTime.Now.AddMonths(-1)
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Total Inflow label
             traDate = dgvTransactions.Rows(i).Cells(1).Value
-            If preMonth <= traDate Then
+            If preMonth <= traDate Then                                                         ' If transaction is lower than preMonth
                 If dgvTransactions.Rows(i).Cells(7).Value.ToString = "" Then
                 Else
                     totValue += dgvTransactions.Rows(i).Cells(7).Value
@@ -644,12 +732,12 @@ Public Class App
                 End If
             Else
                 i = dgvTransactions.Rows.Count - 1
-                lblTotalSpendingValue.Text = totValue.ToString("C")
             End If
+            lblTotalSpendingValue.Text = totValue.ToString("C")
         Next
         totValue = 0
         Dim preYear As DateTime = DateTime.Now.AddYears(-1)
-        For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Total Spending from last 30 days
+        For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Average Spending each month
             traDate = dgvTransactions.Rows(i).Cells(1).Value
             If preYear <= traDate Then
                 If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Then
@@ -658,15 +746,13 @@ Public Class App
                 End If
             Else
                 i = dgvTransactions.Rows.Count - 1
-                totValue = totValue / 12
-                lblAverageSpendingValue.Text = totValue.ToString("C")
             End If
         Next
+        totValue = totValue / 12
+        lblAverageSpendingValue.Text = totValue.ToString("C")
     End Sub
 End Class
 ' TO DO
 ' 
-' Fix 0 values in charts
 ' ignore transaction between accounts in all calculations
-' dgvBudget calculations
-' Functioning "To be budgeted button"
+' dgvBudget calculations after transactions or manual edit dgvBudget (will also fix available balance)
