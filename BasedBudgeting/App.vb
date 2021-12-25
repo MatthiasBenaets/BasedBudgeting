@@ -37,6 +37,8 @@ Public Class App
             Next i
         End If
 
+        dgvBudget.Columns(2).ReadOnly = True
+        dgvBudget.Columns(3).ReadOnly = True
         If My.Computer.FileSystem.FileExists(".\BasedData\budget.csv") Then                     ' If saved budget file exists
             rows = File.ReadAllLines(".\BasedData\budget.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
@@ -76,6 +78,10 @@ Public Class App
                 Next j
 
                 dgvAccounts.Rows.Add(row)                                                       ' Add row to datagridview
+                If dgvAccounts.Rows(i).Cells(1).Value <> "" Then
+                    Dim toDec As Decimal = dgvAccounts.Rows(i).Cells(1).Value
+                    dgvAccounts.Rows(i).Cells(1).Value = CType(toDec, Decimal)
+                End If
             Next i
         End If
 
@@ -85,8 +91,14 @@ Public Class App
         If dgvAccounts.Rows.Count <> 0 Then
             btnAccounts.Visible = True
         End If
-    End Sub
 
+        dgvAccounts.Columns(1).ReadOnly = True
+        For j As Integer = 0 To dgvAccounts.Rows.Count - 1                                      ' Add up total balance
+            Dim toDec As Decimal
+            toDec = lblTotalBalance.Text + dgvAccounts.Rows(j).Cells(1).Value
+            lblTotalBalance.Text = toDec.ToString("C")
+        Next
+    End Sub
     Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
         SaveData()
     End Sub
@@ -104,7 +116,6 @@ Public Class App
         dgvTransactions.Visible = False
         lblDate.Visible = True
     End Sub
-
     Private Sub BtnReports_Click(sender As Object, e As EventArgs) Handles btnReports.Click     ' When Reports button is selected
         btnBudget.BackColor = Color.FromArgb(45, 150, 175)                                      ' Change Button Colors depending on selected menu
         btnReports.BackColor = Color.FromArgb(0, 90, 120)
@@ -119,9 +130,9 @@ Public Class App
         dgvTransactions.Visible = False
         lblDate.Visible = False
 
+
         populateCharts()
     End Sub
-
     Private Sub BtnAccounts_Click(sender As Object, e As EventArgs) Handles btnAccounts.Click   ' When Accounts button is selected
         btnBudget.BackColor = Color.FromArgb(45, 150, 175)                                      ' Change Button Colors depending on selected menu
         btnReports.BackColor = Color.FromArgb(45, 150, 175)
@@ -147,12 +158,24 @@ Public Class App
     Private Sub btnAddAccount_Click(sender As Object, e As EventArgs) Handles btnAddAccount.Click   ' When Add Account buttin is clicked
         Dim accounts(2)
         accounts(0) = InputBox("Name of account")                                               ' Inputbox to get info from user
-        accounts(1) = InputBox("Balance of " & accounts(0) & ".")
-        dgvAccounts.Rows.Add(accounts)                                                          ' Add info to DataGridView
+        If accounts(0) <> "" Then                                                               ' If answer is canceled. Do nothing
+            accounts(1) = InputBox("Balance of " & accounts(0) & ".")
+            If accounts(1) <> "" Then
+                dgvAccounts.Rows.Add(accounts)                                                  ' Add info to DataGridView
 
-        Dim curBalance = Double.Parse(lblTotalBalance.Text)
-        lblTotalBalance.Text = curBalance + accounts(1)
-
+                For i As Integer = 0 To dgvAccounts.Rows.Count - 1                              ' Add up total balance and change format of added account balance
+                    Dim toDec As Decimal
+                    Dim totDec As Decimal
+                    toDec = dgvAccounts.Rows(i).Cells(1).Value
+                    dgvAccounts.Rows(i).Cells(1).Value = toDec.ToString("C")
+                    totDec += dgvAccounts.Rows(i).Cells(1).Value
+                    lblTotalBalance.Text = totDec.ToString("C")
+                Next
+                SaveAccounts()
+            End If
+        End If
+    End Sub
+    Private Sub dgvAccounts_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvAccounts.CellEndEdit
         SaveAccounts()
     End Sub
     Private Sub dgvBudget_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellEndEdit  ' Used to automatically add rows in dgvBudget
@@ -178,9 +201,44 @@ Public Class App
             End If
         End If
     End Sub
-
+    Private Sub dgvTransactions_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvTransactions.CellEndEdit
+        Dim toDec As Decimal = 0
+        If dgvTransactions.CurrentCell.ColumnIndex = 6 Then                                     ' After edit, change value to correct format
+            If dgvTransactions.CurrentCell.Value Is Nothing Then
+            Else
+                toDec = dgvTransactions.CurrentCell.Value
+                dgvTransactions.CurrentCell.Value = toDec.ToString("C")
+            End If
+        End If
+        toDec = 0
+        If dgvTransactions.CurrentCell.ColumnIndex = 7 Then
+            If dgvTransactions.CurrentCell.Value Is Nothing Then
+            Else
+                toDec = dgvTransactions.CurrentCell.Value
+                dgvTransactions.CurrentCell.Value = toDec.ToString("C")
+            End If
+        End If
+    End Sub
+    Private Sub cbCategory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbCategory.SelectedIndexChanged   ' When text in cbCategory changes
+        Dim testing As String = cbCategory.Text
+        cbSubcategory.Text = ""
+        cbSubcategory.Items.Clear()
+        For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Populate combobox with correct items (from category - subcategory)
+            If dgvBudget.Rows(i).Cells(0).Value.ToString = testing Then
+                i += 1
+                For j As Integer = i To dgvBudget.Rows.Count - 1
+                    If dgvBudget.Rows(j).Cells(4).Value.ToString = "S" And dgvBudget.Rows(j).Cells(0).Value.ToString <> "" Then
+                        cbSubcategory.Items.Add(dgvBudget.Rows(j).Cells(0).Value.ToString)
+                    Else
+                        j = dgvBudget.Rows.Count - 1
+                    End If
+                Next
+                i = dgvBudget.Rows.Count - 1
+            End If
+        Next
+        cbSubcategory.Enabled = True                                                            ' Enable cbSubcategory so it can be selected.
+    End Sub
     Private Sub btnAddTransaction_Click(sender As Object, e As EventArgs) Handles btnAddTransaction.Click   ' When transaction add button is clicked
-        'Dim transactionDate As DateTime = dtpDate.Value.ToString("dd MMM yyyy")
         Dim i = 0
         If dgvTransactions.Rows.Count = 0 Then                                                  ' Loop to check where in DataGridView data needs to be stored
             i = 0                                                                               ' If no transactions, will inserted at x=0
@@ -217,8 +275,11 @@ Public Class App
         tbMemo.Text = ""
         tbOutflow.Text = ""
         tbInflow.Text = ""
-    End Sub
 
+        For j As Integer = 0 To dgvAccounts.Rows.Count - 1                                      ' Add up total balance
+            lblTotalBalance.Text = lblTotalBalance.Text + dgvAccounts.Rows(j).Cells(1).Value
+        Next
+    End Sub
     Private Sub tbOutflow_TextChanged(sender As Object, e As EventArgs) Handles tbOutflow.TextChanged   ' When textinput from outflow changes
         If tbOutflow.Text = "" Then                                                             ' If outflow textinput = empty, enable inflow
             tbInflow.Enabled = True
@@ -226,7 +287,6 @@ Public Class App
             tbInflow.Enabled = False
         End If
     End Sub
-
     Private Sub tbInflow_TextChanged(sender As Object, e As EventArgs) Handles tbInflow.TextChanged ' When textinput from inflow changes
         If tbInflow.Text = "" Then                                                              ' If inflow textinput = empty, enable outflow
             tbOutflow.Enabled = True
@@ -268,7 +328,6 @@ Public Class App
         Next
         chNet.Series("chNet").IsValueShownAsLabel = True
     End Sub
-
     Private Sub populateSpending()                                                              ' Add values to chart two in reports
         Dim rowsTra() As String = File.ReadAllLines(".\BasedData\transactions.csv")
         Dim traVal() As String
@@ -288,6 +347,9 @@ Public Class App
                 k = 0
                 l = False
                 While k < xTra.Length
+                    If traVal(6) = "" Then
+                        traVal(6) = 0
+                    End If
                     If xTra(k) = traVal(4) Then
                         yTra(k) = yTra(k) + traVal(6)
                         l = True
@@ -320,7 +382,6 @@ Public Class App
         Next
         chSpending.Series("chSpending").IsValueShownAsLabel = True                              ' Show value instead of name for chart items
     End Sub
-
     Private Sub populateTrend()                                                                 ' Add values to chart three in reports
         Dim rowsTra() As String = File.ReadAllLines(".\BasedData\transactions.csv")
         Dim traVal() As String
@@ -340,6 +401,9 @@ Public Class App
             Dim traDate As String = Convert.ToDateTime(traVal(1))
             Dim traMonth = CDate(traVal(1)).ToString("MMM yyyy")                                ' Convert to Month Year
             If (traDate >= preYear) Then                                                        ' Check if date is not older than 1 year
+                If traVal(6) = "" Then                                                          ' Transactions are sometimes "", in this case, change to 0
+                    traVal(6) = 0
+                End If
                 If dtTrend.Rows.Count = 0 Then                                                  ' First transaction loop
                     dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                            ' Add row to DataTable in order "outflow/date/category"
                 Else                                                                            ' If not first transaction
@@ -372,7 +436,7 @@ Public Class App
                     strDate = strDate + ";" + traMonth
                 End If
             Else
-                i = rowsTra.Length - 1                                                          ' Quit loop if year ends (will only work if csv is chronological
+                i = rowsTra.Length - 1                                                      ' Quit loop if year ends (will only work if csv is chronological
             End If
             l += 1
         Next
@@ -417,7 +481,6 @@ Public Class App
         SaveAccounts()
         SaveTransaction()
     End Sub
-
     Private Sub SaveBudget()
         Dim writer As New StreamWriter(".\BasedData\budget.csv")
         For i As Integer = 0 To dgvBudget.Rows.Count - 1 Step +1                                ' Loop through all rows
@@ -432,7 +495,6 @@ Public Class App
         Next i
         writer.Close()
     End Sub
-
     Private Sub SaveAccounts()
         Dim writer As New StreamWriter(".\BasedData\accounts.csv")
         For i As Integer = 0 To dgvAccounts.Rows.Count - 1 Step +1                              ' Loop through all rows
@@ -447,7 +509,6 @@ Public Class App
         Next i
         writer.Close()
     End Sub
-
     Private Sub SaveTransaction()
         Dim writer As New StreamWriter(".\BasedData\transactions.csv")
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1 Step +1                          ' Loop through all rows
@@ -462,7 +523,6 @@ Public Class App
         Next i
         writer.Close()
     End Sub
-
     Private Sub checkVariables_Tick(sender As Object, e As EventArgs) Handles checkVariables.Tick   ' Ticker every 0.5 second
         If dgvTransactions.Rows.Count = 0 Then                                                  ' Check if there are transactions to show reports
             btnReports.Visible = False
@@ -531,33 +591,82 @@ Public Class App
             Next
         End If
     End Sub
-    Private Sub cbCategory_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbCategory.SelectedIndexChanged
-        Dim testing As String = cbCategory.Text
-        cbSubcategory.Text = ""
-        cbSubcategory.Items.Clear()
-        For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Populate combobox with correct items (from category - subcategory)
-            If dgvBudget.Rows(i).Cells(0).Value.ToString = testing Then
-                i += 1
-                For j As Integer = i To dgvBudget.Rows.Count - 1
-                    If dgvBudget.Rows(j).Cells(4).Value.ToString = "S" And dgvBudget.Rows(j).Cells(0).Value.ToString <> "" Then
-                        cbSubcategory.Items.Add(dgvBudget.Rows(j).Cells(0).Value.ToString)
-                    Else
-                        j = dgvBudget.Rows.Count - 1
-                    End If
-                Next
-                i = dgvBudget.Rows.Count - 1
+    Private Sub updateLabels_Tick(sender As Object, e As EventArgs) Handles updateLabels.Tick
+        Dim totValue As Double = 0
+        For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Total Budgeted label
+            If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" Then
+                If dgvBudget.Rows(i).Cells(1).Value.ToString <> "" Then
+                    totValue += dgvBudget.Rows(i).Cells(1).Value
+                    lblTotalBudgetedValue.Text = totValue.ToString("C")
+                End If
             End If
         Next
-        cbSubcategory.Enabled = True
+        totValue = 0
+        For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Total Activity label
+            If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" Then
+                If dgvBudget.Rows(i).Cells(2).Value.ToString <> "" Then
+                    totValue += dgvBudget.Rows(i).Cells(2).Value
+                    lblTotalActivityValue.Text = totValue.ToString("C")
+                End If
+            End If
+        Next
+        totValue = 0
+        For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Total Available label
+            If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" Then
+                If dgvBudget.Rows(i).Cells(3).Value.ToString <> "" Then
+                    totValue += dgvBudget.Rows(i).Cells(3).Value
+                    lblTotalAvailableValue.Text = totValue.ToString("C")
+                End If
+            End If
+        Next
+        totValue = 0
+        Dim traDate As DateTime
+        Dim preMonth As DateTime = DateTime.Now.AddMonths(-1)
+        For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Total Inflow label
+            traDate = dgvTransactions.Rows(i).Cells(1).Value
+            If preMonth <= traDate Then
+                If dgvTransactions.Rows(i).Cells(7).Value.ToString = "" Then
+                Else
+                    totValue += dgvTransactions.Rows(i).Cells(7).Value
+                End If
+            Else
+                i = dgvTransactions.Rows.Count - 1
+                lblTotalInflowValue.Text = totValue.ToString("C")
+            End If
+        Next
+        totValue = 0
+        For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Total Spending from last 30 days
+            traDate = dgvTransactions.Rows(i).Cells(1).Value
+            If preMonth <= traDate Then
+                If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Then
+                Else
+                    totValue += dgvTransactions.Rows(i).Cells(6).Value
+                End If
+            Else
+                i = dgvTransactions.Rows.Count - 1
+                lblTotalSpendingValue.Text = totValue.ToString("C")
+            End If
+        Next
+        totValue = 0
+        Dim preYear As DateTime = DateTime.Now.AddYears(-1)
+        For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Total Spending from last 30 days
+            traDate = dgvTransactions.Rows(i).Cells(1).Value
+            If preYear <= traDate Then
+                If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Then
+                Else
+                    totValue += dgvTransactions.Rows(i).Cells(6).Value
+                End If
+            Else
+                i = dgvTransactions.Rows.Count - 1
+                totValue = totValue / 12
+                lblAverageSpendingValue.Text = totValue.ToString("C")
+            End If
+        Next
     End Sub
 End Class
-
 ' TO DO
 ' 
-' Fill combobox with correct info and corresponding to eachother
-' Automatic calculation dgvBudget
-' Fix total balance auto calculation on load (possibly change how it gets calculated when added at first)
-' Setup all calculations in menu
-' Make dgvBudget column 2 & 3 not editable
+' Fix 0 values in charts
+' ignore transaction between accounts in all calculations
+' dgvBudget calculations
 ' Functioning "To be budgeted button"
-' transactions if no accounts exist

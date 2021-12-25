@@ -35,6 +35,9 @@ Partial Class App
         Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
         Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
         Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
@@ -50,9 +53,6 @@ Partial Class App
         Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.pnlMenu = New System.Windows.Forms.Panel()
         Me.lblTotalBalance = New System.Windows.Forms.Label()
         Me.lblBudget = New System.Windows.Forms.Label()
@@ -104,6 +104,14 @@ Partial Class App
         Me.lblCategory = New System.Windows.Forms.Label()
         Me.lblAccount = New System.Windows.Forms.Label()
         Me.dgvTransactions = New System.Windows.Forms.DataGridView()
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlAccountsFilter = New System.Windows.Forms.Panel()
         Me.dtpDateFilter = New System.Windows.Forms.DateTimePicker()
         Me.cbSubcategoryFilter = New System.Windows.Forms.ComboBox()
@@ -122,14 +130,7 @@ Partial Class App
         Me.pnlBudgetControl = New System.Windows.Forms.Panel()
         Me.btnAddCategory = New System.Windows.Forms.Button()
         Me.checkVariables = New System.Windows.Forms.Timer(Me.components)
-        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.updateLabels = New System.Windows.Forms.Timer(Me.components)
         Me.pnlMenu.SuspendLayout()
         CType(Me.dgvAccounts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -226,7 +227,6 @@ Partial Class App
         Me.dgvAccounts.GridColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
         Me.dgvAccounts.Location = New System.Drawing.Point(4, 252)
         Me.dgvAccounts.Name = "dgvAccounts"
-        Me.dgvAccounts.ReadOnly = True
         Me.dgvAccounts.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
@@ -250,18 +250,19 @@ Partial Class App
         'Column9
         '
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.NullValue = Nothing
         Me.Column9.DefaultCellStyle = DataGridViewCellStyle3
         Me.Column9.HeaderText = "Account"
         Me.Column9.Name = "Column9"
-        Me.Column9.ReadOnly = True
         '
         'Column10
         '
         DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle4.Format = "C2"
+        DataGridViewCellStyle4.NullValue = Nothing
         Me.Column10.DefaultCellStyle = DataGridViewCellStyle4
         Me.Column10.HeaderText = "Balance"
         Me.Column10.Name = "Column10"
-        Me.Column10.ReadOnly = True
         '
         'btnAddAccount
         '
@@ -907,6 +908,61 @@ Partial Class App
         Me.dgvTransactions.TabIndex = 8
         Me.dgvTransactions.Visible = False
         '
+        'Column1
+        '
+        Me.Column1.HeaderText = "ACCOUNT"
+        Me.Column1.Name = "Column1"
+        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column2
+        '
+        DataGridViewCellStyle9.Format = "d"
+        DataGridViewCellStyle9.NullValue = Nothing
+        Me.Column2.DefaultCellStyle = DataGridViewCellStyle9
+        Me.Column2.HeaderText = "DATE"
+        Me.Column2.Name = "Column2"
+        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column3
+        '
+        Me.Column3.HeaderText = "PAYEE"
+        Me.Column3.Name = "Column3"
+        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column4
+        '
+        Me.Column4.HeaderText = "CATEGORY"
+        Me.Column4.Name = "Column4"
+        Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column5
+        '
+        Me.Column5.HeaderText = "SUBCATEGORY"
+        Me.Column5.Name = "Column5"
+        Me.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column6
+        '
+        Me.Column6.HeaderText = "MEMO"
+        Me.Column6.Name = "Column6"
+        Me.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column7
+        '
+        DataGridViewCellStyle10.Format = "C2"
+        Me.Column7.DefaultCellStyle = DataGridViewCellStyle10
+        Me.Column7.HeaderText = "OUTFLOW"
+        Me.Column7.Name = "Column7"
+        Me.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column8
+        '
+        DataGridViewCellStyle11.Format = "C2"
+        Me.Column8.DefaultCellStyle = DataGridViewCellStyle11
+        Me.Column8.HeaderText = "INFLOW"
+        Me.Column8.Name = "Column8"
+        Me.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
         'pnlAccountsFilter
         '
         Me.pnlAccountsFilter.Controls.Add(Me.dtpDateFilter)
@@ -924,41 +980,41 @@ Partial Class App
         '
         Me.dtpDateFilter.CustomFormat = "MM yyyy"
         Me.dtpDateFilter.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtpDateFilter.Location = New System.Drawing.Point(90, -1)
+        Me.dtpDateFilter.Location = New System.Drawing.Point(99, -1)
         Me.dtpDateFilter.Name = "dtpDateFilter"
-        Me.dtpDateFilter.Size = New System.Drawing.Size(76, 20)
+        Me.dtpDateFilter.Size = New System.Drawing.Size(83, 20)
         Me.dtpDateFilter.TabIndex = 4
         '
         'cbSubcategoryFilter
         '
         Me.cbSubcategoryFilter.FormattingEnabled = True
-        Me.cbSubcategoryFilter.Location = New System.Drawing.Point(314, -1)
+        Me.cbSubcategoryFilter.Location = New System.Drawing.Point(344, -1)
         Me.cbSubcategoryFilter.Name = "cbSubcategoryFilter"
-        Me.cbSubcategoryFilter.Size = New System.Drawing.Size(76, 21)
+        Me.cbSubcategoryFilter.Size = New System.Drawing.Size(82, 21)
         Me.cbSubcategoryFilter.TabIndex = 3
         '
         'cbCategoryFilter
         '
         Me.cbCategoryFilter.FormattingEnabled = True
-        Me.cbCategoryFilter.Location = New System.Drawing.Point(239, -1)
+        Me.cbCategoryFilter.Location = New System.Drawing.Point(262, -1)
         Me.cbCategoryFilter.Name = "cbCategoryFilter"
-        Me.cbCategoryFilter.Size = New System.Drawing.Size(76, 21)
+        Me.cbCategoryFilter.Size = New System.Drawing.Size(83, 21)
         Me.cbCategoryFilter.TabIndex = 2
         '
         'cbPayeeFilter
         '
         Me.cbPayeeFilter.FormattingEnabled = True
-        Me.cbPayeeFilter.Location = New System.Drawing.Point(165, -1)
+        Me.cbPayeeFilter.Location = New System.Drawing.Point(181, -1)
         Me.cbPayeeFilter.Name = "cbPayeeFilter"
-        Me.cbPayeeFilter.Size = New System.Drawing.Size(76, 21)
+        Me.cbPayeeFilter.Size = New System.Drawing.Size(82, 21)
         Me.cbPayeeFilter.TabIndex = 1
         '
         'cbAccountFilter
         '
         Me.cbAccountFilter.FormattingEnabled = True
-        Me.cbAccountFilter.Location = New System.Drawing.Point(15, -1)
+        Me.cbAccountFilter.Location = New System.Drawing.Point(18, -1)
         Me.cbAccountFilter.Name = "cbAccountFilter"
-        Me.cbAccountFilter.Size = New System.Drawing.Size(76, 21)
+        Me.cbAccountFilter.Size = New System.Drawing.Size(82, 21)
         Me.cbAccountFilter.TabIndex = 0
         '
         'pnlReportsCharts
@@ -1140,60 +1196,10 @@ Partial Class App
         Me.checkVariables.Enabled = True
         Me.checkVariables.Interval = 500
         '
-        'Column1
+        'updateLabels
         '
-        Me.Column1.HeaderText = "ACCOUNT"
-        Me.Column1.Name = "Column1"
-        Me.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column2
-        '
-        DataGridViewCellStyle9.Format = "d"
-        DataGridViewCellStyle9.NullValue = Nothing
-        Me.Column2.DefaultCellStyle = DataGridViewCellStyle9
-        Me.Column2.HeaderText = "DATE"
-        Me.Column2.Name = "Column2"
-        Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column3
-        '
-        Me.Column3.HeaderText = "PAYEE"
-        Me.Column3.Name = "Column3"
-        Me.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column4
-        '
-        Me.Column4.HeaderText = "CATEGORY"
-        Me.Column4.Name = "Column4"
-        Me.Column4.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column5
-        '
-        Me.Column5.HeaderText = "SUBCATEGORY"
-        Me.Column5.Name = "Column5"
-        Me.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column6
-        '
-        Me.Column6.HeaderText = "MEMO"
-        Me.Column6.Name = "Column6"
-        Me.Column6.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column7
-        '
-        DataGridViewCellStyle10.Format = "C2"
-        Me.Column7.DefaultCellStyle = DataGridViewCellStyle10
-        Me.Column7.HeaderText = "OUTFLOW"
-        Me.Column7.Name = "Column7"
-        Me.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        '
-        'Column8
-        '
-        DataGridViewCellStyle11.Format = "C2"
-        Me.Column8.DefaultCellStyle = DataGridViewCellStyle11
-        Me.Column8.HeaderText = "INFLOW"
-        Me.Column8.Name = "Column8"
-        Me.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.updateLabels.Enabled = True
+        Me.updateLabels.Interval = 500
         '
         'App
         '
@@ -1202,16 +1208,16 @@ Partial Class App
         Me.AutoSize = True
         Me.BackColor = System.Drawing.SystemColors.Window
         Me.ClientSize = New System.Drawing.Size(1083, 608)
-        Me.Controls.Add(Me.dgvTransactions)
-        Me.Controls.Add(Me.pnlAccountsTransaction)
-        Me.Controls.Add(Me.pnlReportsCharts)
-        Me.Controls.Add(Me.pnlBudgetStatistics)
         Me.Controls.Add(Me.pnlReportsStatistics)
+        Me.Controls.Add(Me.pnlBudgetStatistics)
+        Me.Controls.Add(Me.pnlAccountsTransaction)
+        Me.Controls.Add(Me.dgvTransactions)
+        Me.Controls.Add(Me.pnlAccountsFilter)
+        Me.Controls.Add(Me.pnlReportsCharts)
         Me.Controls.Add(Me.pnlMenu)
         Me.Controls.Add(Me.pnlBudgetControl)
         Me.Controls.Add(Me.pnlNavigation)
         Me.Controls.Add(Me.dgvBudget)
-        Me.Controls.Add(Me.pnlAccountsFilter)
         Me.MaximumSize = New System.Drawing.Size(1099, 647)
         Me.MinimumSize = New System.Drawing.Size(1099, 647)
         Me.Name = "App"
@@ -1299,14 +1305,15 @@ Partial Class App
     Friend WithEvents dgvBudget As DataGridView
     Friend WithEvents pnlBudgetControl As Panel
     Friend WithEvents btnAddCategory As Button
-    Friend WithEvents Column9 As DataGridViewTextBoxColumn
-    Friend WithEvents Column10 As DataGridViewTextBoxColumn
     Friend WithEvents Column11 As DataGridViewTextBoxColumn
     Friend WithEvents Column12 As DataGridViewTextBoxColumn
     Friend WithEvents Column13 As DataGridViewTextBoxColumn
     Friend WithEvents Column14 As DataGridViewTextBoxColumn
     Friend WithEvents Column15 As DataGridViewTextBoxColumn
     Friend WithEvents checkVariables As Timer
+    Friend WithEvents Column9 As DataGridViewTextBoxColumn
+    Friend WithEvents Column10 As DataGridViewTextBoxColumn
+    Friend WithEvents updateLabels As Timer
     Friend WithEvents Column1 As DataGridViewTextBoxColumn
     Friend WithEvents Column2 As DataGridViewTextBoxColumn
     Friend WithEvents Column3 As DataGridViewTextBoxColumn
