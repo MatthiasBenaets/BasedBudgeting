@@ -4,23 +4,19 @@
   <br>
 </h1>
 <div align="center">
-<h2><b><u>BASED BUDGETING</u></b></h2>
-<h2><b> 💰💵📈 GENERAL HANDBOOK 🏰💸🚗</b></h2>
+<h3><b><u>BASED BUDGETING </u><br>
+💰💵📈 GENERAL HANDBOOK 🏰💸🚗</b></h3>
   <h3>
     <a href="https://www.youtube.com/matthiasbenaets/...">
       Tutorial
     </a>
     <span> | </span>
-    <a href="https://github.com/matthiasbenaets/basedbudgeting/blob/master/LICENCE">
+    <a href="https://github.com/MatthiasBenaets/BasedBudgeting/blob/master/LICENSE">
       License
     </a>
     <span> | </span>
-    <a href="https://github.com/matthiasbenaets/basedbudgeting/">
+    <a href="https://github.com/matthiasbenaets/basedbudgeting/releases/">
       Download
-    </a>
-    <span> | </span>
-    <a href="https://github.com/matthiasbenaets/basedbudgeting/blob/master/.github/CONTRIBUTING.md">
-      Contributing
     </a>
     <span> | </span>
     <a href="https://github.com/matthiasbenaets/basedbudgeting/issues">
@@ -35,16 +31,16 @@
 </div>
 
 ##  📋Table of Contents
-- [🏷️Features](#🏷️features)
-- [🕹️Usage](#🕹️usage)
-- [🧩Components](#🧩components)
-- [⌛Download](#⌛download)
-- [🙋FAQ](#🙋faq)
-- [👋Contact](#👋contact)
+- [🏷️Features](#%EF%B8%8Ffeatures)
+- [🕹️Usage](#%EF%B8%8Fusage)
+- [🧩Components](#components)
+- [⌛Download](#download)
+- [🙋FAQ](#faq)
+- [👋Contact](#contact)
 <br></br>
 ##  🏷️Features
 - **Give Your Money A Job**: With Multi-Category Budgeting, split transaction in multiple (sub-)categories
-- **Visualise balance**: Visual representations of transactions and net worth
+- **Visualise balance**: Visual representation of transactions and net worth
 - **Transaction Tracker**: Log all inflow and outflow of your accounts
 - **User Friendly**: Aimed to make the process as much of as possible automated
 - **Stocks Logger**: Coming soon™
@@ -63,9 +59,9 @@ Will be added when the project out of pre-alpha
         - Budget available money from your budget
         - Review monthly activity of the different categories.
         - Follow up on the available balance of your budgeted categories
-    - Always be on top of how much your budgeting, inflow, outflow and availablity of the current month
+    - Always be on top of how much you budgeted, your inflow & outflow and overall availablity of the current month
 - **Reports:**
-    - Net worth chart, Visualise where your money is
+    - Net worth chart, Visualise money diversification
     - 30 Day doughnut spending chart , link to your subcategories
     - 1 Year stacked column spending chart, link to your subcategories
 - **All Accounts:**
