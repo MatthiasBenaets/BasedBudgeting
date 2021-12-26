@@ -67,6 +67,11 @@ Partial Class App
         Me.btnBudget = New System.Windows.Forms.Button()
         Me.chNet = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.pnlNavigation = New System.Windows.Forms.Panel()
+        Me.pnlToBeBudgeted = New System.Windows.Forms.Panel()
+        Me.lblDate = New System.Windows.Forms.Label()
+        Me.lblToBeBudgetedValue = New System.Windows.Forms.Label()
+        Me.lblToBeBudgeted = New System.Windows.Forms.Label()
+        Me.pbArrow = New System.Windows.Forms.PictureBox()
         Me.pnlBudgetStatistics = New System.Windows.Forms.Panel()
         Me.lblTotalActivity = New System.Windows.Forms.Label()
         Me.lblTotalAvailable = New System.Windows.Forms.Label()
@@ -131,22 +136,19 @@ Partial Class App
         Me.btnAddCategory = New System.Windows.Forms.Button()
         Me.checkVariables = New System.Windows.Forms.Timer(Me.components)
         Me.updateLabels = New System.Windows.Forms.Timer(Me.components)
-        Me.pnlToBeBudgeted = New System.Windows.Forms.Panel()
-        Me.pbArrow = New System.Windows.Forms.PictureBox()
-        Me.lblToBeBudgeted = New System.Windows.Forms.Label()
-        Me.lblToBeBudgetedValue = New System.Windows.Forms.Label()
-        Me.lblDate = New System.Windows.Forms.Label()
         Me.pnlWorkingBalance = New System.Windows.Forms.Panel()
-        Me.pbArrow2 = New System.Windows.Forms.PictureBox()
-        Me.lblAllAccounts = New System.Windows.Forms.Label()
-        Me.lblWorkingBalance = New System.Windows.Forms.Label()
         Me.lblWorkingBalanceValue = New System.Windows.Forms.Label()
+        Me.lblWorkingBalance = New System.Windows.Forms.Label()
+        Me.lblAllAccounts = New System.Windows.Forms.Label()
+        Me.pbArrow2 = New System.Windows.Forms.PictureBox()
         Me.pnlReports = New System.Windows.Forms.Panel()
         Me.lblReports = New System.Windows.Forms.Label()
         Me.pnlMenu.SuspendLayout()
         CType(Me.dgvAccounts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlNavigation.SuspendLayout()
+        Me.pnlToBeBudgeted.SuspendLayout()
+        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetStatistics.SuspendLayout()
         Me.pnlReportsStatistics.SuspendLayout()
         Me.pnlAccountsTransaction.SuspendLayout()
@@ -157,8 +159,6 @@ Partial Class App
         CType(Me.chSpending, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvBudget, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetControl.SuspendLayout()
-        Me.pnlToBeBudgeted.SuspendLayout()
-        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlWorkingBalance.SuspendLayout()
         CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlReports.SuspendLayout()
@@ -390,6 +390,61 @@ Partial Class App
         Me.pnlNavigation.Size = New System.Drawing.Size(869, 87)
         Me.pnlNavigation.TabIndex = 1
         '
+        'pnlToBeBudgeted
+        '
+        Me.pnlToBeBudgeted.Controls.Add(Me.lblDate)
+        Me.pnlToBeBudgeted.Controls.Add(Me.lblToBeBudgetedValue)
+        Me.pnlToBeBudgeted.Controls.Add(Me.lblToBeBudgeted)
+        Me.pnlToBeBudgeted.Controls.Add(Me.pbArrow)
+        Me.pnlToBeBudgeted.Location = New System.Drawing.Point(3, 3)
+        Me.pnlToBeBudgeted.Name = "pnlToBeBudgeted"
+        Me.pnlToBeBudgeted.Size = New System.Drawing.Size(863, 82)
+        Me.pnlToBeBudgeted.TabIndex = 4
+        '
+        'lblDate
+        '
+        Me.lblDate.AutoSize = True
+        Me.lblDate.Font = New System.Drawing.Font("Calibri", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblDate.ForeColor = System.Drawing.Color.White
+        Me.lblDate.Location = New System.Drawing.Point(145, 17)
+        Me.lblDate.Name = "lblDate"
+        Me.lblDate.Size = New System.Drawing.Size(117, 45)
+        Me.lblDate.TabIndex = 0
+        Me.lblDate.Text = "[Date]"
+        '
+        'lblToBeBudgetedValue
+        '
+        Me.lblToBeBudgetedValue.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        Me.lblToBeBudgetedValue.Font = New System.Drawing.Font("Calibri", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblToBeBudgetedValue.ForeColor = System.Drawing.Color.FromArgb(CType(CType(106, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(79, Byte), Integer))
+        Me.lblToBeBudgetedValue.Location = New System.Drawing.Point(686, 19)
+        Me.lblToBeBudgetedValue.Name = "lblToBeBudgetedValue"
+        Me.lblToBeBudgetedValue.Size = New System.Drawing.Size(157, 42)
+        Me.lblToBeBudgetedValue.TabIndex = 3
+        Me.lblToBeBudgetedValue.Text = "0,00 €"
+        Me.lblToBeBudgetedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'lblToBeBudgeted
+        '
+        Me.lblToBeBudgeted.BackColor = System.Drawing.Color.FromArgb(CType(CType(106, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(79, Byte), Integer))
+        Me.lblToBeBudgeted.Font = New System.Drawing.Font("Calibri", 18.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblToBeBudgeted.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.lblToBeBudgeted.Location = New System.Drawing.Point(506, 10)
+        Me.lblToBeBudgeted.Name = "lblToBeBudgeted"
+        Me.lblToBeBudgeted.Size = New System.Drawing.Size(113, 58)
+        Me.lblToBeBudgeted.TabIndex = 2
+        Me.lblToBeBudgeted.Text = "To Be Budgeted"
+        '
+        'pbArrow
+        '
+        Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
+        Me.pbArrow.Location = New System.Drawing.Point(472, 2)
+        Me.pbArrow.Name = "pbArrow"
+        Me.pbArrow.Size = New System.Drawing.Size(198, 75)
+        Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbArrow.TabIndex = 1
+        Me.pbArrow.TabStop = False
+        '
         'pnlBudgetStatistics
         '
         Me.pnlBudgetStatistics.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
@@ -610,7 +665,7 @@ Partial Class App
         Me.lblPeriod.Name = "lblPeriod"
         Me.lblPeriod.Size = New System.Drawing.Size(200, 23)
         Me.lblPeriod.TabIndex = 10
-        Me.lblPeriod.Text = "for the first time period"
+        Me.lblPeriod.Text = "for this time period"
         Me.lblPeriod.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblDateValue
@@ -1207,61 +1262,6 @@ Partial Class App
         Me.updateLabels.Enabled = True
         Me.updateLabels.Interval = 500
         '
-        'pnlToBeBudgeted
-        '
-        Me.pnlToBeBudgeted.Controls.Add(Me.lblDate)
-        Me.pnlToBeBudgeted.Controls.Add(Me.lblToBeBudgetedValue)
-        Me.pnlToBeBudgeted.Controls.Add(Me.lblToBeBudgeted)
-        Me.pnlToBeBudgeted.Controls.Add(Me.pbArrow)
-        Me.pnlToBeBudgeted.Location = New System.Drawing.Point(3, 3)
-        Me.pnlToBeBudgeted.Name = "pnlToBeBudgeted"
-        Me.pnlToBeBudgeted.Size = New System.Drawing.Size(863, 82)
-        Me.pnlToBeBudgeted.TabIndex = 4
-        '
-        'pbArrow
-        '
-        Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow.Location = New System.Drawing.Point(472, 2)
-        Me.pbArrow.Name = "pbArrow"
-        Me.pbArrow.Size = New System.Drawing.Size(198, 75)
-        Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbArrow.TabIndex = 1
-        Me.pbArrow.TabStop = False
-        '
-        'lblToBeBudgeted
-        '
-        Me.lblToBeBudgeted.BackColor = System.Drawing.Color.FromArgb(CType(CType(106, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(79, Byte), Integer))
-        Me.lblToBeBudgeted.Font = New System.Drawing.Font("Calibri", 18.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblToBeBudgeted.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.lblToBeBudgeted.Location = New System.Drawing.Point(506, 10)
-        Me.lblToBeBudgeted.Name = "lblToBeBudgeted"
-        Me.lblToBeBudgeted.Size = New System.Drawing.Size(113, 58)
-        Me.lblToBeBudgeted.TabIndex = 2
-        Me.lblToBeBudgeted.Text = "To Be Budgeted"
-        '
-        'lblToBeBudgetedValue
-        '
-        Me.lblToBeBudgetedValue.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        Me.lblToBeBudgetedValue.Font = New System.Drawing.Font("Calibri", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblToBeBudgetedValue.ForeColor = System.Drawing.Color.FromArgb(CType(CType(106, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(79, Byte), Integer))
-        Me.lblToBeBudgetedValue.Location = New System.Drawing.Point(686, 19)
-        Me.lblToBeBudgetedValue.Name = "lblToBeBudgetedValue"
-        Me.lblToBeBudgetedValue.Size = New System.Drawing.Size(157, 42)
-        Me.lblToBeBudgetedValue.TabIndex = 3
-        Me.lblToBeBudgetedValue.Text = "0,00 €"
-        Me.lblToBeBudgetedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'lblDate
-        '
-        Me.lblDate.AutoSize = True
-        Me.lblDate.Font = New System.Drawing.Font("Calibri", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDate.ForeColor = System.Drawing.Color.White
-        Me.lblDate.Location = New System.Drawing.Point(145, 17)
-        Me.lblDate.Name = "lblDate"
-        Me.lblDate.Size = New System.Drawing.Size(117, 45)
-        Me.lblDate.TabIndex = 0
-        Me.lblDate.Text = "[Date]"
-        '
         'pnlWorkingBalance
         '
         Me.pnlWorkingBalance.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
@@ -1276,15 +1276,28 @@ Partial Class App
         Me.pnlWorkingBalance.TabIndex = 26
         Me.pnlWorkingBalance.Visible = False
         '
-        'pbArrow2
+        'lblWorkingBalanceValue
         '
-        Me.pbArrow2.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow2.Location = New System.Drawing.Point(3, 14)
-        Me.pbArrow2.Name = "pbArrow2"
-        Me.pbArrow2.Size = New System.Drawing.Size(209, 52)
-        Me.pbArrow2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbArrow2.TabIndex = 0
-        Me.pbArrow2.TabStop = False
+        Me.lblWorkingBalanceValue.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        Me.lblWorkingBalanceValue.Font = New System.Drawing.Font("Calibri", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblWorkingBalanceValue.ForeColor = System.Drawing.Color.FromArgb(CType(CType(106, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(79, Byte), Integer))
+        Me.lblWorkingBalanceValue.Location = New System.Drawing.Point(222, 25)
+        Me.lblWorkingBalanceValue.Name = "lblWorkingBalanceValue"
+        Me.lblWorkingBalanceValue.Size = New System.Drawing.Size(143, 36)
+        Me.lblWorkingBalanceValue.TabIndex = 3
+        Me.lblWorkingBalanceValue.Text = "0,00"
+        Me.lblWorkingBalanceValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblWorkingBalance
+        '
+        Me.lblWorkingBalance.AutoSize = True
+        Me.lblWorkingBalance.Font = New System.Drawing.Font("Calibri", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblWorkingBalance.ForeColor = System.Drawing.Color.White
+        Me.lblWorkingBalance.Location = New System.Drawing.Point(224, 1)
+        Me.lblWorkingBalance.Name = "lblWorkingBalance"
+        Me.lblWorkingBalance.Size = New System.Drawing.Size(141, 23)
+        Me.lblWorkingBalance.TabIndex = 2
+        Me.lblWorkingBalance.Text = "Working Balance"
         '
         'lblAllAccounts
         '
@@ -1298,28 +1311,15 @@ Partial Class App
         Me.lblAllAccounts.TabIndex = 1
         Me.lblAllAccounts.Text = "All Accounts"
         '
-        'lblWorkingBalance
+        'pbArrow2
         '
-        Me.lblWorkingBalance.AutoSize = True
-        Me.lblWorkingBalance.Font = New System.Drawing.Font("Calibri", 14.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblWorkingBalance.ForeColor = System.Drawing.Color.White
-        Me.lblWorkingBalance.Location = New System.Drawing.Point(224, 1)
-        Me.lblWorkingBalance.Name = "lblWorkingBalance"
-        Me.lblWorkingBalance.Size = New System.Drawing.Size(141, 23)
-        Me.lblWorkingBalance.TabIndex = 2
-        Me.lblWorkingBalance.Text = "Working Balance"
-        '
-        'lblWorkingBalanceValue
-        '
-        Me.lblWorkingBalanceValue.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        Me.lblWorkingBalanceValue.Font = New System.Drawing.Font("Calibri", 20.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblWorkingBalanceValue.ForeColor = System.Drawing.Color.FromArgb(CType(CType(106, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(79, Byte), Integer))
-        Me.lblWorkingBalanceValue.Location = New System.Drawing.Point(222, 25)
-        Me.lblWorkingBalanceValue.Name = "lblWorkingBalanceValue"
-        Me.lblWorkingBalanceValue.Size = New System.Drawing.Size(143, 36)
-        Me.lblWorkingBalanceValue.TabIndex = 3
-        Me.lblWorkingBalanceValue.Text = "0,00"
-        Me.lblWorkingBalanceValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        Me.pbArrow2.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
+        Me.pbArrow2.Location = New System.Drawing.Point(3, 14)
+        Me.pbArrow2.Name = "pbArrow2"
+        Me.pbArrow2.Size = New System.Drawing.Size(209, 52)
+        Me.pbArrow2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbArrow2.TabIndex = 0
+        Me.pbArrow2.TabStop = False
         '
         'pnlReports
         '
@@ -1373,6 +1373,9 @@ Partial Class App
         CType(Me.dgvAccounts, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlNavigation.ResumeLayout(False)
+        Me.pnlToBeBudgeted.ResumeLayout(False)
+        Me.pnlToBeBudgeted.PerformLayout()
+        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBudgetStatistics.ResumeLayout(False)
         Me.pnlReportsStatistics.ResumeLayout(False)
         Me.pnlAccountsTransaction.ResumeLayout(False)
@@ -1384,9 +1387,6 @@ Partial Class App
         CType(Me.chSpending, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvBudget, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBudgetControl.ResumeLayout(False)
-        Me.pnlToBeBudgeted.ResumeLayout(False)
-        Me.pnlToBeBudgeted.PerformLayout()
-        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlWorkingBalance.ResumeLayout(False)
         Me.pnlWorkingBalance.PerformLayout()
         CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).EndInit()

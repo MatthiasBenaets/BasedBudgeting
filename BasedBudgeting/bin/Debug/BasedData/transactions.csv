@@ -1,3 +1,8 @@
+acc1;26/12/2021;test;To Be Budgeted;No subcategory needed;test;;10
+acc1;26/12/2021;qsdf;To Be Budgeted;No subcategory needed;qdfs;;5
+acc1;26/12/2021;acc2;Transfer;No subcategory needed;Transfer;4;
+acc1;26/12/2021;acc2;Transfer;No subcategory needed;Transfer;;10
+acc1;26/12/2021;acc2;Transfer;No subcategory needed;Transfer;10;
 acc2;25/12/2021;acc1;cat1;subcat2;dsf;3;
 acc1;25/12/2021;acc2;cat2;subcat3;sqfd;2;
 acc2;25/12/2021;acc1;cat1;subcat1;test;5;
@@ -5,7 +10,9 @@ acc1;24/12/2021;test;cat1;subcat1;test;;5,00
 Account 1;10/12/2021;Man 2;Cat 2;Subcat 2;test;20;
 Account 1;03/12/2021;Man 1;Cat 1;Subcat 1;test;5;
 Account 1;02/12/2021;Man 1;Cat 1;Subcat 1;test;10;
+acc1;01/12/2021;fdsffqds;cat1;subcat2;sdqf;;1
 Account 2;01/12/2021;Man 2;Cat 2;Subcat 2;test;10;
+acc1;30/11/2021;dfqsqfds;cat2;subcat3;qsfd;;3
 Account 1;25/11/2021;Man 1;Cat 1;Subcat 1;test;15;
 Account 5;01/11/2021;Man 4;Cat 2;Subcat 2;test;10;
 Account 4;27/10/2021;Man 4;Cat 4;Subcat 4;test;20;
