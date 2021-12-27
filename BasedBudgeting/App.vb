@@ -183,7 +183,7 @@ Public Class App
     Private Sub dgvAccounts_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvAccounts.CellEndEdit
         SaveAccounts()
     End Sub
-    Private Sub dgvBudget_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellEndEdit  ' Used to automatically add rows in dgvBudget
+    Private Sub dgvBudget_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellEndEdit  ' Used to automatically add rows in dgvBudget and update total available
         If dgvBudget.CurrentCell.ColumnIndex > 0 Then                                           ' Check if category cell is selected
         ElseIf dgvBudget.CurrentCell.Value <> "" And
                 dgvBudget.Rows(e.RowIndex).Cells(1).Value.ToString <> "" And
@@ -199,12 +199,22 @@ Public Class App
                 dgvBudget.Rows(e.RowIndex).Cells(2).Value = 0
                 dgvBudget.Rows(e.RowIndex).Cells(3).Value = 0
                 dgvBudget.Rows.Insert(e.RowIndex + 1, "", "", "", "", "S")
-                'ElseIf dgvBudget.CurrentRow.Index = dgvBudget.Rows.Count - 1 Then              ' Or if last row - add
-                'dgvBudget.Rows.Add("", "", "", "", "S")
             Else                                                                                ' else insert a new row in category
                 dgvBudget.Rows.Insert(e.RowIndex + 1, "", "", "", "", "S")
             End If
         End If
+
+        If dgvBudget.CurrentCell.ColumnIndex = 1 Then
+            dgvBudget.Rows(e.RowIndex).Cells(3).Value = CType(dgvBudget.Rows(e.RowIndex).Cells(1).Value, Decimal) + CType(dgvBudget.Rows(e.RowIndex).Cells(2).Value, Decimal)
+        End If
+        'Dim rowsBud() As String = File.ReadAllLines(".\BasedData\budget.csv")                   ' Update total available after edit in budgeted
+        'Dim colAvailable() As String
+        'For i As Integer = 0 To dgvBudget.Rows.Count - 1
+        'colAvailable = rowsBud(i).ToString().Split(";")
+        'If dgvBudget.Rows(i).Cells(0).Value.ToString <> "" Then
+        'dgvBudget.Rows(i).Cells(3).Value = CType(colAvailable(3), Decimal) + CType(dgvBudget.Rows(i).Cells(1).Value, Decimal)
+        'End If
+        'Next
     End Sub
     Private Sub dgvTransactions_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvTransactions.CellEndEdit
         Dim toDec As Decimal = 0
@@ -255,6 +265,7 @@ Public Class App
         Dim traOutflow As Boolean = False
         Dim traInflow As Boolean = False
         Dim traTransfer As Boolean = False
+        Dim toDec As Decimal
         Dim i = 0
         If dgvTransactions.Rows.Count = 0 Then                                                  ' Loop to check where in DataGridView data needs to be stored
             i = 0                                                                               ' If no transactions, will inserted at x=0
@@ -281,67 +292,103 @@ Public Class App
                 MsgBox("Transaction value not a number")
             End If
             btnReports.Visible = True
-        End If
 
-        For j As Integer = 0 To dgvAccounts.Rows.Count - 1
-            If cbPayee.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then                  ' If cbPayee is a category, it is a transfer
-                traTransfer = True
-                j = dgvAccounts.Rows.Count - 1
-            Else
-                traTransfer = False
+
+            For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+                If cbPayee.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then                  ' If cbPayee is a category, it is a transfer
+                    traTransfer = True
+                    j = dgvAccounts.Rows.Count - 1
+                Else
+                    traTransfer = False
+                End If
+            Next
+
+            If traTransfer = True Then                                                              ' Check if normal transaction or transfer
+                For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+                    If cbPayee.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then              ' Find correct account and add or subtract from account
+                        If traOutflow = True Then
+                            dgvAccounts.Rows(j).Cells(1).Value += CType(tbOutflow.Text, Decimal)
+                        ElseIf traInflow = True Then
+                            dgvAccounts.Rows(j).Cells(1).Value -= CType(tbInflow.Text, Decimal)
+                        End If
+                    End If
+                    If cbAccount.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then
+                        If traOutflow = True Then
+                            dgvAccounts.Rows(j).Cells(1).Value -= CType(tbOutflow.Text, Decimal)
+                        ElseIf traInflow = True Then
+                            dgvAccounts.Rows(j).Cells(1).Value += CType(tbInflow.Text, Decimal)
+                        End If
+                    End If
+                Next
+            ElseIf traTransfer = False Then
+                For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+                    If dgvAccounts.Rows(j).Cells(0).Value.ToString = cbAccount.Text Then            ' Add or subtract value and count total balance
+                        If traOutflow = True Then                                                   ' Check if its outflow or inflow
+                            dgvAccounts.Rows(j).Cells(1).Value -= CType(tbOutflow.Text, Decimal)
+                            toDec = CType(lblTotalBalance.Text, Decimal) - CType(tbOutflow.Text, Decimal)
+                            lblTotalBalance.Text = toDec.ToString("C")
+                        ElseIf traInflow = True Then
+                            dgvAccounts.Rows(j).Cells(1).Value += CType(tbInflow.Text, Decimal)
+                            toDec = CType(lblTotalBalance.Text, Decimal) + CType(tbInflow.Text, Decimal)
+                            lblTotalBalance.Text = toDec.ToString("C")
+                        End If
+                    End If
+                Next
             End If
-        Next
 
-        If traTransfer = True Then                                                              ' Check if normal transaction or transfer
-            For j As Integer = 0 To dgvAccounts.Rows.Count - 1
-                If cbPayee.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then              ' Find correct account and add or subtract from account
-                    If traOutflow = True Then
-                        dgvAccounts.Rows(j).Cells(1).Value += CType(tbOutflow.Text, Decimal)
-                    ElseIf traInflow = True Then
-                        dgvAccounts.Rows(j).Cells(1).Value -= CType(tbInflow.Text, Decimal)
+            For j As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Add transaction to activity tab in dgvBudget
+                If traOutflow = True And cbCategory.Text <> "Transfer" And cbCategory.Text <> "To Be Budgeted" Then
+                    If dgvBudget.Rows(j).Cells(0).Value.ToString = cbSubcategory.Text Then
+                        toDec = CType(dgvBudget.Rows(j).Cells(2).Value, Decimal) - CType(tbOutflow.Text, Decimal)
+                        dgvBudget.Rows(j).Cells(2).Value = toDec.ToString("C")
+                        toDec = CType(dgvBudget.Rows(j).Cells(3).Value, Decimal) - CType(tbOutflow.Text, Decimal) ''
+                        dgvBudget.Rows(j).Cells(3).Value = toDec.ToString("C")
                     End If
-                End If
-                If cbAccount.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then
-                    If traOutflow = True Then
-                        dgvAccounts.Rows(j).Cells(1).Value -= CType(tbOutflow.Text, Decimal)
-                    ElseIf traInflow = True Then
-                        dgvAccounts.Rows(j).Cells(1).Value += CType(tbInflow.Text, Decimal)
-                    End If
-                End If
-            Next
-        ElseIf traTransfer = False Then
-            Dim toDec As Decimal
-            For j As Integer = 0 To dgvAccounts.Rows.Count - 1
-                If dgvAccounts.Rows(j).Cells(0).Value.ToString = cbAccount.Text Then            ' Add or subtract value and count total balance
-                    If traOutflow = True Then                                                   ' Check if its outflow or inflow
-                        dgvAccounts.Rows(j).Cells(1).Value -= CType(tbOutflow.Text, Decimal)
-                        toDec = CType(lblTotalBalance.Text, Decimal) - CType(tbOutflow.Text, Decimal)
-                        lblTotalBalance.Text = toDec.ToString("C")
-                    ElseIf traInflow = True Then
-                        dgvAccounts.Rows(j).Cells(1).Value += CType(tbInflow.Text, Decimal)
-                        toDec = CType(lblTotalBalance.Text, Decimal) + CType(tbInflow.Text, Decimal)
-                        lblTotalBalance.Text = toDec.ToString("C")
+                ElseIf traInflow = True And cbCategory.Text <> "Transfer" And cbCategory.Text <> "To Be Budgeted" Then
+                    If dgvBudget.Rows(j).Cells(0).Value.ToString = cbSubcategory.Text Then
+                        toDec = CType(dgvBudget.Rows(j).Cells(2).Value, Decimal) + CType(tbInflow.Text, Decimal)
+                        dgvBudget.Rows(j).Cells(2).Value = toDec.ToString("C")
+                        toDec = CType(dgvBudget.Rows(j).Cells(3).Value, Decimal) + CType(tbInflow.Text, Decimal) ''
+                        dgvBudget.Rows(j).Cells(3).Value = toDec.ToString("C")
                     End If
                 End If
             Next
+            For j As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Calculate total activity for the category
+                If cbCategory.Text = dgvBudget.Rows(j).Cells(0).Value.ToString Then
+                    Dim totActivity As Decimal = 0
+                    Dim totAvailable As Decimal = 0
+                    Dim l = j + 1
+                    For k As Integer = l To dgvBudget.Rows.Count - 1
+                        If dgvBudget.Rows(k).Cells(0).Value.ToString <> "" Then
+                            totActivity += CType(dgvBudget.Rows(k).Cells(2).Value, Decimal)
+                            totAvailable += CType(dgvBudget.Rows(k).Cells(3).Value, Decimal) ''
+                        Else
+                            k = dgvBudget.Rows.Count - 1
+                        End If
+                    Next
+                    dgvBudget.Rows(j).Cells(2).Value = totActivity
+                    dgvBudget.Rows(j).Cells(3).Value = totAvailable
+                End If
+            Next
+
+            SaveTransaction()
+
+            cbAccount.Items.Clear()                                                                 ' Reset transaction menu to default
+            dtpDate.Text = DateTime.Now
+            cbPayee.Text = ""
+            cbCategory.Items.Clear()
+            cbCategory.Enabled = True
+            cbSubcategory.Items.Clear()
+            cbSubcategory.Enabled = False
+            tbMemo.Text = ""
+            tbOutflow.Text = ""
+            tbOutflow.Enabled = True
+            tbInflow.Text = ""
+            traOutflow = False
+            traInflow = False
+            traTransfer = False
+
         End If
-        SaveTransaction()
-
-        cbAccount.Items.Clear()                                                                 ' Reset transaction menu to default
-        dtpDate.Text = DateTime.Now
-        cbPayee.Text = ""
-        cbCategory.Items.Clear()
-        cbCategory.Enabled = True
-        cbSubcategory.Items.Clear()
-        cbSubcategory.Enabled = False
-        tbMemo.Text = ""
-        tbOutflow.Text = ""
-        tbOutflow.Enabled = True
-        tbInflow.Text = ""
-        traOutflow = False
-        traInflow = False
-        traTransfer = False
-        ' DONT FORGET TO ADD SUPPORT TO IGNORE TRANSACTIONS !!!!!!!!!!!!!!!!!!!!!
     End Sub
     Private Sub cbPayee_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayee.TextChanged  ' When text changes inside the Payee combobox
         Dim traOutflow As Boolean = False
@@ -579,7 +626,7 @@ Public Class App
         Dim writer As New StreamWriter(".\BasedData\budget.csv")
         For i As Integer = 0 To dgvBudget.Rows.Count - 1 Step +1                                ' Loop through all rows
             For j As Integer = 0 To dgvBudget.Columns.Count - 1 Step +1                         ' Loop through all columns within the row
-                If j = dgvBudget.Columns.Count - 1 Then                                         ' Print values with ";"; except last column
+                If j = dgvBudget.Columns.Count - 1 Then                                         ' Print values with ";", except last column
                     writer.Write(dgvBudget.Rows(i).Cells(j).Value)
                 Else
                     writer.Write(dgvBudget.Rows(i).Cells(j).Value & ";")
@@ -593,7 +640,7 @@ Public Class App
         Dim writer As New StreamWriter(".\BasedData\accounts.csv")
         For i As Integer = 0 To dgvAccounts.Rows.Count - 1 Step +1                              ' Loop through all rows
             For j As Integer = 0 To dgvAccounts.Columns.Count - 1 Step +1                       ' Loop through all columns within the row
-                If j = dgvAccounts.Columns.Count - 1 Then                                       ' Print values with ";"; except last column
+                If j = dgvAccounts.Columns.Count - 1 Then                                       ' Print values with ";", except last column
                     writer.Write(dgvAccounts.Rows(i).Cells(j).Value)
                 Else
                     writer.Write(dgvAccounts.Rows(i).Cells(j).Value & ";")
@@ -607,7 +654,7 @@ Public Class App
         Dim writer As New StreamWriter(".\BasedData\transactions.csv")
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1 Step +1                          ' Loop through all rows
             For j As Integer = 0 To dgvTransactions.Columns.Count - 1 Step +1                   ' Loop through all columns within the row
-                If j = dgvTransactions.Columns.Count - 1 Then                                   ' Print values with ";"; except last column
+                If j = dgvTransactions.Columns.Count - 1 Then                                   ' Print values with ";", except last column
                     writer.Write(dgvTransactions.Rows(i).Cells(j).Value)
                 Else
                     writer.Write(dgvTransactions.Rows(i).Cells(j).Value & ";")
@@ -758,10 +805,39 @@ Public Class App
         Next
         totValue = totValue / 12
         lblAverageSpendingValue.Text = totValue.ToString("C")
+
+        totValue = 0
+        For i As Integer = 0 To dgvAccounts.Rows.Count - 1                                      ' Update To be budgeted label
+            totValue += dgvAccounts.Rows(i).Cells(1).Value
+        Next
+        For i As Integer = 0 To dgvBudget.Rows.Count - 1
+            If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" And dgvBudget.Rows(i).Cells(1).Value.ToString <> "" Then
+                totValue -= CType(dgvBudget.Rows(i).Cells(1).Value, Decimal)
+            End If
+        Next
+        lblToBeBudgetedValue.Text = totValue.ToString("C")
+
+        If CType(lblToBeBudgetedValue.Text, Decimal) >= 0 Then                                  ' Update color of to be budgeted label
+            lblToBeBudgetedValue.ForeColor = Color.FromArgb(106, 168, 79)
+            lblToBeBudgeted.BackColor = Color.FromArgb(106, 168, 79)
+            lblToBeBudgeted.ForeColor = Color.FromArgb(0, 64, 0)
+            pbArrow.Image = BasedBudgeting.My.Resources.Resources.arrow
+        ElseIf CType(lblToBeBudgetedValue.Text, Decimal) < 0 Then
+            lblToBeBudgetedValue.ForeColor = Color.FromArgb(207, 82, 76)
+            lblToBeBudgeted.BackColor = Color.FromArgb(207, 82, 76)
+            lblToBeBudgeted.ForeColor = Color.FromArgb(124, 25, 25)
+            pbArrow.Image = BasedBudgeting.My.Resources.Resources.arrowred
+        End If
+        If CType(lblWorkingBalanceValue.Text, Decimal) >= 0 Then                                ' Update working balance color
+            lblWorkingBalanceValue.ForeColor = Color.FromArgb(106, 168, 79)
+            pbArrow2.Image = BasedBudgeting.My.Resources.Resources.arrow
+        ElseIf CType(lblWorkingBalanceValue.Text, Decimal) < 0 Then
+            lblWorkingBalanceValue.ForeColor = Color.FromArgb(207, 82, 76)
+            pbArrow.Image = BasedBudgeting.My.Resources.Resources.arrowred
+        End If
     End Sub
 End Class
 ' TO DO
 ' 
-' dgvBudget calculations after transactions or manual edit dgvBudget (will also fix available balance)
-' ignore transaction between accounts in all dgvBudget
+' update budgeted column in dgvBudget
 ' dgvTransaction filter (show all again just before close to save correctly)

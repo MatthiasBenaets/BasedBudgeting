@@ -71,7 +71,6 @@ Partial Class App
         Me.lblDate = New System.Windows.Forms.Label()
         Me.lblToBeBudgetedValue = New System.Windows.Forms.Label()
         Me.lblToBeBudgeted = New System.Windows.Forms.Label()
-        Me.pbArrow = New System.Windows.Forms.PictureBox()
         Me.pnlBudgetStatistics = New System.Windows.Forms.Panel()
         Me.lblTotalActivity = New System.Windows.Forms.Label()
         Me.lblTotalAvailable = New System.Windows.Forms.Label()
@@ -140,15 +139,15 @@ Partial Class App
         Me.lblWorkingBalanceValue = New System.Windows.Forms.Label()
         Me.lblWorkingBalance = New System.Windows.Forms.Label()
         Me.lblAllAccounts = New System.Windows.Forms.Label()
-        Me.pbArrow2 = New System.Windows.Forms.PictureBox()
         Me.pnlReports = New System.Windows.Forms.Panel()
         Me.lblReports = New System.Windows.Forms.Label()
+        Me.pbArrow2 = New System.Windows.Forms.PictureBox()
+        Me.pbArrow = New System.Windows.Forms.PictureBox()
         Me.pnlMenu.SuspendLayout()
         CType(Me.dgvAccounts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlNavigation.SuspendLayout()
         Me.pnlToBeBudgeted.SuspendLayout()
-        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetStatistics.SuspendLayout()
         Me.pnlReportsStatistics.SuspendLayout()
         Me.pnlAccountsTransaction.SuspendLayout()
@@ -160,8 +159,9 @@ Partial Class App
         CType(Me.dgvBudget, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetControl.SuspendLayout()
         Me.pnlWorkingBalance.SuspendLayout()
-        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlReports.SuspendLayout()
+        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'pnlMenu
@@ -434,16 +434,6 @@ Partial Class App
         Me.lblToBeBudgeted.Size = New System.Drawing.Size(113, 58)
         Me.lblToBeBudgeted.TabIndex = 2
         Me.lblToBeBudgeted.Text = "To Be Budgeted"
-        '
-        'pbArrow
-        '
-        Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow.Location = New System.Drawing.Point(472, 2)
-        Me.pbArrow.Name = "pbArrow"
-        Me.pbArrow.Size = New System.Drawing.Size(198, 75)
-        Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbArrow.TabIndex = 1
-        Me.pbArrow.TabStop = False
         '
         'pnlBudgetStatistics
         '
@@ -1311,16 +1301,6 @@ Partial Class App
         Me.lblAllAccounts.TabIndex = 1
         Me.lblAllAccounts.Text = "All Accounts"
         '
-        'pbArrow2
-        '
-        Me.pbArrow2.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow2.Location = New System.Drawing.Point(3, 14)
-        Me.pbArrow2.Name = "pbArrow2"
-        Me.pbArrow2.Size = New System.Drawing.Size(209, 52)
-        Me.pbArrow2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbArrow2.TabIndex = 0
-        Me.pbArrow2.TabStop = False
-        '
         'pnlReports
         '
         Me.pnlReports.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
@@ -1342,6 +1322,26 @@ Partial Class App
         Me.lblReports.Size = New System.Drawing.Size(140, 45)
         Me.lblReports.TabIndex = 0
         Me.lblReports.Text = "Reports"
+        '
+        'pbArrow2
+        '
+        Me.pbArrow2.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
+        Me.pbArrow2.Location = New System.Drawing.Point(3, 14)
+        Me.pbArrow2.Name = "pbArrow2"
+        Me.pbArrow2.Size = New System.Drawing.Size(209, 52)
+        Me.pbArrow2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbArrow2.TabIndex = 0
+        Me.pbArrow2.TabStop = False
+        '
+        'pbArrow
+        '
+        Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
+        Me.pbArrow.Location = New System.Drawing.Point(472, 2)
+        Me.pbArrow.Name = "pbArrow"
+        Me.pbArrow.Size = New System.Drawing.Size(198, 75)
+        Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbArrow.TabIndex = 1
+        Me.pbArrow.TabStop = False
         '
         'App
         '
@@ -1375,7 +1375,6 @@ Partial Class App
         Me.pnlNavigation.ResumeLayout(False)
         Me.pnlToBeBudgeted.ResumeLayout(False)
         Me.pnlToBeBudgeted.PerformLayout()
-        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBudgetStatistics.ResumeLayout(False)
         Me.pnlReportsStatistics.ResumeLayout(False)
         Me.pnlAccountsTransaction.ResumeLayout(False)
@@ -1389,9 +1388,10 @@ Partial Class App
         Me.pnlBudgetControl.ResumeLayout(False)
         Me.pnlWorkingBalance.ResumeLayout(False)
         Me.pnlWorkingBalance.PerformLayout()
-        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlReports.ResumeLayout(False)
         Me.pnlReports.PerformLayout()
+        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
