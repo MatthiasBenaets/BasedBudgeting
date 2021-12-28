@@ -12,6 +12,10 @@ Public Class App
             'SaveTransaction()
         End If
 
+        For Each column As DataGridViewColumn In dgvBudget.Columns
+            column.SortMode = DataGridViewColumnSortMode.NotSortable
+        Next
+
         Dim rows() As String
         Dim values() As String
         If My.Computer.FileSystem.FileExists(".\BasedData\transactions.csv") Then               ' If saved transaction file exists
@@ -763,29 +767,33 @@ Public Class App
             If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" Then                             ' Loop through budget list and do if it is subcategory ...
                 If dgvBudget.Rows(i).Cells(1).Value.ToString <> "" Then                         ' If not empty
                     totValue += dgvBudget.Rows(i).Cells(1).Value                                ' Add to total
-                    lblTotalBudgetedValue.Text = totValue.ToString("C")                         ' Convert to currency string and print on label
                 End If
             End If
         Next
+        lblTotalBudgetedValue.Text = totValue.ToString("C")                                     ' Convert to currency string and print on label
+
         totValue = 0
         For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Total Activity label
             If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" Then
                 If dgvBudget.Rows(i).Cells(2).Value.ToString <> "" Then
                     totValue += dgvBudget.Rows(i).Cells(2).Value
-                    lblTotalActivityValue.Text = totValue.ToString("C")
                 End If
             End If
         Next
+        lblTotalActivityValue.Text = totValue.ToString("C")
+
         totValue = 0
         For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Total Available label
             If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" Then
                 If dgvBudget.Rows(i).Cells(3).Value.ToString <> "" Then
                     totValue += dgvBudget.Rows(i).Cells(3).Value
-                    lblTotalAvailableValue.Text = totValue.ToString("C")
-                    lblWorkingBalanceValue.Text = totValue.ToString("C")
                 End If
             End If
         Next
+        totValue += CType(lblToBeBudgetedValue.Text, Decimal)
+        lblTotalAvailableValue.Text = totValue.ToString("C")
+        lblWorkingBalanceValue.Text = totValue.ToString("C")
+
         totValue = 0
         Dim traDate As DateTime
         Dim preMonth As DateTime = New DateTime(Now.Year, Now.Month, 1)                         ' Only transaction from beginnen of current month
@@ -798,9 +806,10 @@ Public Class App
                 End If
             Else
                 i = dgvTransactions.Rows.Count - 1
-                lblTotalInflowValue.Text = totValue.ToString("C")
             End If
         Next
+        lblTotalInflowValue.Text = totValue.ToString("C")
+
         totValue = 0
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Total Spending for current month
             traDate = dgvTransactions.Rows(i).Cells(1).Value
@@ -812,8 +821,9 @@ Public Class App
             Else
                 i = dgvTransactions.Rows.Count - 1
             End If
-            lblTotalSpendingValue.Text = totValue.ToString("C")
         Next
+        lblTotalSpendingValue.Text = totValue.ToString("C")
+
         totValue = 0
         Dim preYear As DateTime = DateTime.Now.AddYears(-1)
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Average Spending each month
@@ -841,7 +851,7 @@ Public Class App
         Next
         lblToBeBudgetedValue.Text = totValue.ToString("C")
     End Sub
-    Private Sub redDetector_Tick(sender As Object, e As EventArgs) Handles redDetector.Tick
+    Private Sub redDetector_Tick(sender As Object, e As EventArgs) Handles redDetector.Tick     ' Check every second if TBB is pos or neg. Change color if needed
         If CType(lblToBeBudgetedValue.Text, Decimal) >= 0 And lblToBeBudgetedValue.ForeColor = Color.FromArgb(207, 82, 76) Then    ' Update color of to be budgeted label
             lblToBeBudgetedValue.ForeColor = Color.FromArgb(106, 168, 79)
             lblToBeBudgeted.BackColor = Color.FromArgb(106, 168, 79)
@@ -863,7 +873,25 @@ Public Class App
             pbArrow2.Image = BasedBudgeting.My.Resources.Resources.arrowred
         End If
     End Sub
+
+    Private Sub dgvBudget_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles dgvBudget.CellFormatting   ' Conditional formatting, dgvBudget column 3
+        For Each row As DataGridViewRow In dgvBudget.Rows
+            If row.Cells(0).Value.ToString <> "" Then                                           ' Only do for  subcategories that have filled category name
+                If row.Cells(3).Value = 0 And row.Cells(4).Value.ToString = "S" Then            ' If available value = 0  than default
+                    row.Cells(3).Style.ForeColor = Color.FromArgb(0, 50, 65)
+                    row.Cells(3).Style.BackColor = Color.White
+                Else
+                    If row.Cells(3).Value > 0 And row.Cells(4).Value.ToString = "S" Then        ' If negative
+                        row.Cells(3).Style.ForeColor = Color.White
+                        row.Cells(3).Style.BackColor = Color.FromArgb(106, 168, 79)
+                    ElseIf row.Cells(3).Value < 0 And row.Cells(4).Value.ToString = "S" Then    ' If positive
+                        row.Cells(3).Style.ForeColor = Color.White
+                        row.Cells(3).Style.BackColor = Color.FromArgb(207, 82, 76)
+                    End If
+                End If
+            End If
+        Next
+    End Sub
 End Class
 ' TO DO
-' conditional format dgvBudget
 ' dgvTransaction filter (show all again just before close to save correctly)
