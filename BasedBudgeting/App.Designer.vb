@@ -144,6 +144,7 @@ Partial Class App
         Me.pnlReports = New System.Windows.Forms.Panel()
         Me.lblReports = New System.Windows.Forms.Label()
         Me.redDetector = New System.Windows.Forms.Timer(Me.components)
+        Me.btnResetTransaction = New System.Windows.Forms.Button()
         Me.pnlMenu.SuspendLayout()
         CType(Me.dgvAccounts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -608,7 +609,7 @@ Partial Class App
         Me.lblAverageSpendingValue.Name = "lblAverageSpendingValue"
         Me.lblAverageSpendingValue.Size = New System.Drawing.Size(200, 37)
         Me.lblAverageSpendingValue.TabIndex = 12
-        Me.lblAverageSpendingValue.Text = "[AvgSpend]"
+        Me.lblAverageSpendingValue.Text = "-"
         Me.lblAverageSpendingValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblPeriod2
@@ -651,7 +652,7 @@ Partial Class App
         Me.lblTotalSpendingValue.Name = "lblTotalSpendingValue"
         Me.lblTotalSpendingValue.Size = New System.Drawing.Size(200, 37)
         Me.lblTotalSpendingValue.TabIndex = 8
-        Me.lblTotalSpendingValue.Text = "[TotSpend]"
+        Me.lblTotalSpendingValue.Text = "-"
         Me.lblTotalSpendingValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblPeriod
@@ -1028,6 +1029,7 @@ Partial Class App
         '
         'pnlAccountsFilter
         '
+        Me.pnlAccountsFilter.Controls.Add(Me.btnResetTransaction)
         Me.pnlAccountsFilter.Controls.Add(Me.dtpDateFilter)
         Me.pnlAccountsFilter.Controls.Add(Me.cbSubcategoryFilter)
         Me.pnlAccountsFilter.Controls.Add(Me.cbCategoryFilter)
@@ -1257,7 +1259,7 @@ Partial Class App
         'checkVariables
         '
         Me.checkVariables.Enabled = True
-        Me.checkVariables.Interval = 500
+        Me.checkVariables.Interval = 2500
         '
         'updateLabels
         '
@@ -1348,7 +1350,19 @@ Partial Class App
         'redDetector
         '
         Me.redDetector.Enabled = True
-        Me.redDetector.Interval = 1000
+        Me.redDetector.Interval = 500
+        '
+        'btnResetTransaction
+        '
+        Me.btnResetTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnResetTransaction.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnResetTransaction.Location = New System.Drawing.Point(590, -2)
+        Me.btnResetTransaction.Margin = New System.Windows.Forms.Padding(0)
+        Me.btnResetTransaction.Name = "btnResetTransaction"
+        Me.btnResetTransaction.Size = New System.Drawing.Size(75, 21)
+        Me.btnResetTransaction.TabIndex = 5
+        Me.btnResetTransaction.Text = "Reset Filter"
+        Me.btnResetTransaction.UseVisualStyleBackColor = True
         '
         'App
         '
@@ -1493,4 +1507,5 @@ Partial Class App
     Friend WithEvents Column7 As DataGridViewTextBoxColumn
     Friend WithEvents Column8 As DataGridViewTextBoxColumn
     Friend WithEvents redDetector As Timer
+    Friend WithEvents btnResetTransaction As Button
 End Class

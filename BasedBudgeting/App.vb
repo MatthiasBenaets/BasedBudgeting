@@ -1,15 +1,15 @@
 ﻿Imports System.Windows.Forms.DataVisualization.Charting
 Public Class App
+    Dim roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
+    Dim filtering = False
     Private Sub App_Load(sender As Object, e As EventArgs) Handles MyBase.Load                  ' When applications loads
         Me.lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()                           ' Print correct date
         Me.lblDateValue.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()
         Me.dtpDate.Value = DateTime.Now                                                         ' Update DateTimePicker to current date
 
-        If System.IO.Directory.Exists(".\BasedData") Then                                       ' Check if BasedData exist, if not create it and run SaveTransaction
-            'SaveTransaction()
+        If System.IO.Directory.Exists(roaming + "\BasedBudgeting") Then                         ' Check if BasedData exist, if not create it and run SaveTransaction
         Else
-            System.IO.Directory.CreateDirectory(".\BasedData")
-            'SaveTransaction()
+            System.IO.Directory.CreateDirectory(roaming + "\BasedBudgeting")
         End If
 
         For Each column As DataGridViewColumn In dgvBudget.Columns
@@ -18,8 +18,8 @@ Public Class App
 
         Dim rows() As String
         Dim values() As String
-        If My.Computer.FileSystem.FileExists(".\BasedData\transactions.csv") Then               ' If saved transaction file exists
-            rows = File.ReadAllLines(".\BasedData\transactions.csv")
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\transactions.csv") Then  ' If saved transaction file exists
+            rows = File.ReadAllLines(roaming + "\BasedBudgeting\transactions.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
                 values = rows(i).ToString().Split(";")                                          ' Split values at ";"
                 Dim row(values.Length - 1) As String
@@ -41,10 +41,10 @@ Public Class App
             Next i
         End If
 
-        dgvBudget.Columns(2).ReadOnly = True
+        'dgvBudget.Columns(2).ReadOnly = True
         dgvBudget.Columns(3).ReadOnly = True
-        If My.Computer.FileSystem.FileExists(".\BasedData\budget.csv") Then                     ' If saved budget file exists
-            rows = File.ReadAllLines(".\BasedData\budget.csv")
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\budget.csv") Then       ' If saved budget file exists
+            rows = File.ReadAllLines(roaming + "\BasedBudgeting\budget.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
                 values = rows(i).ToString().Split(";")                                          ' Split values at ";"
                 Dim row(values.Length - 1) As String
@@ -71,8 +71,8 @@ Public Class App
             Next
         Next
 
-        If My.Computer.FileSystem.FileExists(".\BasedData\accounts.csv") Then                   ' If saved transaction file exists
-            rows = File.ReadAllLines(".\BasedData\accounts.csv")
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\accounts.csv") Then     ' If saved transaction file exists
+            rows = File.ReadAllLines(roaming + "\BasedBudgeting\accounts.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
                 values = rows(i).ToString().Split(";")                                          ' Split values at ";"
                 Dim row(values.Length - 1) As String
@@ -155,6 +155,7 @@ Public Class App
         pnlToBeBudgeted.Visible = False
         pnlWorkingBalance.Visible = True
         pnlReports.Visible = False
+        checkCombobox()
     End Sub
     Private Sub btnAddCategory_Click(sender As Object, e As EventArgs) Handles btnAddCategory.Click ' Add category at end of dgvBudget
         Dim strCat As String
@@ -282,8 +283,8 @@ Public Class App
         cbSubcategory.Enabled = True                                                            ' Enable cbSubcategory so it can be selected.
 
         If cbCategory.Text = "To Be Budgeted" Then                                              ' If category is "To be budgeted", do next...
-            cbSubcategory.Items.Add("No subcategory needed")
-            cbSubcategory.Text = "No subcategory needed"
+            cbSubcategory.Items.Add("No subcategory")
+            cbSubcategory.Text = "No subcategory"
             cbSubcategory.Enabled = False
             tbOutflow.Text = ""
             tbOutflow.Enabled = False
@@ -435,15 +436,15 @@ Public Class App
             cbCategory.Items.Add("Transfer")                                                    ' Add extra items for combobox
             cbCategory.Text = "Transfer"
             cbCategory.Enabled = False
-            cbSubcategory.Items.Add("No subcategory needed")
-            cbSubcategory.Text = "No subcategory needed"
+            cbSubcategory.Items.Add("No subcategory")
+            cbSubcategory.Text = "No subcategory"
             cbSubcategory.Enabled = False
             tbMemo.Text = "Transfer"
         Else                                                                                    ' Remove limitations if changing back to external payee
             cbCategory.Enabled = True
             cbCategory.Items.Remove("Transfer")
             cbCategory.Text = ""
-            cbSubcategory.Items.Remove("No subcategory needed")
+            cbSubcategory.Items.Remove("No subcategory")
             cbSubcategory.Text = ""
         End If
     End Sub
@@ -467,7 +468,7 @@ Public Class App
         populateTrend()
     End Sub
     Private Sub populateNetWorth()                                                              ' Add values to chart one in reports
-        Dim rowsAcc() As String = File.ReadAllLines(".\BasedData\accounts.csv")
+        Dim rowsAcc() As String = File.ReadAllLines(roaming + "\BasedBudgeting\accounts.csv")
         Dim accVal() As String
         Dim xAcc(rowsAcc.Length) As String
         Dim yAcc(rowsAcc.Length) As Double
@@ -496,7 +497,7 @@ Public Class App
         chNet.Series("chNet").IsValueShownAsLabel = True
     End Sub
     Private Sub populateSpending()                                                              ' Add values to chart two in reports
-        Dim rowsTra() As String = File.ReadAllLines(".\BasedData\transactions.csv")
+        Dim rowsTra() As String = File.ReadAllLines(roaming + "\BasedBudgeting\transactions.csv")
         Dim traVal() As String
         Dim preMonth As DateTime = DateTime.Now.AddMonths(-1)
         Dim traDate As DateTime
@@ -514,7 +515,7 @@ Public Class App
                 k = 0
                 l = False
                 While k < xTra.Length
-                    If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No subcategory needed" Then ' If outflow does not exist (its probably inflow transaction), skip
+                    If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No subcategory" Then ' If outflow does not exist (its probably inflow transaction), skip
                         k += 1
                         l = True
                     Else
@@ -552,7 +553,7 @@ Public Class App
         chSpending.Series("chSpending").IsValueShownAsLabel = True                              ' Show value instead of name for chart items
     End Sub
     Private Sub populateTrend()                                                                 ' Add values to chart three in reports
-        Dim rowsTra() As String = File.ReadAllLines(".\BasedData\transactions.csv")
+        Dim rowsTra() As String = File.ReadAllLines(roaming + "\BasedBudgeting\transactions.csv")
         Dim traVal() As String
         Dim strCat As String = ""
         Dim strDate As String = ""
@@ -570,7 +571,7 @@ Public Class App
             Dim traDate As String = Convert.ToDateTime(traVal(1))
             Dim traMonth = CDate(traVal(1)).ToString("MMM yyyy")                                ' Convert to Month Year
             If (traDate >= preYear) Then                                                        ' Check if date is not older than 1 year
-                If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No subcategory needed" Then ' Transactions are sometimes "", in this case, change to 0
+                If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No subcategory" Then ' Transactions are sometimes "", in this case, change to 0
                 Else
                     If dtTrend.Rows.Count = 0 Then                                              ' First transaction loop
                         dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                        ' Add row to DataTable in order "outflow/date/category"
@@ -651,7 +652,7 @@ Public Class App
         SaveTransaction()
     End Sub
     Private Sub SaveBudget()
-        Dim writer As New StreamWriter(".\BasedData\budget.csv")
+        Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\budget.csv"))
         For i As Integer = 0 To dgvBudget.Rows.Count - 1 Step +1                                ' Loop through all rows
             For j As Integer = 0 To dgvBudget.Columns.Count - 1 Step +1                         ' Loop through all columns within the row
                 If j = dgvBudget.Columns.Count - 1 Then                                         ' Print values with ";", except last column
@@ -665,7 +666,7 @@ Public Class App
         writer.Close()
     End Sub
     Private Sub SaveAccounts()
-        Dim writer As New StreamWriter(".\BasedData\accounts.csv")
+        Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\accounts.csv"))
         For i As Integer = 0 To dgvAccounts.Rows.Count - 1 Step +1                              ' Loop through all rows
             For j As Integer = 0 To dgvAccounts.Columns.Count - 1 Step +1                       ' Loop through all columns within the row
                 If j = dgvAccounts.Columns.Count - 1 Then                                       ' Print values with ";", except last column
@@ -679,7 +680,7 @@ Public Class App
         writer.Close()
     End Sub
     Private Sub SaveTransaction()
-        Dim writer As New StreamWriter(".\BasedData\transactions.csv")
+        Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\transactions.csv"))
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1 Step +1                          ' Loop through all rows
             For j As Integer = 0 To dgvTransactions.Columns.Count - 1 Step +1                   ' Loop through all columns within the row
                 If j = dgvTransactions.Columns.Count - 1 Then                                   ' Print values with ";", except last column
@@ -692,18 +693,7 @@ Public Class App
         Next i
         writer.Close()
     End Sub
-    Private Sub checkVariables_Tick(sender As Object, e As EventArgs) Handles checkVariables.Tick   ' Ticker every 0.5 second
-        If dgvTransactions.Rows.Count = 0 Then                                                  ' Check if there are transactions to show reports
-            btnReports.Visible = False
-        Else
-            btnReports.Visible = True
-        End If
-        If dgvAccounts.Rows.Count = 0 Then                                                      ' Check if there are any accounts to show transactions menu
-            btnAccounts.Visible = False
-        Else
-            btnAccounts.Visible = True
-        End If
-
+    Private Sub checkCombobox()
         If cbCategory.Text = "" Then                                                            ' Populate combobox with correct items (category)
             cbCategory.Items.Clear()
             cbCategory.Items.Add("To Be Budgeted")
@@ -759,6 +749,18 @@ Public Class App
             For i As Integer = 0 To dgvAccounts.Rows.Count - 1                                  ' Add correct info to combobox account/payee
                 cbPayeeFilter.Items.Add(dgvAccounts.Rows(i).Cells(0).Value.ToString)
             Next
+        End If
+    End Sub
+    Private Sub checkVariables_Tick(sender As Object, e As EventArgs) Handles checkVariables.Tick   ' Ticker every 0.5 second
+        If dgvTransactions.Rows.Count = 0 Then                                                  ' Check if there are transactions to show reports
+            btnReports.Visible = False
+        Else
+            btnReports.Visible = True
+        End If
+        If dgvAccounts.Rows.Count = 0 Then                                                      ' Check if there are any accounts to show transactions menu
+            btnAccounts.Visible = False
+        Else
+            btnAccounts.Visible = True
         End If
     End Sub
     Private Sub updateLabels_Tick(sender As Object, e As EventArgs) Handles updateLabels.Tick
@@ -829,7 +831,7 @@ Public Class App
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Average Spending each month
             traDate = dgvTransactions.Rows(i).Cells(1).Value
             If preYear <= traDate Then
-                If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Then
+                If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Or dgvTransactions.Rows(i).Cells(3).Value.ToString <> "Transfer" Then
                 Else
                     totValue += dgvTransactions.Rows(i).Cells(6).Value
                 End If
@@ -892,6 +894,78 @@ Public Class App
             End If
         Next
     End Sub
+    Private Sub cbAccountFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbAccountFilter.TextChanged
+        For Each row As DataGridViewRow In dgvTransactions.Rows
+            If filtering = False Then
+                row.Visible = True
+                filtering = True
+                dtpDateFilter.Enabled = False
+            End If
+            If row.Cells(0).Value.ToString <> cbAccountFilter.Text Then
+                row.Visible = False
+            End If
+        Next
+    End Sub
+    Private Sub dtpDateFilter_ValueChanged(sender As Object, e As EventArgs) Handles dtpDateFilter.ValueChanged
+        Dim conDateFilter As String
+        Dim conDate As String
+        For Each row As DataGridViewRow In dgvTransactions.Rows
+            row.Visible = True
+            filtering = true
+            conDate = CDate(row.Cells(1).Value).ToString("MM yyyy")
+            conDateFilter = CDate(dtpDateFilter.Text).ToString("MM yyyy")
+            If conDateFilter <> conDate Then
+                row.Visible = False
+            End If
+        Next
+    End Sub
+    Private Sub cbPayeeFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayeeFilter.TextChanged
+        For Each row As DataGridViewRow In dgvTransactions.Rows
+            If filtering = False Then
+                row.Visible = True
+                filtering = True
+                dtpDateFilter.Enabled = False
+            End If
+            If row.Cells(2).Value.ToString <> cbPayeeFilter.Text Then
+                row.Visible = False
+            End If
+        Next
+    End Sub
+    Private Sub cbCategoryFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbCategoryFilter.TextChanged
+        For Each row As DataGridViewRow In dgvTransactions.Rows
+            If filtering = False Then
+                row.Visible = True
+                filtering = True
+                dtpDateFilter.Enabled = False
+            End If
+            If row.Cells(3).Value.ToString <> cbCategoryFilter.Text Then
+                row.Visible = False
+            End If
+        Next
+
+    End Sub
+    Private Sub cbSubcategoryFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSubcategoryFilter.TextChanged
+        For Each row As DataGridViewRow In dgvTransactions.Rows
+            If filtering = False Then
+                row.Visible = True
+                filtering = True
+                dtpDateFilter.Enabled = False
+            End If
+            If row.Cells(4).Value.ToString <> cbSubcategoryFilter.Text Then
+                row.Visible = False
+            End If
+        Next
+    End Sub
+    Private Sub btnResetTransaction_Click(sender As Object, e As EventArgs) Handles btnResetTransaction.Click
+        cbAccountFilter.Text = ""
+        dtpDateFilter.Text = ""
+        cbPayeeFilter.Text = ""
+        cbCategoryFilter.Text = ""
+        cbSubcategoryFilter.Text = ""
+        filtering = False
+        dtpDateFilter.Enabled = True
+        For Each row As DataGridViewRow In dgvTransactions.Rows
+            row.Visible = True
+        Next
+    End Sub
 End Class
-' TO DO
-' dgvTransaction filter (show all again just before close to save correctly)

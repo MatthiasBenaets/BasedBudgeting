@@ -37,3 +37,7 @@ C:\Users\matth\Documents\BasedBudgeting - Copy\BasedBudgeting\obj\Debug\BasedBud
 C:\Users\matth\Documents\BasedBudgeting - Copy\BasedBudgeting\obj\Debug\BasedBudgeting.exe
 C:\Users\matth\Documents\BasedBudgeting - Copy\BasedBudgeting\obj\Debug\BasedBudgeting.xml
 C:\Users\matth\Documents\BasedBudgeting - Copy\BasedBudgeting\obj\Debug\BasedBudgeting.pdb
+C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.exe.manifest
+C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.application
+C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.exe.manifest
+C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.application
