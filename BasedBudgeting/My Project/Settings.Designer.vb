@@ -53,6 +53,18 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("start")>  _
+        Public Property startDate() As String
+            Get
+                Return CType(Me("startDate"),String)
+            End Get
+            Set
+                Me("startDate") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

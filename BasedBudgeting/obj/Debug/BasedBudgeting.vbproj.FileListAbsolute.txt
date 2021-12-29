@@ -15,7 +15,6 @@ C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.exe
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.pdb
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.xml
-C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.vbproj.AssemblyReference.cache
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.vbproj.SuggestedBindingRedirects.cache
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.App.resources
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.Resources.resources
@@ -41,3 +40,4 @@ C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.application
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.exe.manifest
 C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.application
+C:\Users\matth\Documents\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.vbproj.AssemblyReference.cache
