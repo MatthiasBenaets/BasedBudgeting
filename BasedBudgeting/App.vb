@@ -91,7 +91,11 @@ Public Class App
             Next i
         End If
 
-        Dim checkedDate As Date
+        Dim checkedDate As Date                                                                 ' Skip on first load, will give checkedDate correct date value
+        If My.Settings.startDate <> "start" Then
+            checkedDate = My.Settings.startDate                                                 ' Will further on be use to give correct document name
+        End If
+
         If My.Settings.startDate = "start" Then                                                 ' If no global date variable exist | used t reset dgvBudget for new month
             My.Settings.startDate = DateTime.Now.ToString("MMM yyyy")
             checkedDate = CType(My.Settings.startDate, DateTime)
@@ -131,8 +135,8 @@ Public Class App
         Next
     End Sub
     Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
-        dgvDateChange(DateTime.Now.ToString("MMM yyyy").ToUpper())                              ' Reset dgvBudget back to present so it is saved correctly
         SaveData()
+        dgvDateChange(DateTime.Now.ToString("MMM yyyy").ToUpper())                              ' Reset dgvBudget back to present so it is saved correctly
     End Sub
     Private Sub BtnBudget_Click(sender As Object, e As EventArgs) Handles btnBudget.Click       ' When Budget menu is selected
         btnBudget.BackColor = Color.FromArgb(0, 90, 120)                                        ' Change Button Colors depending on selected menu
@@ -1112,3 +1116,6 @@ Public Class App
         Next
     End Sub
 End Class
+
+' TO DO
+'   FIX DGVDATECHANGE IF DATA THE SAME ACCESS BUDGET
