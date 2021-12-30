@@ -1,0 +1,18 @@
+Category 1;160,00;-50,00;110,00;C
+Subcategory 1;50,00;0;50,00;S
+Subcategory 2;50,00;-50,00;0,00;S
+Subcategory 3;60,00;0;60,00;S
+Subcategory test;0;0;0;S
+;;;;S
+Category 2;90,00;-10,00;80,00;C
+Subcategory 4;10,00;-5,00;5,00;S
+Subcategory 5;80,00;-5,00;75,00;S
+Subcategory 9;0;0;0;S
+;;;;S
+Category 3;200,00;-1,00;199,00;C
+Subcategory 6;200,00;-1,00;199,00;S
+;;;;S
+Category 4;80,00;-5,00;75,00;C
+Subcategory 7;80,00;0;80,00;S
+Subcategory 8;0;-5,00;-5,00;S
+;;;;S

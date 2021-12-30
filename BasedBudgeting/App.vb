@@ -131,6 +131,7 @@ Public Class App
         Next
     End Sub
     Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
+        dgvDateChange(DateTime.Now.ToString("MMM yyyy").ToUpper())                              ' Reset dgvBudget back to present so it is saved correctly
         SaveData()
         My.Settings.Reset()
     End Sub
@@ -144,12 +145,10 @@ Public Class App
         pnlReportsCharts.Visible = False
         pnlAccountsTransaction.Visible = False
         pnlAccountsFilter.Visible = False
-        dgvBudget.Visible = True
         dgvTransactions.Visible = False
         pnlToBeBudgeted.Visible = True
         pnlWorkingBalance.Visible = False
         pnlReports.Visible = False
-        dgvBudget.Visible = False                                                               ' For visual bug fix where rows of dvgTransaction stays until clicked
         dgvBudget.Visible = True
         dgvBudget.Refresh()
     End Sub
@@ -788,13 +787,26 @@ Public Class App
     Private Sub checkVariables_Tick(sender As Object, e As EventArgs) Handles checkVariables.Tick   ' Ticker every 0.5 second
         If dgvTransactions.Rows.Count = 0 Then                                                  ' Check if there are transactions to show reports
             btnReports.Visible = False
+        ElseIf lblDate.Text <> DateTime.Now.ToString("MMM yyyy").ToUpper() Then                 ' If lbldate is different from current date, hide buttons
+            btnReports.Visible = False
         Else
             btnReports.Visible = True
         End If
         If dgvAccounts.Rows.Count = 0 Then                                                      ' Check if there are any accounts to show transactions menu
             btnAccounts.Visible = False
+        ElseIf lblDate.Text <> DateTime.Now.ToString("MMM yyyy").ToUpper() Then
+            btnAccounts.Visible = False
         Else
             btnAccounts.Visible = True
+        End If
+        If lblDate.Text <> DateTime.Now.ToString("MMM yyyy").ToUpper() Then                     ' If lblDate Is different from current date ...
+            lblToBeBudgeted.Visible = False
+            lblToBeBudgetedValue.Visible = False
+            pbArrow.Visible = False
+        Else
+            lblToBeBudgeted.Visible = True
+            lblToBeBudgetedValue.Visible = True
+            pbArrow.Visible = True
         End If
     End Sub
     Private Sub updateLabels_Tick(sender As Object, e As EventArgs) Handles updateLabels.Tick
@@ -826,16 +838,21 @@ Public Class App
                 End If
             End If
         Next
-        totValue += CType(lblToBeBudgetedValue.Text, Decimal)
+        If lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper() Then
+            totValue += CType(lblToBeBudgetedValue.Text, Decimal)
+        End If
         lblTotalAvailableValue.Text = totValue.ToString("C")
         lblWorkingBalanceValue.Text = totValue.ToString("C")
 
         totValue = 0
         Dim traDate As DateTime
-        Dim preMonth As DateTime = New DateTime(Now.Year, Now.Month, 1)                         ' Only transaction from beginnen of current month
+        Dim dt As Date
+        Date.TryParse(lblDate.Text, dt)                                                         ' Get date
+        Dim premonth As New Date(dt.Year, dt.Month, 1)                                          ' First day of month and last day of month
+        Dim endMonth As New Date(dt.Year, dt.Month, Date.DaysInMonth(dt.Year, dt.Month))
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Total Inflow label
             traDate = dgvTransactions.Rows(i).Cells(1).Value
-            If preMonth <= traDate Then                                                         ' If transaction is lower than preMonth
+            If premonth <= traDate And endMonth >= traDate Then                                 ' If transaction is lower than preMonth
                 If dgvTransactions.Rows(i).Cells(7).Value.ToString = "" Or dgvTransactions.Rows(i).Cells(3).Value.ToString = "Transfer" Then    ' Ignore null and transfers
                 Else
                     totValue += dgvTransactions.Rows(i).Cells(7).Value
@@ -849,7 +866,7 @@ Public Class App
         totValue = 0
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Total Spending for current month
             traDate = dgvTransactions.Rows(i).Cells(1).Value
-            If preMonth <= traDate Then
+            If premonth <= traDate And endMonth >= traDate Then
                 If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Or dgvTransactions.Rows(i).Cells(3).Value.ToString = "Transfer" Then    ' Ignore null and transfers
                 Else
                     totValue += dgvTransactions.Rows(i).Cells(6).Value
@@ -886,6 +903,24 @@ Public Class App
             End If
         Next
         lblToBeBudgetedValue.Text = totValue.ToString("C")
+
+        Dim conDate As DateTime = CDate(lblDate.Text)                                           ' Check if document exist
+        Dim downDate As String = conDate.AddMonths(-1).ToString("MMM yyyy").ToUpper()
+        Dim upDate As String = conDate.AddMonths(+1).ToString("MMM yyyy").ToUpper()
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + downDate + ".csv") Then
+            pbPrevMonth.Visible = True
+        Else
+            pbPrevMonth.Visible = False
+        End If
+        If lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper() Then
+            pbNextMonth.Visible = False
+        ElseIf upDate = DateTime.Now.ToString("MMM yyyy").ToUpper() Then
+            pbNextMonth.Visible = True
+        ElseIf My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + upDate + ".csv") Then
+            pbNextMonth.Visible = True
+        Else
+            pbNextMonth.Visible = False
+        End If
     End Sub
     Private Sub redDetector_Tick(sender As Object, e As EventArgs) Handles redDetector.Tick     ' Check every second if TBB is pos or neg. Change color if needed
         If CType(lblToBeBudgetedValue.Text, Decimal) >= 0 And lblToBeBudgetedValue.ForeColor = Color.FromArgb(207, 82, 76) Then    ' Update color of to be budgeted label
@@ -1004,15 +1039,65 @@ Public Class App
     End Sub
 
     Private Sub pbPrevMonth_Click(sender As Object, e As EventArgs) Handles pbPrevMonth.Click
-
+        lblDate.Text = CDate(lblDate.Text).AddMonths(-1).ToString("MMM yyyy").ToUpper()
+        dgvDateChange(lblDate.Text)
     End Sub
 
     Private Sub pbNextMonth_Click(sender As Object, e As EventArgs) Handles pbNextMonth.Click
+        lblDate.Text = CDate(lblDate.Text).AddMonths(+1).ToString("MMM yyyy").ToUpper()
+        dgvDateChange(lblDate.Text)
+    End Sub
 
+    Private Sub dgvDateChange(dateMonth As String)                                              ' Used to change datagridview if other month is selected
+        dgvBudget.Rows.Clear()
+        Dim rows() As String
+        Dim values() As String
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + dateMonth + ".csv") Then  ' If saved budget file exists
+            rows = File.ReadAllLines(roaming + "\BasedBudgeting\BasedData\" + dateMonth + ".csv")
+            For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
+                values = rows(i).ToString().Split(";")                                          ' Split values at ";"
+                Dim row(values.Length - 1) As String
+
+                For j As Integer = 0 To values.Length - 1 Step +1
+                    row(j) = values(j).Trim()
+                Next j
+                dgvBudget.Rows.Add(row)                                                         ' Add row to datagridview
+            Next i
+        ElseIf dateMonth = DateTime.Now.ToString("MMM yyyy").ToUpper Then
+            rows = File.ReadAllLines(roaming + "\BasedBudgeting\budget.csv")
+            For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
+                values = rows(i).ToString().Split(";")                                          ' Split values at ";"
+                Dim row(values.Length - 1) As String
+
+                For j As Integer = 0 To values.Length - 1 Step +1
+                    row(j) = values(j).Trim()
+                Next j
+                dgvBudget.Rows.Add(row)                                                         ' Add row to datagridview
+            Next i
+        End If
+
+        For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Give category row a background color
+            If dgvBudget.Rows(i).Cells(4).Value = "C" Then
+                dgvBudget.Rows(i).DefaultCellStyle.BackColor = Color.FromArgb(230, 245, 250)
+            End If
+            For j As Integer = 1 To 3                                                           ' If there are values imported, convert from string to integer to get correct format
+                If dgvBudget.Rows(i).Cells(0).Value = "" Then                                   ' Do nothing if category is not filled
+                ElseIf dgvBudget.Rows(i).Cells(j).Value = "" Then                               ' If no value, print 0
+                    dgvBudget.Rows(i).Cells(j).Value = 0
+                Else                                                                            ' Else convert stored value to double and 
+                    Dim toInt As String = dgvBudget.Rows(i).Cells(j).Value
+                    dgvBudget.Rows(i).Cells(j).Value = CType(toInt, Decimal)
+                End If
+            Next
+        Next
     End Sub
 End Class
 ' TO DO
 ' MONTHLY RESET
-'   LOAD DATA DEPENDING ON DATE LABEL
-'   arrows load data depending on name, if date is current date - load current budget and hide labels
-'   FIX VISUAL BUG LOAD DIFFERENT CHARTS/ROW BUG
+'   HIDE Navigation buttons if lbldate is not datetimenow
+'   UPDATE labels to date
+'
+'   DONT ALLOW SAME CATEGORY NAME OR SUBCATEGORY NAME
+'
+'   UPDATE AVAILABLE WHEN ACTIVITY IS EDITED
+'   UPDATE TO DOUBLE WHEN E.cellindex is edited

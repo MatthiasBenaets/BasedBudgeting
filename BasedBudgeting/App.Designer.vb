@@ -23,36 +23,36 @@ Partial Class App
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle26 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle27 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle28 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ChartArea4 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend4 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim DataGridViewCellStyle29 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle33 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle30 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ChartArea5 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend5 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series5 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea6 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend6 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series6 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle40 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle41 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle42 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle36 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle37 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle38 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle39 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(App))
         Me.pnlMenu = New System.Windows.Forms.Panel()
         Me.lblTotalBalance = New System.Windows.Forms.Label()
@@ -68,9 +68,12 @@ Partial Class App
         Me.chNet = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.pnlNavigation = New System.Windows.Forms.Panel()
         Me.pnlToBeBudgeted = New System.Windows.Forms.Panel()
+        Me.pbNextMonth = New System.Windows.Forms.PictureBox()
+        Me.pbPrevMonth = New System.Windows.Forms.PictureBox()
         Me.lblDate = New System.Windows.Forms.Label()
         Me.lblToBeBudgetedValue = New System.Windows.Forms.Label()
         Me.lblToBeBudgeted = New System.Windows.Forms.Label()
+        Me.pbArrow = New System.Windows.Forms.PictureBox()
         Me.pnlBudgetStatistics = New System.Windows.Forms.Panel()
         Me.lblTotalActivity = New System.Windows.Forms.Label()
         Me.lblTotalAvailable = New System.Windows.Forms.Label()
@@ -140,18 +143,18 @@ Partial Class App
         Me.lblWorkingBalanceValue = New System.Windows.Forms.Label()
         Me.lblWorkingBalance = New System.Windows.Forms.Label()
         Me.lblAllAccounts = New System.Windows.Forms.Label()
+        Me.pbArrow2 = New System.Windows.Forms.PictureBox()
         Me.pnlReports = New System.Windows.Forms.Panel()
         Me.lblReports = New System.Windows.Forms.Label()
         Me.redDetector = New System.Windows.Forms.Timer(Me.components)
-        Me.pbNextMonth = New System.Windows.Forms.PictureBox()
-        Me.pbPrevMonth = New System.Windows.Forms.PictureBox()
-        Me.pbArrow = New System.Windows.Forms.PictureBox()
-        Me.pbArrow2 = New System.Windows.Forms.PictureBox()
         Me.pnlMenu.SuspendLayout()
         CType(Me.dgvAccounts, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlNavigation.SuspendLayout()
         Me.pnlToBeBudgeted.SuspendLayout()
+        CType(Me.pbNextMonth, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbPrevMonth, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetStatistics.SuspendLayout()
         Me.pnlReportsStatistics.SuspendLayout()
         Me.pnlAccountsTransaction.SuspendLayout()
@@ -163,11 +166,8 @@ Partial Class App
         CType(Me.dgvBudget, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetControl.SuspendLayout()
         Me.pnlWorkingBalance.SuspendLayout()
-        Me.pnlReports.SuspendLayout()
-        CType(Me.pbNextMonth, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbPrevMonth, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlReports.SuspendLayout()
         Me.SuspendLayout()
         '
         'pnlMenu
@@ -217,73 +217,73 @@ Partial Class App
         Me.dgvAccounts.AllowUserToAddRows = False
         Me.dgvAccounts.AllowUserToResizeColumns = False
         Me.dgvAccounts.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White
-        Me.dgvAccounts.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle22.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle22.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle22.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle22.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle22.SelectionForeColor = System.Drawing.Color.White
+        Me.dgvAccounts.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle22
         Me.dgvAccounts.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvAccounts.BackgroundColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
         Me.dgvAccounts.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.dgvAccounts.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvAccounts.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle23.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle23.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle23.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle23.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle23.SelectionForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvAccounts.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle23
         Me.dgvAccounts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvAccounts.ColumnHeadersVisible = False
         Me.dgvAccounts.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column9, Me.Column10})
         Me.dgvAccounts.Cursor = System.Windows.Forms.Cursors.IBeam
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvAccounts.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle26.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle26.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle26.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle26.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle26.SelectionForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle26.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvAccounts.DefaultCellStyle = DataGridViewCellStyle26
         Me.dgvAccounts.GridColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
         Me.dgvAccounts.Location = New System.Drawing.Point(4, 252)
         Me.dgvAccounts.Name = "dgvAccounts"
         Me.dgvAccounts.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvAccounts.RowHeadersDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle27.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle27.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle27.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle27.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle27.SelectionForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle27.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvAccounts.RowHeadersDefaultCellStyle = DataGridViewCellStyle27
         Me.dgvAccounts.RowHeadersVisible = False
         Me.dgvAccounts.RowHeadersWidth = 4
-        DataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.White
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.White
-        Me.dgvAccounts.RowsDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle28.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle28.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle28.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle28.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
+        DataGridViewCellStyle28.SelectionForeColor = System.Drawing.Color.White
+        Me.dgvAccounts.RowsDefaultCellStyle = DataGridViewCellStyle28
         Me.dgvAccounts.Size = New System.Drawing.Size(204, 353)
         Me.dgvAccounts.TabIndex = 5
         '
         'Column9
         '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Column9.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle24.NullValue = Nothing
+        Me.Column9.DefaultCellStyle = DataGridViewCellStyle24
         Me.Column9.HeaderText = "Account"
         Me.Column9.Name = "Column9"
         '
         'Column10
         '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle4.Format = "C2"
-        DataGridViewCellStyle4.NullValue = Nothing
-        Me.Column10.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle25.Format = "C2"
+        DataGridViewCellStyle25.NullValue = Nothing
+        Me.Column10.DefaultCellStyle = DataGridViewCellStyle25
         Me.Column10.HeaderText = "Balance"
         Me.Column10.Name = "Column10"
         '
@@ -369,19 +369,19 @@ Partial Class App
         '
         'chNet
         '
-        ChartArea1.Name = "ChartArea1"
-        Me.chNet.ChartAreas.Add(ChartArea1)
-        Legend1.Name = "Legend1"
-        Me.chNet.Legends.Add(Legend1)
+        ChartArea4.Name = "ChartArea1"
+        Me.chNet.ChartAreas.Add(ChartArea4)
+        Legend4.Name = "Legend1"
+        Me.chNet.Legends.Add(Legend4)
         Me.chNet.Location = New System.Drawing.Point(0, 0)
         Me.chNet.Margin = New System.Windows.Forms.Padding(0)
         Me.chNet.Name = "chNet"
         Me.chNet.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
-        Series1.ChartArea = "ChartArea1"
-        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie
-        Series1.Legend = "Legend1"
-        Series1.Name = "Series1"
-        Me.chNet.Series.Add(Series1)
+        Series4.ChartArea = "ChartArea1"
+        Series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie
+        Series4.Legend = "Legend1"
+        Series4.Name = "Series1"
+        Me.chNet.Series.Add(Series4)
         Me.chNet.Size = New System.Drawing.Size(653, 300)
         Me.chNet.TabIndex = 10
         Me.chNet.Text = "chNet"
@@ -409,16 +409,41 @@ Partial Class App
         Me.pnlToBeBudgeted.Size = New System.Drawing.Size(863, 82)
         Me.pnlToBeBudgeted.TabIndex = 4
         '
+        'pbNextMonth
+        '
+        Me.pbNextMonth.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbNextMonth.Image = Global.BasedBudgeting.My.Resources.Resources.nextmonth
+        Me.pbNextMonth.Location = New System.Drawing.Point(69, 21)
+        Me.pbNextMonth.Name = "pbNextMonth"
+        Me.pbNextMonth.Size = New System.Drawing.Size(40, 40)
+        Me.pbNextMonth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbNextMonth.TabIndex = 5
+        Me.pbNextMonth.TabStop = False
+        Me.pbNextMonth.Visible = False
+        '
+        'pbPrevMonth
+        '
+        Me.pbPrevMonth.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbPrevMonth.Image = Global.BasedBudgeting.My.Resources.Resources.prevmonth
+        Me.pbPrevMonth.Location = New System.Drawing.Point(293, 21)
+        Me.pbPrevMonth.Name = "pbPrevMonth"
+        Me.pbPrevMonth.Size = New System.Drawing.Size(40, 40)
+        Me.pbPrevMonth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbPrevMonth.TabIndex = 4
+        Me.pbPrevMonth.TabStop = False
+        Me.pbPrevMonth.Visible = False
+        '
         'lblDate
         '
         Me.lblDate.AutoSize = True
         Me.lblDate.Font = New System.Drawing.Font("Calibri", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblDate.ForeColor = System.Drawing.Color.White
-        Me.lblDate.Location = New System.Drawing.Point(145, 17)
+        Me.lblDate.Location = New System.Drawing.Point(120, 17)
         Me.lblDate.Name = "lblDate"
         Me.lblDate.Size = New System.Drawing.Size(117, 45)
         Me.lblDate.TabIndex = 0
         Me.lblDate.Text = "[Date]"
+        Me.lblDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'lblToBeBudgetedValue
         '
@@ -442,6 +467,16 @@ Partial Class App
         Me.lblToBeBudgeted.Size = New System.Drawing.Size(113, 58)
         Me.lblToBeBudgeted.TabIndex = 2
         Me.lblToBeBudgeted.Text = "To Be Budgeted"
+        '
+        'pbArrow
+        '
+        Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
+        Me.pbArrow.Location = New System.Drawing.Point(472, 2)
+        Me.pbArrow.Name = "pbArrow"
+        Me.pbArrow.Size = New System.Drawing.Size(198, 75)
+        Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbArrow.TabIndex = 1
+        Me.pbArrow.TabStop = False
         '
         'pnlBudgetStatistics
         '
@@ -940,24 +975,24 @@ Partial Class App
         Me.dgvTransactions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvTransactions.BackgroundColor = System.Drawing.Color.White
         Me.dgvTransactions.BorderStyle = System.Windows.Forms.BorderStyle.None
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Bold)
-        DataGridViewCellStyle8.ForeColor = System.Drawing.Color.Gray
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Gray
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvTransactions.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle29.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle29.Font = New System.Drawing.Font("Calibri", 8.0!, System.Drawing.FontStyle.Bold)
+        DataGridViewCellStyle29.ForeColor = System.Drawing.Color.Gray
+        DataGridViewCellStyle29.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
+        DataGridViewCellStyle29.SelectionForeColor = System.Drawing.Color.Gray
+        DataGridViewCellStyle29.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvTransactions.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle29
         Me.dgvTransactions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvTransactions.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2, Me.Column3, Me.Column4, Me.Column5, Me.Column6, Me.Column7, Me.Column8})
-        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Calibri", 9.0!)
-        DataGridViewCellStyle12.ForeColor = System.Drawing.Color.Gray
-        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
-        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.Color.Gray
-        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvTransactions.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle33.Font = New System.Drawing.Font("Calibri", 9.0!)
+        DataGridViewCellStyle33.ForeColor = System.Drawing.Color.Gray
+        DataGridViewCellStyle33.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
+        DataGridViewCellStyle33.SelectionForeColor = System.Drawing.Color.Gray
+        DataGridViewCellStyle33.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvTransactions.DefaultCellStyle = DataGridViewCellStyle33
         Me.dgvTransactions.GridColor = System.Drawing.Color.LightGray
         Me.dgvTransactions.Location = New System.Drawing.Point(213, 104)
         Me.dgvTransactions.Margin = New System.Windows.Forms.Padding(0)
@@ -976,9 +1011,9 @@ Partial Class App
         '
         'Column2
         '
-        DataGridViewCellStyle9.Format = "d"
-        DataGridViewCellStyle9.NullValue = Nothing
-        Me.Column2.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle30.Format = "d"
+        DataGridViewCellStyle30.NullValue = Nothing
+        Me.Column2.DefaultCellStyle = DataGridViewCellStyle30
         Me.Column2.HeaderText = "DATE"
         Me.Column2.Name = "Column2"
         Me.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
@@ -1009,16 +1044,16 @@ Partial Class App
         '
         'Column7
         '
-        DataGridViewCellStyle10.Format = "C2"
-        Me.Column7.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle31.Format = "C2"
+        Me.Column7.DefaultCellStyle = DataGridViewCellStyle31
         Me.Column7.HeaderText = "OUTFLOW"
         Me.Column7.Name = "Column7"
         Me.Column7.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
         '
         'Column8
         '
-        DataGridViewCellStyle11.Format = "C2"
-        Me.Column8.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle32.Format = "C2"
+        Me.Column8.DefaultCellStyle = DataGridViewCellStyle32
         Me.Column8.HeaderText = "INFLOW"
         Me.Column8.Name = "Column8"
         Me.Column8.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
@@ -1105,38 +1140,38 @@ Partial Class App
         '
         'chTrend
         '
-        ChartArea2.Name = "ChartArea1"
-        Me.chTrend.ChartAreas.Add(ChartArea2)
-        Legend2.Name = "Legend1"
-        Me.chTrend.Legends.Add(Legend2)
+        ChartArea5.Name = "ChartArea1"
+        Me.chTrend.ChartAreas.Add(ChartArea5)
+        Legend5.Name = "Legend1"
+        Me.chTrend.Legends.Add(Legend5)
         Me.chTrend.Location = New System.Drawing.Point(0, 600)
         Me.chTrend.Margin = New System.Windows.Forms.Padding(0)
         Me.chTrend.Name = "chTrend"
         Me.chTrend.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
-        Series2.ChartArea = "ChartArea1"
-        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn
-        Series2.Legend = "Legend1"
-        Series2.Name = "Series1"
-        Me.chTrend.Series.Add(Series2)
+        Series5.ChartArea = "ChartArea1"
+        Series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn
+        Series5.Legend = "Legend1"
+        Series5.Name = "Series1"
+        Me.chTrend.Series.Add(Series5)
         Me.chTrend.Size = New System.Drawing.Size(653, 300)
         Me.chTrend.TabIndex = 12
         Me.chTrend.Text = "chTrend"
         '
         'chSpending
         '
-        ChartArea3.Name = "ChartArea1"
-        Me.chSpending.ChartAreas.Add(ChartArea3)
-        Legend3.Name = "Legend1"
-        Me.chSpending.Legends.Add(Legend3)
+        ChartArea6.Name = "ChartArea1"
+        Me.chSpending.ChartAreas.Add(ChartArea6)
+        Legend6.Name = "Legend1"
+        Me.chSpending.Legends.Add(Legend6)
         Me.chSpending.Location = New System.Drawing.Point(0, 300)
         Me.chSpending.Margin = New System.Windows.Forms.Padding(0)
         Me.chSpending.Name = "chSpending"
         Me.chSpending.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
-        Series3.ChartArea = "ChartArea1"
-        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut
-        Series3.Legend = "Legend1"
-        Series3.Name = "Series1"
-        Me.chSpending.Series.Add(Series3)
+        Series6.ChartArea = "ChartArea1"
+        Series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut
+        Series6.Legend = "Legend1"
+        Series6.Name = "Series1"
+        Me.chSpending.Series.Add(Series6)
         Me.chSpending.Size = New System.Drawing.Size(653, 300)
         Me.chSpending.TabIndex = 11
         Me.chSpending.Text = "chSpending"
@@ -1147,41 +1182,41 @@ Partial Class App
         Me.dgvBudget.AllowUserToResizeColumns = False
         Me.dgvBudget.BackgroundColor = System.Drawing.Color.White
         Me.dgvBudget.BorderStyle = System.Windows.Forms.BorderStyle.None
-        DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle13.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Bold)
-        DataGridViewCellStyle13.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
-        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvBudget.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle34.Font = New System.Drawing.Font("Calibri", 9.0!, System.Drawing.FontStyle.Bold)
+        DataGridViewCellStyle34.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        DataGridViewCellStyle34.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
+        DataGridViewCellStyle34.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        DataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvBudget.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle34
         Me.dgvBudget.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvBudget.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column11, Me.Column12, Me.Column13, Me.Column14, Me.Column15})
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Calibri", 9.0!)
-        DataGridViewCellStyle19.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
-        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dgvBudget.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle40.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle40.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle40.Font = New System.Drawing.Font("Calibri", 9.0!)
+        DataGridViewCellStyle40.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        DataGridViewCellStyle40.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
+        DataGridViewCellStyle40.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        DataGridViewCellStyle40.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.dgvBudget.DefaultCellStyle = DataGridViewCellStyle40
         Me.dgvBudget.GridColor = System.Drawing.Color.LightGray
         Me.dgvBudget.Location = New System.Drawing.Point(213, 104)
         Me.dgvBudget.Margin = New System.Windows.Forms.Padding(0)
         Me.dgvBudget.Name = "dgvBudget"
-        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle20.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle20.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle20.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        DataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
-        DataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        DataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dgvBudget.RowHeadersDefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle41.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle41.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle41.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle41.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        DataGridViewCellStyle41.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
+        DataGridViewCellStyle41.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        DataGridViewCellStyle41.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvBudget.RowHeadersDefaultCellStyle = DataGridViewCellStyle41
         Me.dgvBudget.RowHeadersWidth = 8
-        DataGridViewCellStyle21.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle21.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        DataGridViewCellStyle21.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
-        DataGridViewCellStyle21.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        Me.dgvBudget.RowsDefaultCellStyle = DataGridViewCellStyle21
+        DataGridViewCellStyle42.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle42.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        DataGridViewCellStyle42.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
+        DataGridViewCellStyle42.SelectionForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        Me.dgvBudget.RowsDefaultCellStyle = DataGridViewCellStyle42
         Me.dgvBudget.RowTemplate.DefaultCellStyle.BackColor = System.Drawing.Color.White
         Me.dgvBudget.RowTemplate.DefaultCellStyle.ForeColor = System.Drawing.Color.Black
         Me.dgvBudget.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.Transparent
@@ -1193,9 +1228,9 @@ Partial Class App
         'Column11
         '
         Me.Column11.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
-        Me.Column11.DefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle35.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle35.Padding = New System.Windows.Forms.Padding(10, 0, 0, 0)
+        Me.Column11.DefaultCellStyle = DataGridViewCellStyle35
         Me.Column11.FillWeight = 300.0!
         Me.Column11.HeaderText = "CATEGORY"
         Me.Column11.Name = "Column11"
@@ -1203,40 +1238,40 @@ Partial Class App
         'Column12
         '
         Me.Column12.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle15.Format = "C2"
-        DataGridViewCellStyle15.NullValue = "0,00"
-        DataGridViewCellStyle15.Padding = New System.Windows.Forms.Padding(0, 0, 10, 0)
-        Me.Column12.DefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle36.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle36.Format = "C2"
+        DataGridViewCellStyle36.NullValue = "0,00"
+        DataGridViewCellStyle36.Padding = New System.Windows.Forms.Padding(0, 0, 10, 0)
+        Me.Column12.DefaultCellStyle = DataGridViewCellStyle36
         Me.Column12.HeaderText = "BUDGETED"
         Me.Column12.Name = "Column12"
         '
         'Column13
         '
         Me.Column13.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle16.Format = "C2"
-        DataGridViewCellStyle16.NullValue = "0,00"
-        DataGridViewCellStyle16.Padding = New System.Windows.Forms.Padding(0, 0, 10, 0)
-        Me.Column13.DefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle37.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle37.Format = "C2"
+        DataGridViewCellStyle37.NullValue = "0,00"
+        DataGridViewCellStyle37.Padding = New System.Windows.Forms.Padding(0, 0, 10, 0)
+        Me.Column13.DefaultCellStyle = DataGridViewCellStyle37
         Me.Column13.HeaderText = "ACTIVITY"
         Me.Column13.Name = "Column13"
         '
         'Column14
         '
         Me.Column14.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle17.Format = "C2"
-        DataGridViewCellStyle17.NullValue = "0,00"
-        DataGridViewCellStyle17.Padding = New System.Windows.Forms.Padding(0, 0, 10, 0)
-        Me.Column14.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle38.Format = "C2"
+        DataGridViewCellStyle38.NullValue = "0,00"
+        DataGridViewCellStyle38.Padding = New System.Windows.Forms.Padding(0, 0, 10, 0)
+        Me.Column14.DefaultCellStyle = DataGridViewCellStyle38
         Me.Column14.HeaderText = "AVAILABLE"
         Me.Column14.Name = "Column14"
         '
         'Column15
         '
-        DataGridViewCellStyle18.NullValue = "S"
-        Me.Column15.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle39.NullValue = "S"
+        Me.Column15.DefaultCellStyle = DataGridViewCellStyle39
         Me.Column15.HeaderText = "Type"
         Me.Column15.Name = "Column15"
         Me.Column15.Visible = False
@@ -1267,7 +1302,7 @@ Partial Class App
         'checkVariables
         '
         Me.checkVariables.Enabled = True
-        Me.checkVariables.Interval = 2500
+        Me.checkVariables.Interval = 500
         '
         'updateLabels
         '
@@ -1323,6 +1358,16 @@ Partial Class App
         Me.lblAllAccounts.TabIndex = 1
         Me.lblAllAccounts.Text = "All Accounts"
         '
+        'pbArrow2
+        '
+        Me.pbArrow2.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
+        Me.pbArrow2.Location = New System.Drawing.Point(3, 14)
+        Me.pbArrow2.Name = "pbArrow2"
+        Me.pbArrow2.Size = New System.Drawing.Size(209, 52)
+        Me.pbArrow2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbArrow2.TabIndex = 0
+        Me.pbArrow2.TabStop = False
+        '
         'pnlReports
         '
         Me.pnlReports.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
@@ -1349,48 +1394,6 @@ Partial Class App
         '
         Me.redDetector.Enabled = True
         Me.redDetector.Interval = 500
-        '
-        'pbNextMonth
-        '
-        Me.pbNextMonth.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbNextMonth.Image = Global.BasedBudgeting.My.Resources.Resources.nextmonth
-        Me.pbNextMonth.Location = New System.Drawing.Point(69, 21)
-        Me.pbNextMonth.Name = "pbNextMonth"
-        Me.pbNextMonth.Size = New System.Drawing.Size(40, 40)
-        Me.pbNextMonth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbNextMonth.TabIndex = 5
-        Me.pbNextMonth.TabStop = False
-        '
-        'pbPrevMonth
-        '
-        Me.pbPrevMonth.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbPrevMonth.Image = Global.BasedBudgeting.My.Resources.Resources.prevmonth
-        Me.pbPrevMonth.Location = New System.Drawing.Point(293, 21)
-        Me.pbPrevMonth.Name = "pbPrevMonth"
-        Me.pbPrevMonth.Size = New System.Drawing.Size(40, 40)
-        Me.pbPrevMonth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbPrevMonth.TabIndex = 4
-        Me.pbPrevMonth.TabStop = False
-        '
-        'pbArrow
-        '
-        Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow.Location = New System.Drawing.Point(472, 2)
-        Me.pbArrow.Name = "pbArrow"
-        Me.pbArrow.Size = New System.Drawing.Size(198, 75)
-        Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbArrow.TabIndex = 1
-        Me.pbArrow.TabStop = False
-        '
-        'pbArrow2
-        '
-        Me.pbArrow2.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow2.Location = New System.Drawing.Point(3, 14)
-        Me.pbArrow2.Name = "pbArrow2"
-        Me.pbArrow2.Size = New System.Drawing.Size(209, 52)
-        Me.pbArrow2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbArrow2.TabIndex = 0
-        Me.pbArrow2.TabStop = False
         '
         'App
         '
@@ -1424,6 +1427,9 @@ Partial Class App
         Me.pnlNavigation.ResumeLayout(False)
         Me.pnlToBeBudgeted.ResumeLayout(False)
         Me.pnlToBeBudgeted.PerformLayout()
+        CType(Me.pbNextMonth, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbPrevMonth, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBudgetStatistics.ResumeLayout(False)
         Me.pnlReportsStatistics.ResumeLayout(False)
         Me.pnlAccountsTransaction.ResumeLayout(False)
@@ -1437,12 +1443,9 @@ Partial Class App
         Me.pnlBudgetControl.ResumeLayout(False)
         Me.pnlWorkingBalance.ResumeLayout(False)
         Me.pnlWorkingBalance.PerformLayout()
+        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlReports.ResumeLayout(False)
         Me.pnlReports.PerformLayout()
-        CType(Me.pbNextMonth, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbPrevMonth, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
