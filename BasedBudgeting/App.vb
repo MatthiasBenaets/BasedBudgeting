@@ -133,7 +133,6 @@ Public Class App
     Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
         dgvDateChange(DateTime.Now.ToString("MMM yyyy").ToUpper())                              ' Reset dgvBudget back to present so it is saved correctly
         SaveData()
-        My.Settings.Reset()
     End Sub
     Private Sub BtnBudget_Click(sender As Object, e As EventArgs) Handles btnBudget.Click       ' When Budget menu is selected
         btnBudget.BackColor = Color.FromArgb(0, 90, 120)                                        ' Change Button Colors depending on selected menu
@@ -262,7 +261,7 @@ Public Class App
 
         Dim totBudgeted As Decimal = 0
         Dim indexCount As Integer = 0
-        If dgvBudget.CurrentCell.ColumnIndex = 1 Then                                           ' Update available after edit in budgeted
+        If dgvBudget.CurrentCell.ColumnIndex = 1 Or dgvBudget.CurrentCell.ColumnIndex = 2 Then                                           ' Update available after edit in budgeted
             dgvBudget.Rows(e.RowIndex).Cells(3).Value = CType(dgvBudget.Rows(e.RowIndex).Cells(1).Value, Decimal) + CType(dgvBudget.Rows(e.RowIndex).Cells(2).Value, Decimal)
             For i As Integer = 0 To dgvBudget.Rows.Count - 1                                    ' Update total budgeted of category, below edit
                 If dgvBudget.Rows(e.RowIndex + i).Cells(0).Value.ToString <> "" And dgvBudget.Rows(e.RowIndex + i).Cells(4).Value.ToString = "S" Then
@@ -292,7 +291,6 @@ Public Class App
                     k = dgvBudget.Rows.Count - 1
                 End If
             Next
-            'dgvBudget.Rows(j).Cells(3).Value = totAvailable
             dgvBudget.Rows(e.RowIndex - indexCount).Cells(3).Value = totAvailable
         Next
         dgvBudget.Refresh()                                                                     ' Precaution visual bug
@@ -1060,12 +1058,12 @@ Public Class App
         Next
     End Sub
 
-    Private Sub pbPrevMonth_Click(sender As Object, e As EventArgs) Handles pbPrevMonth.Click
+    Private Sub pbPrevMonth_Click(sender As Object, e As EventArgs) Handles pbPrevMonth.Click   ' Show previous month budget
         lblDate.Text = CDate(lblDate.Text).AddMonths(-1).ToString("MMM yyyy").ToUpper()
         dgvDateChange(lblDate.Text)
     End Sub
 
-    Private Sub pbNextMonth_Click(sender As Object, e As EventArgs) Handles pbNextMonth.Click
+    Private Sub pbNextMonth_Click(sender As Object, e As EventArgs) Handles pbNextMonth.Click   ' Show next or current month duget
         lblDate.Text = CDate(lblDate.Text).AddMonths(+1).ToString("MMM yyyy").ToUpper()
         dgvDateChange(lblDate.Text)
     End Sub
@@ -1114,7 +1112,3 @@ Public Class App
         Next
     End Sub
 End Class
-' TO DO
-'
-'   UPDATE AVAILABLE WHEN ACTIVITY IS EDITED
-'   UPDATE TO DOUBLE WHEN E.cellindex is edited
