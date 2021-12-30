@@ -455,6 +455,7 @@ Public Class App
             Next
 
             SaveTransaction()
+            SaveAccounts()
 
             cbAccount.Items.Clear()                                                             ' Reset transaction menu to default
             dtpDate.Text = DateTime.Now
@@ -1116,6 +1117,3 @@ Public Class App
         Next
     End Sub
 End Class
-
-' TO DO
-'   FIX DGVDATECHANGE IF DATA THE SAME ACCESS BUDGET

@@ -1408,6 +1408,8 @@ Partial Class App
         Me.AutoSize = True
         Me.BackColor = System.Drawing.SystemColors.Window
         Me.ClientSize = New System.Drawing.Size(1083, 608)
+        Me.Controls.Add(Me.pnlWorkingBalance)
+        Me.Controls.Add(Me.pnlReports)
         Me.Controls.Add(Me.pnlBudgetStatistics)
         Me.Controls.Add(Me.pnlAccountsTransaction)
         Me.Controls.Add(Me.pnlReportsStatistics)
@@ -1418,8 +1420,6 @@ Partial Class App
         Me.Controls.Add(Me.pnlBudgetControl)
         Me.Controls.Add(Me.pnlNavigation)
         Me.Controls.Add(Me.dgvBudget)
-        Me.Controls.Add(Me.pnlReports)
-        Me.Controls.Add(Me.pnlWorkingBalance)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximumSize = New System.Drawing.Size(1099, 647)
         Me.MinimumSize = New System.Drawing.Size(1099, 647)
