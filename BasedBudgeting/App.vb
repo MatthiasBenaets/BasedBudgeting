@@ -192,6 +192,12 @@ Public Class App
         Dim strCat As String
         Dim test As Integer = dgvBudget.Rows.Count
         strCat = InputBox("Please give a category name", "Category")
+        For Each row As DataGridViewRow In dgvBudget.Rows                                       ' If category already exists, don't add it
+            If strCat = row.Cells(0).Value.ToString Then
+                MsgBox("Category already exists")
+                Exit Sub
+            End If
+        Next
         dgvBudget.Rows.Add(strCat, 0, 0, 0, "C")
         dgvBudget.Rows(test).DefaultCellStyle.BackColor = Color.FromArgb(230, 245, 250)         ' Change background 
         dgvBudget.Rows.Add("", "", "", "", "S")
@@ -220,6 +226,16 @@ Public Class App
         SaveAccounts()
     End Sub
     Private Sub dgvBudget_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellEndEdit  ' Used to automatically add rows in dgvBudget and update total available
+        If dgvBudget.CurrentCell.RowIndex = 0 Then
+            For Each row As DataGridViewRow In dgvBudget.Rows                                   ' If subcategory already exists, don't add it
+                If dgvBudget.CurrentCell.Value.ToString = row.Cells(0).Value.ToString Then
+                    dgvBudget.CurrentCell.Value = ""
+                    MsgBox("Subcategory already exists")
+                    Exit Sub
+                End If
+            Next
+        End If
+
         If dgvBudget.CurrentCell.ColumnIndex > 0 Then                                           ' Check if category cell is selected
         ElseIf dgvBudget.CurrentCell.Value <> "" And
                 dgvBudget.Rows(e.RowIndex).Cells(1).Value.ToString <> "" And
@@ -238,6 +254,10 @@ Public Class App
             Else                                                                                ' else insert a new row in category
                 dgvBudget.Rows.Insert(e.RowIndex + 1, "", "", "", "", "S")
             End If
+        End If
+
+        If dgvBudget.CurrentCell.ColumnIndex = 1 Or dgvBudget.CurrentCell.ColumnIndex = 2 Then  ' Convert given value to decimal currency
+            dgvBudget.CurrentCell.Value = CType(dgvBudget.CurrentCell.Value, Decimal).ToString("C")
         End If
 
         Dim totBudgeted As Decimal = 0
@@ -803,10 +823,12 @@ Public Class App
             lblToBeBudgeted.Visible = False
             lblToBeBudgetedValue.Visible = False
             pbArrow.Visible = False
+            btnAddCategory.Visible = False
         Else
             lblToBeBudgeted.Visible = True
             lblToBeBudgetedValue.Visible = True
             pbArrow.Visible = True
+            btnAddCategory.Visible = True
         End If
     End Sub
     Private Sub updateLabels_Tick(sender As Object, e As EventArgs) Handles updateLabels.Tick
@@ -1093,11 +1115,6 @@ Public Class App
     End Sub
 End Class
 ' TO DO
-' MONTHLY RESET
-'   HIDE Navigation buttons if lbldate is not datetimenow
-'   UPDATE labels to date
-'
-'   DONT ALLOW SAME CATEGORY NAME OR SUBCATEGORY NAME
 '
 '   UPDATE AVAILABLE WHEN ACTIVITY IS EDITED
 '   UPDATE TO DOUBLE WHEN E.cellindex is edited
