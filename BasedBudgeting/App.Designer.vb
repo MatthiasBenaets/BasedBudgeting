@@ -374,7 +374,7 @@ Partial Class App
         Me.lblPeriod2.Location = New System.Drawing.Point(-1, 211)
         Me.lblPeriod2.Margin = New System.Windows.Forms.Padding(0)
         Me.lblPeriod2.Name = "lblPeriod2"
-        Me.lblPeriod2.Size = New System.Drawing.Size(200, 23)
+        Me.lblPeriod2.Size = New System.Drawing.Size(202, 23)
         Me.lblPeriod2.TabIndex = 13
         Me.lblPeriod2.Text = "Per month (last 12 months)"
         Me.lblPeriod2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -417,7 +417,7 @@ Partial Class App
         Me.lblPeriod.Location = New System.Drawing.Point(-1, 133)
         Me.lblPeriod.Margin = New System.Windows.Forms.Padding(0)
         Me.lblPeriod.Name = "lblPeriod"
-        Me.lblPeriod.Size = New System.Drawing.Size(200, 23)
+        Me.lblPeriod.Size = New System.Drawing.Size(202, 23)
         Me.lblPeriod.TabIndex = 10
         Me.lblPeriod.Text = "for this time period"
         Me.lblPeriod.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
@@ -460,7 +460,7 @@ Partial Class App
         Me.lblIncluded.Location = New System.Drawing.Point(-1, 42)
         Me.lblIncluded.Margin = New System.Windows.Forms.Padding(0)
         Me.lblIncluded.Name = "lblIncluded"
-        Me.lblIncluded.Size = New System.Drawing.Size(200, 36)
+        Me.lblIncluded.Size = New System.Drawing.Size(202, 36)
         Me.lblIncluded.TabIndex = 3
         Me.lblIncluded.Text = "All categories and accounts included"
         Me.lblIncluded.TextAlign = System.Drawing.ContentAlignment.MiddleCenter

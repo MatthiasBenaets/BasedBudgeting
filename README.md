@@ -5,29 +5,36 @@
 </h1>
 <div align="center">
 <h3><b><u>BASED BUDGETING </u><br>
-💰💵📈 GENERAL HANDBOOK 🏰💸🚗</b></h3>
+💰📈 GENERAL HANDBOOK 📊💵 </b></h3>
   <h3>
     <a href="https://www.youtube.com/matthiasbenaets/...">
       Tutorial
     </a>
-    <span> | </span>
+    <span> · </span>
     <a href="https://github.com/MatthiasBenaets/BasedBudgeting/blob/master/LICENSE">
       License
     </a>
-    <span> | </span>
+    <span> · </span>
     <a href="https://github.com/matthiasbenaets/basedbudgeting/releases/">
       Download
     </a>
-    <span> | </span>
+    <span> · </span>
     <a href="https://github.com/matthiasbenaets/basedbudgeting/issues">
       Issues
     </a>
-    <span> | </span>
+    <span> · </span>
     <a href="https://matthiasbenaets.github.io/">
       Contact
     </a>
   </h3>
   <h1></h1>
+</div>
+
+<div align="center">Based Budgeting is a budgeting application written in Visual Basic .NET for Windows.
+
+The applications aims to make you get a hold of your personal finances and set limits on expense, all while growing your net worth and purchase power.
+
+Either take the blue pill and live in contented ignorance and debt, or take the red pill and discover the potential financial growth and become debt free.
 </div>
 
 ##  📋Table of Contents
@@ -46,7 +53,12 @@
 - **Stocks Logger**: Coming soon™
 <br></br>
 ##  🕹️Usage
-Will be added when the project out of pre-alpha
+Coming soon™
+
+<img src="src\README\Budget.png" alt="Based Budgeting" width="48%"></img>
+<img src="src\README\Spending.png" alt="Based Budgeting" width="48%"></img>
+<img src="src\README\Spending1y.png" alt="Based Budgeting" width="48%"></img>
+<img src="src\README\Transactions.png" alt="Based Budgeting" width="48%"></img>
 <br></br>
 ##  🧩Components
 - **Accounts:**
@@ -73,9 +85,12 @@ Will be added when the project out of pre-alpha
 <br></br>
 ##  ⌛Download
 ### **[Releases](https://github.com/MatthiasBenaets/BasedBudgeting/releases)**
+### **[Latest Version](https://github.com/MatthiasBenaets/BasedBudgeting/releases/tag/v1.0.0)**
 <br></br>
 ##  🙋FAQ
 Nothing to tell at the moment. Sorry
+
+Ask a question [HERE](https://github.com/MatthiasBenaets/BasedBudgeting/discussions)
 <br></br>
 ##  👋Contact
 - [Issues or Feature Request](https://github.com/MatthiasBenaets/BasedBudgeting/issues)

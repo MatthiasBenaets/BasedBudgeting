@@ -243,6 +243,15 @@ Public Class App
             End If
         End If
     End Sub
+    Private Sub pbPrevMonth_Click(sender As Object, e As EventArgs) Handles pbPrevMonth.Click   ' Show previous month budget
+        lblDate.Text = CDate(lblDate.Text).AddMonths(-1).ToString("MMM yyyy").ToUpper()
+        dgvDateChange(lblDate.Text)
+    End Sub
+
+    Private Sub pbNextMonth_Click(sender As Object, e As EventArgs) Handles pbNextMonth.Click   ' Show next or current month duget
+        lblDate.Text = CDate(lblDate.Text).AddMonths(+1).ToString("MMM yyyy").ToUpper()
+        dgvDateChange(lblDate.Text)
+    End Sub
     Private Sub dgvAccounts_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvAccounts.CellEndEdit
         SaveAccounts()
     End Sub
@@ -493,6 +502,18 @@ Public Class App
             checkCombobox()
         End If
     End Sub
+    Private Sub btnResetTransaction_Click(sender As Object, e As EventArgs) Handles btnResetTransaction.Click   ' Transaction filter
+        cbAccountFilter.Text = ""
+        dtpDateFilter.Text = ""
+        cbPayeeFilter.Text = ""
+        cbCategoryFilter.Text = ""
+        cbSubcategoryFilter.Text = ""
+        filtering = False
+        dtpDateFilter.Enabled = True
+        For Each row As DataGridViewRow In dgvTransactions.Rows
+            row.Visible = True
+        Next
+    End Sub
     Private Sub cbPayee_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayee.TextChanged  ' When text changes inside the Payee combobox
         Dim traOutflow As Boolean = False
         Dim traInflow As Boolean = False
@@ -719,6 +740,32 @@ Public Class App
             cs.ChartType = SeriesChartType.StackedColumn                                        ' Chart type
             'Dim dpcp As DataPointCustomProperties = New DataPointCustomProperties
         Next
+    End Sub
+    Private Sub lblSpendingButton_Click(sender As Object, e As EventArgs) Handles lblSpendingButton.Click   ' Navigate to other chart
+        lblSpendingButton.Image = BasedBudgeting.My.Resources.Resources.selected                ' Change button picture
+        lblNetWorthButton.Image = Nothing
+        lblSpendingTrendButton.Image = Nothing
+        chSpending.Visible = True
+        chNet.Visible = False
+        chTrend.Visible = False
+    End Sub
+
+    Private Sub lblNetWorthButton_Click(sender As Object, e As EventArgs) Handles lblNetWorthButton.Click   ' Navigate to other chart
+        lblSpendingButton.Image = Nothing                                                       ' Change button picture
+        lblNetWorthButton.Image = BasedBudgeting.My.Resources.Resources.selected
+        lblSpendingTrendButton.Image = Nothing
+        chSpending.Visible = False
+        chNet.Visible = True
+        chTrend.Visible = False
+    End Sub
+
+    Private Sub lblSpendingTrendButton_Click(sender As Object, e As EventArgs) Handles lblSpendingTrendButton.Click ' Navigate to other chart
+        lblSpendingButton.Image = Nothing                                                       ' Change button picture
+        lblNetWorthButton.Image = Nothing
+        lblSpendingTrendButton.Image = BasedBudgeting.My.Resources.Resources.selected
+        chSpending.Visible = False                                                              ' Make charts visible
+        chNet.Visible = False
+        chTrend.Visible = True
     End Sub
     Private Sub SaveData()
         SaveBudget()
@@ -1068,29 +1115,6 @@ Public Class App
             End If
         Next
     End Sub
-    Private Sub btnResetTransaction_Click(sender As Object, e As EventArgs) Handles btnResetTransaction.Click   ' Transaction filter
-        cbAccountFilter.Text = ""
-        dtpDateFilter.Text = ""
-        cbPayeeFilter.Text = ""
-        cbCategoryFilter.Text = ""
-        cbSubcategoryFilter.Text = ""
-        filtering = False
-        dtpDateFilter.Enabled = True
-        For Each row As DataGridViewRow In dgvTransactions.Rows
-            row.Visible = True
-        Next
-    End Sub
-
-    Private Sub pbPrevMonth_Click(sender As Object, e As EventArgs) Handles pbPrevMonth.Click   ' Show previous month budget
-        lblDate.Text = CDate(lblDate.Text).AddMonths(-1).ToString("MMM yyyy").ToUpper()
-        dgvDateChange(lblDate.Text)
-    End Sub
-
-    Private Sub pbNextMonth_Click(sender As Object, e As EventArgs) Handles pbNextMonth.Click   ' Show next or current month duget
-        lblDate.Text = CDate(lblDate.Text).AddMonths(+1).ToString("MMM yyyy").ToUpper()
-        dgvDateChange(lblDate.Text)
-    End Sub
-
     Private Sub dgvDateChange(dateMonth As String)                                              ' Used to change datagridview if other month is selected
         dgvBudget.Rows.Clear()
         Dim rows() As String
@@ -1134,31 +1158,8 @@ Public Class App
             Next
         Next
     End Sub
-
-    Private Sub lblSpendingButton_Click(sender As Object, e As EventArgs) Handles lblSpendingButton.Click   ' Navigate to other chart
-        lblSpendingButton.Image = BasedBudgeting.My.Resources.Resources.selected                ' Change button picture
-        lblNetWorthButton.Image = Nothing
-        lblSpendingTrendButton.Image = Nothing
-        chSpending.Visible = True
-        chNet.Visible = False
-        chTrend.Visible = False
-    End Sub
-
-    Private Sub lblNetWorthButton_Click(sender As Object, e As EventArgs) Handles lblNetWorthButton.Click   ' Navigate to other chart
-        lblSpendingButton.Image = Nothing                                                       ' Change button picture
-        lblNetWorthButton.Image = BasedBudgeting.My.Resources.Resources.selected
-        lblSpendingTrendButton.Image = Nothing
-        chSpending.Visible = False
-        chNet.Visible = True
-        chTrend.Visible = False
-    End Sub
-
-    Private Sub lblSpendingTrendButton_Click(sender As Object, e As EventArgs) Handles lblSpendingTrendButton.Click ' Navigate to other chart
-        lblSpendingButton.Image = Nothing                                                       ' Change button picture
-        lblNetWorthButton.Image = Nothing
-        lblSpendingTrendButton.Image = BasedBudgeting.My.Resources.Resources.selected
-        chSpending.Visible = False                                                              ' Make charts visible
-        chNet.Visible = False
-        chTrend.Visible = True
-    End Sub
 End Class
+'TO DO
+' LOAD TRANSACTIONS AT BEGINNING
+' DARK MODE
+' SELECT CORRECT COLOR SCREEN FOR CHARTS
