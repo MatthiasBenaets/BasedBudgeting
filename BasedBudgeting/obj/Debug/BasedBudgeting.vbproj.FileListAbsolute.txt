@@ -74,3 +74,7 @@ C:\Users\matth\Desktop\BasedBudgeting - scale2\BasedBudgeting\obj\Debug\BasedBud
 C:\Users\matth\Desktop\BasedBudgeting - scale2\BasedBudgeting\obj\Debug\BasedBudgeting.exe
 C:\Users\matth\Desktop\BasedBudgeting - scale2\BasedBudgeting\obj\Debug\BasedBudgeting.xml
 C:\Users\matth\Desktop\BasedBudgeting - scale2\BasedBudgeting\obj\Debug\BasedBudgeting.pdb
+C:\Users\matth\Desktop\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.exe.manifest
+C:\Users\matth\Desktop\BasedBudgeting\BasedBudgeting\bin\Debug\BasedBudgeting.application
+C:\Users\matth\Desktop\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.exe.manifest
+C:\Users\matth\Desktop\BasedBudgeting\BasedBudgeting\obj\Debug\BasedBudgeting.application

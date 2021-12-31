@@ -43,24 +43,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BasedBudgeting.exe" size="158688">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BasedBudgeting.exe" size="163808">
       <assemblyIdentity name="BasedBudgeting" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>wjIF7j6jrYMmrFJWEkhRKRdXVInFM6oYCBlRvOp31s0=</dsig:DigestValue>
+        <dsig:DigestValue>x4HjTU8N5leVsHhSZV29YvcHYQzReJ1EK7RtcJsgFCE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="BasedBudgeting.exe.config" size="919">
+  <file name="BasedBudgeting.exe.config" size="1047">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>4iKC61n4bA7h1Ywqz5OXJnNckjZme9mgGtWE+SEq4wE=</dsig:DigestValue>
+      <dsig:DigestValue>K7fBDtNagt7YwIddNGsDkBKyVd5g8PVmLV+NXz1fMG4=</dsig:DigestValue>
     </hash>
   </file>
   <file name="budget.ico" size="28669">

@@ -5,5 +5,8 @@
     <Setting Name="startDate" Type="System.String" Scope="User">
       <Value Profile="(Default)">start</Value>
     </Setting>
+    <Setting Name="budgetName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">My Budget</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

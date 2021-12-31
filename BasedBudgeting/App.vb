@@ -6,6 +6,7 @@ Public Class App
         Me.lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()                           ' Print correct date
         Me.lblDateValue.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()
         Me.dtpDate.Value = DateTime.Now                                                         ' Update DateTimePicker to current date
+        txtTitle.Text = My.Settings.budgetName
 
         If System.IO.Directory.Exists(roaming + "\BasedBudgeting") Then                         ' Check if BasedData exist, if not create it and run SaveTransaction
         Else
@@ -137,6 +138,7 @@ Public Class App
     Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
         SaveData()
         dgvDateChange(DateTime.Now.ToString("MMM yyyy").ToUpper())                              ' Reset dgvBudget back to present so it is saved correctly
+        My.Settings.budgetName = txtTitle.Text
     End Sub
     Private Sub BtnBudget_Click(sender As Object, e As EventArgs) Handles btnBudget.Click       ' When Budget menu is selected
         btnBudget.BackColor = Color.FromArgb(0, 90, 120)                                        ' Change Button Colors depending on selected menu
@@ -174,6 +176,19 @@ Public Class App
         pnlReports.Visible = True
 
         populateCharts()
+
+        Dim t As Title = chNet.Titles.Add("Net Worth")                                          ' Titles of charts
+        t.Alignment = ContentAlignment.MiddleLeft
+        t.Font = New Font("Calibri", 18, FontStyle.Bold)
+        t.ForeColor = Color.Gray
+        t = chSpending.Titles.Add("Total Spending of the Current Month")
+        t.Alignment = ContentAlignment.MiddleLeft
+        t.Font = New Font("Calibri", 18, FontStyle.Bold)
+        t.ForeColor = Color.Gray
+        t = chTrend.Titles.Add("Spending Trends of the Last Year")
+        t.Alignment = ContentAlignment.MiddleLeft
+        t.Font = New Font("Calibri", 18, FontStyle.Bold)
+        t.ForeColor = Color.Gray
     End Sub
     Private Sub BtnAccounts_Click(sender As Object, e As EventArgs) Handles btnAccounts.Click   ' When Accounts button is selected
         btnBudget.BackColor = Color.FromArgb(45, 150, 175)                                      ' Change Button Colors depending on selected menu
@@ -1119,8 +1134,31 @@ Public Class App
             Next
         Next
     End Sub
-End Class
 
-'TO DO
-'   ADD TITLE TO CHARTS
-'   REMOVE LABEL OF 1Y CHART (3)
+    Private Sub lblSpendingButton_Click(sender As Object, e As EventArgs) Handles lblSpendingButton.Click   ' Navigate to other chart
+        lblSpendingButton.Image = BasedBudgeting.My.Resources.Resources.selected                ' Change button picture
+        lblNetWorthButton.Image = Nothing
+        lblSpendingTrendButton.Image = Nothing
+        chSpending.Visible = True
+        chNet.Visible = False
+        chTrend.Visible = False
+    End Sub
+
+    Private Sub lblNetWorthButton_Click(sender As Object, e As EventArgs) Handles lblNetWorthButton.Click   ' Navigate to other chart
+        lblSpendingButton.Image = Nothing                                                       ' Change button picture
+        lblNetWorthButton.Image = BasedBudgeting.My.Resources.Resources.selected
+        lblSpendingTrendButton.Image = Nothing
+        chSpending.Visible = False
+        chNet.Visible = True
+        chTrend.Visible = False
+    End Sub
+
+    Private Sub lblSpendingTrendButton_Click(sender As Object, e As EventArgs) Handles lblSpendingTrendButton.Click ' Navigate to other chart
+        lblSpendingButton.Image = Nothing                                                       ' Change button picture
+        lblNetWorthButton.Image = Nothing
+        lblSpendingTrendButton.Image = BasedBudgeting.My.Resources.Resources.selected
+        chSpending.Visible = False                                                              ' Make charts visible
+        chNet.Visible = False
+        chTrend.Visible = True
+    End Sub
+End Class

@@ -65,6 +65,18 @@ Namespace My
                 Me("startDate") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("My Budget")>  _
+        Public Property budgetName() As String
+            Get
+                Return CType(Me("budgetName"),String)
+            End Get
+            Set
+                Me("budgetName") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

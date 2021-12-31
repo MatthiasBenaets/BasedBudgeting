@@ -7,14 +7,14 @@
     <framework targetVersion="4.8" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="BasedBudgeting.exe.manifest" size="3970">
+    <dependentAssembly dependencyType="install" codebase="BasedBudgeting.exe.manifest" size="3971">
       <assemblyIdentity name="BasedBudgeting.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>qM2+ij7xMB6v9PsozdA2PyaXdwOLvQ2965tcPRhfFB4=</dsig:DigestValue>
+        <dsig:DigestValue>0ZqJuB5PfCckQqTgQSpQ8OLRz7A3YlCx64AAQLjW2aY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

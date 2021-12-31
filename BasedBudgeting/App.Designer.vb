@@ -145,7 +145,9 @@ Partial Class App
         Me.lblDate = New System.Windows.Forms.Label()
         Me.lblToBeBudgetedValue = New System.Windows.Forms.Label()
         Me.pnlReports = New System.Windows.Forms.Panel()
-        Me.lblReports = New System.Windows.Forms.Label()
+        Me.lblSpendingTrendButton = New System.Windows.Forms.Label()
+        Me.lblSpendingButton = New System.Windows.Forms.Label()
+        Me.lblNetWorthButton = New System.Windows.Forms.Label()
         Me.pnlNavigation = New System.Windows.Forms.Panel()
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetStatistics.SuspendLayout()
@@ -172,7 +174,8 @@ Partial Class App
         '
         'chNet
         '
-        Me.chNet.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.chNet.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         ChartArea1.Name = "ChartArea1"
         Me.chNet.ChartAreas.Add(ChartArea1)
@@ -187,9 +190,10 @@ Partial Class App
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
         Me.chNet.Series.Add(Series1)
-        Me.chNet.Size = New System.Drawing.Size(852, 300)
+        Me.chNet.Size = New System.Drawing.Size(869, 593)
         Me.chNet.TabIndex = 10
         Me.chNet.Text = "chNet"
+        Me.chNet.Visible = False
         '
         'pnlBudgetStatistics
         '
@@ -873,13 +877,14 @@ Partial Class App
         '
         'chTrend
         '
-        Me.chTrend.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.chTrend.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         ChartArea2.Name = "ChartArea1"
         Me.chTrend.ChartAreas.Add(ChartArea2)
         Legend2.Name = "Legend1"
         Me.chTrend.Legends.Add(Legend2)
-        Me.chTrend.Location = New System.Drawing.Point(0, 600)
+        Me.chTrend.Location = New System.Drawing.Point(0, 0)
         Me.chTrend.Margin = New System.Windows.Forms.Padding(0)
         Me.chTrend.Name = "chTrend"
         Me.chTrend.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
@@ -888,19 +893,21 @@ Partial Class App
         Series2.Legend = "Legend1"
         Series2.Name = "Series1"
         Me.chTrend.Series.Add(Series2)
-        Me.chTrend.Size = New System.Drawing.Size(852, 300)
+        Me.chTrend.Size = New System.Drawing.Size(869, 593)
         Me.chTrend.TabIndex = 12
         Me.chTrend.Text = "chTrend"
+        Me.chTrend.Visible = False
         '
         'chSpending
         '
-        Me.chSpending.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.chSpending.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         ChartArea3.Name = "ChartArea1"
         Me.chSpending.ChartAreas.Add(ChartArea3)
         Legend3.Name = "Legend1"
         Me.chSpending.Legends.Add(Legend3)
-        Me.chSpending.Location = New System.Drawing.Point(0, 300)
+        Me.chSpending.Location = New System.Drawing.Point(0, 0)
         Me.chSpending.Margin = New System.Windows.Forms.Padding(0)
         Me.chSpending.Name = "chSpending"
         Me.chSpending.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
@@ -909,7 +916,7 @@ Partial Class App
         Series3.Legend = "Legend1"
         Series3.Name = "Series1"
         Me.chSpending.Series.Add(Series3)
-        Me.chSpending.Size = New System.Drawing.Size(852, 300)
+        Me.chSpending.Size = New System.Drawing.Size(869, 593)
         Me.chSpending.TabIndex = 11
         Me.chSpending.Text = "chSpending"
         '
@@ -1425,31 +1432,58 @@ Partial Class App
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pnlReports.AutoSize = True
-        Me.pnlReports.Controls.Add(Me.lblReports)
+        Me.pnlReports.Controls.Add(Me.lblSpendingTrendButton)
+        Me.pnlReports.Controls.Add(Me.lblSpendingButton)
+        Me.pnlReports.Controls.Add(Me.lblNetWorthButton)
         Me.pnlReports.Location = New System.Drawing.Point(0, 0)
         Me.pnlReports.Name = "pnlReports"
         Me.pnlReports.Size = New System.Drawing.Size(1046, 88)
         Me.pnlReports.TabIndex = 28
         Me.pnlReports.Visible = False
         '
-        'lblReports
+        'lblSpendingTrendButton
         '
-        Me.lblReports.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.lblReports.AutoSize = True
-        Me.lblReports.Font = New System.Drawing.Font("Calibri", 26.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblReports.ForeColor = System.Drawing.Color.White
-        Me.lblReports.Location = New System.Drawing.Point(20, 20)
-        Me.lblReports.Name = "lblReports"
-        Me.lblReports.Size = New System.Drawing.Size(131, 42)
-        Me.lblReports.TabIndex = 0
-        Me.lblReports.Text = "Reports"
+        Me.lblSpendingTrendButton.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblSpendingTrendButton.Font = New System.Drawing.Font("Calibri", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSpendingTrendButton.ForeColor = System.Drawing.Color.White
+        Me.lblSpendingTrendButton.Location = New System.Drawing.Point(437, 12)
+        Me.lblSpendingTrendButton.Name = "lblSpendingTrendButton"
+        Me.lblSpendingTrendButton.Size = New System.Drawing.Size(211, 64)
+        Me.lblSpendingTrendButton.TabIndex = 2
+        Me.lblSpendingTrendButton.Text = "Spending Trend"
+        Me.lblSpendingTrendButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblSpendingButton
+        '
+        Me.lblSpendingButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        Me.lblSpendingButton.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblSpendingButton.Font = New System.Drawing.Font("Calibri", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSpendingButton.ForeColor = System.Drawing.Color.White
+        Me.lblSpendingButton.Image = CType(resources.GetObject("lblSpendingButton.Image"), System.Drawing.Image)
+        Me.lblSpendingButton.Location = New System.Drawing.Point(4, 11)
+        Me.lblSpendingButton.Name = "lblSpendingButton"
+        Me.lblSpendingButton.Size = New System.Drawing.Size(211, 64)
+        Me.lblSpendingButton.TabIndex = 1
+        Me.lblSpendingButton.Text = "Spending "
+        Me.lblSpendingButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'lblNetWorthButton
+        '
+        Me.lblNetWorthButton.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblNetWorthButton.Font = New System.Drawing.Font("Calibri", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblNetWorthButton.ForeColor = System.Drawing.Color.White
+        Me.lblNetWorthButton.Location = New System.Drawing.Point(206, 11)
+        Me.lblNetWorthButton.Name = "lblNetWorthButton"
+        Me.lblNetWorthButton.Size = New System.Drawing.Size(211, 64)
+        Me.lblNetWorthButton.TabIndex = 0
+        Me.lblNetWorthButton.Text = "Net Worth"
+        Me.lblNetWorthButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
         'pnlNavigation
         '
         Me.pnlNavigation.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        Me.pnlNavigation.Controls.Add(Me.pnlWorkingBalance)
         Me.pnlNavigation.Controls.Add(Me.pnlReports)
+        Me.pnlNavigation.Controls.Add(Me.pnlWorkingBalance)
         Me.pnlNavigation.Controls.Add(Me.pnlToBeBudgeted)
         Me.pnlNavigation.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlNavigation.Location = New System.Drawing.Point(215, 0)
@@ -1502,7 +1536,6 @@ Partial Class App
         CType(Me.pbNextMonth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbPrevMonth, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlReports.ResumeLayout(False)
-        Me.pnlReports.PerformLayout()
         Me.pnlNavigation.ResumeLayout(False)
         Me.pnlNavigation.PerformLayout()
         Me.ResumeLayout(False)
@@ -1600,6 +1633,8 @@ Partial Class App
     Friend WithEvents lblDate As Label
     Friend WithEvents lblToBeBudgetedValue As Label
     Friend WithEvents pnlReports As Panel
-    Friend WithEvents lblReports As Label
     Friend WithEvents pnlNavigation As Panel
+    Friend WithEvents lblNetWorthButton As Label
+    Friend WithEvents lblSpendingButton As Label
+    Friend WithEvents lblSpendingTrendButton As Label
 End Class
