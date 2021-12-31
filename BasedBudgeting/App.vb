@@ -144,6 +144,7 @@ Public Class App
         btnAccounts.BackColor = Color.FromArgb(45, 150, 175)
         pnlBudgetStatistics.Visible = True                                                      ' Show correct panels for selected menu
         pnlBudgetControl.Visible = True
+        pnlToBeBudgeted.Visible = True
         pnlReportsStatistics.Visible = False
         pnlReportsCharts.Visible = False
         pnlAccountsTransaction.Visible = False
@@ -161,13 +162,14 @@ Public Class App
         btnAccounts.BackColor = Color.FromArgb(45, 150, 175)
         pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
         pnlBudgetControl.Visible = False
+        pnlToBeBudgeted.Visible = False
         pnlReportsStatistics.Visible = True
         pnlReportsCharts.Visible = True
         pnlAccountsTransaction.Visible = False
         pnlAccountsFilter.Visible = False
         dgvBudget.Visible = False
         dgvTransactions.Visible = False
-        pnlToBeBudgeted.Visible = False
+        pnlToBeBudgeted.Visible = True
         pnlWorkingBalance.Visible = False
         pnlReports.Visible = True
 
@@ -179,13 +181,14 @@ Public Class App
         btnAccounts.BackColor = Color.FromArgb(0, 90, 120)
         pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
         pnlBudgetControl.Visible = False
+        pnlToBeBudgeted.Visible = False
         pnlReportsStatistics.Visible = False
         pnlReportsCharts.Visible = False
         pnlAccountsTransaction.Visible = True
         pnlAccountsFilter.Visible = True
         dgvBudget.Visible = False
         dgvTransactions.Visible = True
-        pnlToBeBudgeted.Visible = False
+        pnlToBeBudgeted.Visible = True
         pnlWorkingBalance.Visible = True
         pnlReports.Visible = False
         checkCombobox()
@@ -1117,3 +1120,7 @@ Public Class App
         Next
     End Sub
 End Class
+
+'TO DO
+'   ADD TITLE TO CHARTS
+'   REMOVE LABEL OF 1Y CHART (3)
