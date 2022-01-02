@@ -342,6 +342,9 @@ Public Class App
     End Sub
     Private Sub dgvTransactions_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvTransactions.CellEndEdit
         Dim toDec As Decimal = 0
+        'If dgvTransactions.CurrentCell.Value = "" Then
+        'dgvTransactions.CurrentCell.Value = toDec.ToString
+        'End If
         If dgvTransactions.CurrentCell.ColumnIndex = 6 Then                                     ' After edit, change value to correct format
             If dgvTransactions.CurrentCell.Value Is Nothing Then
             Else
@@ -622,7 +625,8 @@ Public Class App
     Private Sub populateSpending()                                                              ' Add values to chart two in reports
         Dim rowsTra() As String = File.ReadAllLines(roaming + "\BasedBudgeting\transactions.csv")
         Dim traVal() As String
-        Dim preMonth As DateTime = DateTime.Now.AddMonths(-1)
+        'Dim preMonth As DateTime = DateTime.Now.AddMonths(-1)
+        Dim preMonth As DateTime = New DateTime(Now.Year, Now.Month, 1)
         Dim traDate As DateTime
         Dim xTra(rowsTra.Length) As String
         Dim yTra(rowsTra.Length) As Double
@@ -984,6 +988,7 @@ Public Class App
             traDate = dgvTransactions.Rows(i).Cells(1).Value
             If premonth <= traDate And endMonth >= traDate Then                                 ' If transaction is lower than preMonth
                 If dgvTransactions.Rows(i).Cells(7).Value.ToString = "" Or dgvTransactions.Rows(i).Cells(3).Value.ToString = "Transfer" Then    ' Ignore null and transfers
+                    totValue += 0
                 Else
                     totValue += dgvTransactions.Rows(i).Cells(7).Value
                 End If
@@ -998,6 +1003,7 @@ Public Class App
             traDate = dgvTransactions.Rows(i).Cells(1).Value
             If premonth <= traDate And endMonth >= traDate Then
                 If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Or dgvTransactions.Rows(i).Cells(3).Value.ToString = "Transfer" Then    ' Ignore null and transfers
+                    totValue += 0
                 Else
                     totValue += dgvTransactions.Rows(i).Cells(6).Value
                 End If
@@ -1012,7 +1018,8 @@ Public Class App
         For i As Integer = 0 To dgvTransactions.Rows.Count - 1                                  ' Average Spending each month
             traDate = dgvTransactions.Rows(i).Cells(1).Value
             If preYear <= traDate Then
-                If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Or dgvTransactions.Rows(i).Cells(3).Value.ToString <> "Transfer" Then
+                If dgvTransactions.Rows(i).Cells(6).Value.ToString = "" Or dgvTransactions.Rows(i).Cells(3).Value.ToString = "Transfer" Then
+                    totValue += 0
                 Else
                     totValue += dgvTransactions.Rows(i).Cells(6).Value
                 End If
@@ -1197,6 +1204,117 @@ Public Class App
                 End If
             Next
         Next
+    End Sub
+    Private Sub dgvTransactions_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles dgvTransactions.UserDeletingRow  ' When a row get deleted
+        Dim checkDate As DateTime
+        Dim minDate As DateTime = New DateTime(Now.Year, Now.Month, 1)
+        Dim checkSubcat As String
+        Dim acc As String
+        Dim checkFlow As Decimal
+        Dim inflow As Boolean = False
+        Dim outflow As Boolean = False
+        checkDate = CDate(dgvTransactions.CurrentRow.Cells(1).Value)
+
+        If dgvTransactions.CurrentRow.Cells(3).Value.ToString = "Transfer" Then                 ' Check if "transfer"
+            Dim acc1 As String = dgvTransactions.CurrentRow.Cells(0).Value.ToString
+            Dim acc2 As String = dgvTransactions.CurrentRow.Cells(2).Value.ToString
+            If dgvTransactions.CurrentRow.Cells(6).Value.ToString <> "" Then                    ' If outflow not empty
+                checkFlow = CType(dgvTransactions.CurrentRow.Cells(6).Value, Decimal)
+                For i As Integer = 0 To dgvAccounts.Rows.Count - 1
+                    If dgvAccounts.Rows(i).Cells(0).Value.ToString = acc1 Then                  ' Add or subtract from account depending on account & payee
+                        dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal) + checkFlow
+                    End If
+                    If dgvAccounts.Rows(i).Cells(0).Value.ToString = acc2 Then
+                        dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal) - checkFlow
+                    End If
+                Next
+            Else
+                checkFlow = CType(dgvTransactions.CurrentRow.Cells(7).Value, Decimal)           ' Ditto but if inflow
+                For i As Integer = 0 To dgvAccounts.Rows.Count - 1
+                    If dgvAccounts.Rows(i).Cells(0).Value.ToString = acc1 Then
+                        dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal) - checkFlow
+                    End If
+                    If dgvAccounts.Rows(i).Cells(0).Value.ToString = acc2 Then
+                        dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal) + checkFlow
+                    End If
+                Next
+            End If
+        ElseIf dgvTransactions.CurrentRow.Cells(4).Value.ToString = "To Be Budgeted" Then       ' Else if "To be budgeted"
+            checkFlow = CType(dgvTransactions.CurrentRow.Cells(7).Value, Decimal)
+            acc = dgvTransactions.CurrentRow.Cells(0).Value.ToString
+            For i As Integer = 0 To dgvAccounts.Rows.Count - 1                                  ' Always inflow, subtract from account
+                If dgvAccounts.Rows(i).Cells(0).Value.ToString = acc Then
+                    dgvAccounts.Rows(i).Cells(0).Value = CType(dgvAccounts.Rows(i).Cells(0).Value, Decimal) - checkFlow
+                End If
+            Next
+        ElseIf checkDate >= minDate Then                                                        ' If not within this months budget, no need to edit dgvBudget
+            checkSubcat = dgvTransactions.CurrentRow.Cells(4).Value
+            acc = dgvTransactions.CurrentRow.Cells(0).Value.ToString
+            Dim cat = dgvTransactions.CurrentRow.Cells(3).Value
+            If dgvTransactions.CurrentRow.Cells(6).Value.ToString = "" Then                     ' Check if inflow or outflow
+                checkFlow = dgvTransactions.CurrentRow.Cells(7).Value
+                inflow = True
+            Else
+                checkFlow = dgvTransactions.CurrentRow.Cells(6).Value
+                outflow = True
+            End If
+            For i As Integer = 0 To dgvBudget.Rows.Count - 1                                    ' Add or subtract from dgvBudget
+                If checkSubcat = dgvBudget.Rows(i).Cells(0).Value.ToString Then
+                    If outflow = True Then
+                        dgvBudget.Rows(i).Cells(2).Value = CType(dgvBudget.Rows(i).Cells(2).Value, Decimal) + checkFlow
+                        dgvBudget.Rows(i).Cells(3).Value = CType(dgvBudget.Rows(i).Cells(3).Value, Decimal) + checkFlow
+                        For j As Integer = 0 To dgvBudget.Rows.Count - 1                        ' Update category total
+                            If dgvBudget.Rows(i - j).Cells(4).Value.ToString = "C" Then
+                                dgvBudget.Rows(i - j).Cells(2).Value = CType(dgvBudget.Rows(i - j).Cells(2).Value, Decimal) + checkFlow
+                                dgvBudget.Rows(i - j).Cells(3).Value = CType(dgvBudget.Rows(i - j).Cells(3).Value, Decimal) + checkFlow
+                                j = dgvBudget.Rows.Count - 1
+                            End If
+                        Next
+                    ElseIf inflow = True Then
+                        dgvBudget.Rows(i).Cells(2).Value = CType(dgvBudget.Rows(i).Cells(2).Value, Decimal) - checkFlow
+                        dgvBudget.Rows(i).Cells(3).Value = CType(dgvBudget.Rows(i).Cells(3).Value, Decimal) - checkFlow
+                        For j As Integer = 0 To dgvBudget.Rows.Count - 1                        ' Update category total
+                            If dgvBudget.Rows(i - j).Cells(4).Value.ToString = "C" Then
+                                dgvBudget.Rows(i - j).Cells(2).Value = CType(dgvBudget.Rows(i - j).Cells(2).Value, Decimal) - checkFlow
+                                dgvBudget.Rows(i - j).Cells(3).Value = CType(dgvBudget.Rows(i - j).Cells(3).Value, Decimal) - checkFlow
+                                j = dgvBudget.Rows.Count - 1
+                            End If
+                        Next
+                    End If
+                End If
+            Next
+            For i As Integer = 0 To dgvAccounts.Rows.Count - 1                                  ' Add or subtract from dgvAccount
+                If acc = dgvAccounts.Rows(i).Cells(0).Value.ToString Then
+                    If outflow = True Then
+                        dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal) + checkFlow
+                        i = dgvAccounts.Rows.Count - 1
+                    ElseIf inflow = True Then
+                        dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal) - checkFlow
+                        i = dgvAccounts.Rows.Count - 1
+                    End If
+                End If
+            Next
+        Else                                                                                    ' Else, older transaction. Now only change overall account balance
+            checkFlow = CType(dgvTransactions.CurrentRow.Cells(7).Value, Decimal)
+            acc = dgvTransactions.CurrentRow.Cells(0).Value.ToString
+            If dgvTransactions.CurrentRow.Cells(6).Value.ToString = "" Then                     ' Check if inflow or outflow
+                checkFlow = dgvTransactions.CurrentRow.Cells(7).Value
+                inflow = True
+            Else
+                checkFlow = dgvTransactions.CurrentRow.Cells(6).Value
+                outflow = True
+            End If
+            For i As Integer = 0 To dgvAccounts.Rows.Count - 1                                  ' Add or subtract from dgvAccount
+                If acc = dgvAccounts.Rows(i).Cells(0).Value.ToString Then
+                    If outflow = True Then
+                        dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal) + checkFlow
+                    End If
+                    If inflow = True Then
+                        dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal) - checkFlow
+                    End If
+                End If
+            Next
+        End If
     End Sub
 End Class
 'TO DO
