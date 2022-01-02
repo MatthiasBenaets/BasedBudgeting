@@ -969,7 +969,7 @@ Partial Class App
         Me.dgvBudget.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.Transparent
         Me.dgvBudget.RowTemplate.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.Black
         Me.dgvBudget.RowTemplate.Height = 25
-        Me.dgvBudget.Size = New System.Drawing.Size(852, 504)
+        Me.dgvBudget.Size = New System.Drawing.Size(852, 578)
         Me.dgvBudget.TabIndex = 25
         '
         'Column11
@@ -1348,7 +1348,7 @@ Partial Class App
         Me.lblToBeBudgeted.BackColor = System.Drawing.Color.FromArgb(CType(CType(106, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(79, Byte), Integer))
         Me.lblToBeBudgeted.Font = New System.Drawing.Font("Calibri", 18.0!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblToBeBudgeted.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.lblToBeBudgeted.Location = New System.Drawing.Point(667, 8)
+        Me.lblToBeBudgeted.Location = New System.Drawing.Point(638, 8)
         Me.lblToBeBudgeted.Name = "lblToBeBudgeted"
         Me.lblToBeBudgeted.Size = New System.Drawing.Size(119, 63)
         Me.lblToBeBudgeted.TabIndex = 2
@@ -1359,7 +1359,7 @@ Partial Class App
         Me.pbArrow.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow.Location = New System.Drawing.Point(646, -1)
+        Me.pbArrow.Location = New System.Drawing.Point(617, -1)
         Me.pbArrow.Name = "pbArrow"
         Me.pbArrow.Size = New System.Drawing.Size(204, 80)
         Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -1368,9 +1368,6 @@ Partial Class App
         '
         'pbNextMonth
         '
-        Me.pbNextMonth.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pbNextMonth.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbNextMonth.Image = Global.BasedBudgeting.My.Resources.Resources.nextmonth
         Me.pbNextMonth.Location = New System.Drawing.Point(91, 20)
@@ -1383,9 +1380,6 @@ Partial Class App
         '
         'pbPrevMonth
         '
-        Me.pbPrevMonth.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pbPrevMonth.Cursor = System.Windows.Forms.Cursors.Hand
         Me.pbPrevMonth.Image = Global.BasedBudgeting.My.Resources.Resources.prevmonth
         Me.pbPrevMonth.Location = New System.Drawing.Point(316, 20)
@@ -1419,9 +1413,9 @@ Partial Class App
         Me.lblToBeBudgetedValue.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
         Me.lblToBeBudgetedValue.Font = New System.Drawing.Font("Calibri", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblToBeBudgetedValue.ForeColor = System.Drawing.Color.FromArgb(CType(CType(106, Byte), Integer), CType(CType(168, Byte), Integer), CType(CType(79, Byte), Integer))
-        Me.lblToBeBudgetedValue.Location = New System.Drawing.Point(891, 18)
+        Me.lblToBeBudgetedValue.Location = New System.Drawing.Point(814, 18)
         Me.lblToBeBudgetedValue.Name = "lblToBeBudgetedValue"
-        Me.lblToBeBudgetedValue.Size = New System.Drawing.Size(152, 47)
+        Me.lblToBeBudgetedValue.Size = New System.Drawing.Size(225, 47)
         Me.lblToBeBudgetedValue.TabIndex = 3
         Me.lblToBeBudgetedValue.Text = "0,00 €"
         Me.lblToBeBudgetedValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -1482,9 +1476,9 @@ Partial Class App
         'pnlNavigation
         '
         Me.pnlNavigation.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        Me.pnlNavigation.Controls.Add(Me.pnlToBeBudgeted)
         Me.pnlNavigation.Controls.Add(Me.pnlReports)
         Me.pnlNavigation.Controls.Add(Me.pnlWorkingBalance)
-        Me.pnlNavigation.Controls.Add(Me.pnlToBeBudgeted)
         Me.pnlNavigation.Dock = System.Windows.Forms.DockStyle.Top
         Me.pnlNavigation.Location = New System.Drawing.Point(215, 0)
         Me.pnlNavigation.Margin = New System.Windows.Forms.Padding(0)

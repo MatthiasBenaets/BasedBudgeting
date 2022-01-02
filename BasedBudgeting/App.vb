@@ -255,6 +255,12 @@ Public Class App
     Private Sub dgvAccounts_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvAccounts.CellEndEdit
         SaveAccounts()
     End Sub
+    Dim cellVal As Decimal                                                                      ' Variable for when you double click a cell
+    Dim cellVal2 As Decimal
+    Private Sub dgvBudget_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellDoubleClick
+        cellVal = CType(dgvBudget.Rows(e.RowIndex).Cells(1).Value, Decimal)                     ' Give above variables a value
+        cellVal2 = CType(dgvBudget.Rows(e.RowIndex).Cells(2).Value, Decimal)
+    End Sub
     Private Sub dgvBudget_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellEndEdit  ' Used to automatically add rows in dgvBudget and update total available
         If dgvBudget.CurrentCell.RowIndex = 0 Then
             For Each row As DataGridViewRow In dgvBudget.Rows                                   ' If subcategory already exists, don't add it
@@ -287,26 +293,37 @@ Public Class App
         End If
 
         If dgvBudget.CurrentCell.ColumnIndex = 1 Or dgvBudget.CurrentCell.ColumnIndex = 2 Then  ' Convert given value to decimal currency
-            dgvBudget.CurrentCell.Value = CType(dgvBudget.CurrentCell.Value, Decimal).ToString("C")
+            If dgvBudget.CurrentCell.Value.ToString = "" Then
+                dgvBudget.CurrentCell.Value = ""
+                Exit Sub
+            Else
+                dgvBudget.CurrentCell.Value = CType(dgvBudget.CurrentCell.Value, Decimal).ToString("C")
+            End If
         End If
 
         Dim totBudgeted As Decimal = 0
+        Dim totActivity As Decimal = 0
         Dim indexCount As Integer = 0
-        If dgvBudget.CurrentCell.ColumnIndex = 1 Or dgvBudget.CurrentCell.ColumnIndex = 2 Then                                           ' Update available after edit in budgeted
-            dgvBudget.Rows(e.RowIndex).Cells(3).Value = CType(dgvBudget.Rows(e.RowIndex).Cells(1).Value, Decimal) + CType(dgvBudget.Rows(e.RowIndex).Cells(2).Value, Decimal)
-            For i As Integer = 0 To dgvBudget.Rows.Count - 1                                    ' Update total budgeted of category, below edit
+        If dgvBudget.CurrentCell.ColumnIndex = 1 Or dgvBudget.CurrentCell.ColumnIndex = 2 Then  ' Update available after edit in budgeted
+            If dgvBudget.Rows(e.RowIndex).Cells(0).Value <> "" Then
+                dgvBudget.Rows(e.RowIndex).Cells(3).Value = CType(dgvBudget.Rows(e.RowIndex).Cells(3).Value, Decimal) + CType(dgvBudget.Rows(e.RowIndex).Cells(1).Value, Decimal) + CType(dgvBudget.Rows(e.RowIndex).Cells(2).Value, Decimal) - cellVal - cellVal2
+            End If
+            For i As Integer = 0 To dgvBudget.Rows.Count - 1                                    ' Update total budgeted/activity of category, below edit
                 If dgvBudget.Rows(e.RowIndex + i).Cells(0).Value.ToString <> "" And dgvBudget.Rows(e.RowIndex + i).Cells(4).Value.ToString = "S" Then
                     totBudgeted += CType(dgvBudget.Rows(e.RowIndex + i).Cells(1).Value, Decimal)
+                    totActivity += CType(dgvBudget.Rows(e.RowIndex + i).Cells(2).Value, Decimal)
                 Else
                     i = dgvBudget.Rows.Count - 1
                 End If
             Next
-            For i As Integer = 0 To dgvBudget.Rows.Count - 1                                    ' above edit, until category titel 
+            For i As Integer = 0 To dgvBudget.Rows.Count - 1                                    ' above edit, until category title
                 If dgvBudget.Rows(e.RowIndex - i).Cells(0).Value.ToString <> "" And dgvBudget.Rows(e.RowIndex - i).Cells(4).Value.ToString = "S" Then
                     totBudgeted += CType(dgvBudget.Rows(e.RowIndex - i).Cells(1).Value, Decimal)
+                    totActivity += CType(dgvBudget.Rows(e.RowIndex - i).Cells(2).Value, Decimal)
                     indexCount += 1
                 Else
                     dgvBudget.Rows(e.RowIndex - indexCount).Cells(1).Value = totBudgeted - CType(dgvBudget.Rows(e.RowIndex).Cells(1).Value, Decimal)    ' Change total budgeted for category
+                    dgvBudget.Rows(e.RowIndex - indexCount).Cells(2).Value = totActivity - CType(dgvBudget.Rows(e.RowIndex).Cells(2).Value, Decimal)
                     i = dgvBudget.Rows.Count - 1
                 End If
             Next
@@ -364,8 +381,8 @@ Public Class App
         cbSubcategory.Enabled = True                                                            ' Enable cbSubcategory so it can be selected.
 
         If cbCategory.Text = "To Be Budgeted" Then                                              ' If category is "To be budgeted", do next...
-            cbSubcategory.Items.Add("No subcategory")
-            cbSubcategory.Text = "No subcategory"
+            cbSubcategory.Items.Add("No Subcategory")
+            cbSubcategory.Text = "No Subcategory"
             cbSubcategory.Enabled = False
             tbOutflow.Text = ""
             tbOutflow.Enabled = False
@@ -531,15 +548,15 @@ Public Class App
             cbCategory.Items.Add("Transfer")                                                    ' Add extra items for combobox
             cbCategory.Text = "Transfer"
             cbCategory.Enabled = False
-            cbSubcategory.Items.Add("No subcategory")
-            cbSubcategory.Text = "No subcategory"
+            cbSubcategory.Items.Add("No Subcategory")
+            cbSubcategory.Text = "No Subcategory"
             cbSubcategory.Enabled = False
             tbMemo.Text = "Transfer"
         Else                                                                                    ' Remove limitations if changing back to external payee
             cbCategory.Enabled = True
             cbCategory.Items.Remove("Transfer")
             cbCategory.Text = ""
-            cbSubcategory.Items.Remove("No subcategory")
+            cbSubcategory.Items.Remove("No Subcategory")
             cbSubcategory.Text = ""
         End If
     End Sub
@@ -610,7 +627,7 @@ Public Class App
                 k = 0
                 l = False
                 While k < xTra.Length
-                    If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No subcategory" Then ' If outflow does not exist (its probably inflow transaction), skip
+                    If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No Subcategory" Then ' If outflow does not exist (its probably inflow transaction), skip
                         k += 1
                         l = True
                     Else
@@ -666,7 +683,7 @@ Public Class App
             Dim traDate As String = Convert.ToDateTime(traVal(1))
             Dim traMonth = CDate(traVal(1)).ToString("MMM yyyy")                                ' Convert to Month Year
             If (traDate >= preYear) Then                                                        ' Check if date is not older than 1 year
-                If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No subcategory" Then ' Transactions are sometimes "", in this case, change to 0
+                If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No Subcategory" Then ' Transactions are sometimes "", in this case, change to 0
                 Else
                     If dtTrend.Rows.Count = 0 Then                                              ' First transaction loop
                         dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                        ' Add row to DataTable in order "outflow/date/category"
@@ -989,7 +1006,7 @@ Public Class App
         Next
         For i As Integer = 0 To dgvBudget.Rows.Count - 1
             If dgvBudget.Rows(i).Cells(4).Value.ToString = "S" And dgvBudget.Rows(i).Cells(1).Value.ToString <> "" Then
-                totValue -= CType(dgvBudget.Rows(i).Cells(1).Value, Decimal)
+                totValue -= CType(dgvBudget.Rows(i).Cells(3).Value, Decimal)
             End If
         Next
         lblToBeBudgetedValue.Text = totValue.ToString("C")
