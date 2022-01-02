@@ -66,7 +66,7 @@ Coming soon™
     - Keep track of bank accounts, cash or even your portfolio balance at one place
     - Balance will stay updated automatically after initial setup
 - **Budget:**
-    - Keep a budget for the current month (and review budget from previous months=WIP)
+    - Keep a budget for the current month and review budget from previous months
     - List different categories and subcategories
         - Budget available money from your budget
         - Review monthly activity of the different categories.
@@ -74,7 +74,7 @@ Coming soon™
     - Always be on top of how much you budgeted, your inflow & outflow and overall availablity of the current month
 - **Reports:**
     - Net worth chart, Visualise money diversification
-    - 30 Day doughnut spending chart , link to your subcategories
+    - Current month doughnut spending chart , link to your subcategories
     - 1 Year stacked column spending chart, link to your subcategories
 - **All Accounts:**
     - Add transactions linked to your given accounts and subcategories
@@ -85,10 +85,10 @@ Coming soon™
 <br></br>
 ##  ⌛Download
 ### **[Releases](https://github.com/MatthiasBenaets/BasedBudgeting/releases)**
-### **[Latest Version](https://github.com/MatthiasBenaets/BasedBudgeting/releases/tag/v1.0.0)**
+### **[Latest Version](https://github.com/MatthiasBenaets/BasedBudgeting/releases/tag/v1.1.0)**
 <br></br>
 ##  🙋FAQ
-Nothing to tell at the moment. Sorry
+Nothing to tell at the moment.
 
 Ask a question [HERE](https://github.com/MatthiasBenaets/BasedBudgeting/discussions)
 <br></br>
