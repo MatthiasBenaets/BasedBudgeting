@@ -44,8 +44,7 @@ Public Class App
             Next i
         End If
 
-        'dgvBudget.Columns(2).ReadOnly = True                                                   ' For not disabled so manual edit is possible, if error made at transactions
-        dgvBudget.Columns(3).ReadOnly = True
+        dgvBudget.Columns(3).ReadOnly = True                                                    ' For not disabled so manual edit is possible, if error made at transactions
         If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\budget.csv") Then       ' If saved budget file exists
             rows = File.ReadAllLines(roaming + "\BasedBudgeting\budget.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
@@ -152,9 +151,9 @@ Public Class App
         pnlAccountsTransaction.Visible = False
         pnlAccountsFilter.Visible = False
         dgvTransactions.Visible = False
-        pnlToBeBudgeted.Visible = True
         pnlWorkingBalance.Visible = False
         pnlReports.Visible = False
+        dgvBudget.Visible = False                                                               ' Visual bug fix
         dgvBudget.Visible = True
         dgvBudget.Refresh()
     End Sub
@@ -171,7 +170,6 @@ Public Class App
         pnlAccountsFilter.Visible = False
         dgvBudget.Visible = False
         dgvTransactions.Visible = False
-        pnlToBeBudgeted.Visible = True
         pnlWorkingBalance.Visible = False
         pnlReports.Visible = True
 
@@ -203,7 +201,6 @@ Public Class App
         pnlAccountsFilter.Visible = True
         dgvBudget.Visible = False
         dgvTransactions.Visible = True
-        pnlToBeBudgeted.Visible = True
         pnlWorkingBalance.Visible = True
         pnlReports.Visible = False
         checkCombobox()
@@ -585,12 +582,17 @@ Public Class App
         Dim xAcc(rowsAcc.Length) As String
         Dim yAcc(rowsAcc.Length) As Double
         Dim seriesAcc As String = Nothing
+        Dim yTot As Double = 0
         Dim j As Integer = 0
 
+        For i As Integer = 0 To rowsAcc.Length - 1 Step +1                                      ' Get total balance to get percentage
+            accVal = rowsAcc(i).ToString().Split(";")
+            yTot += accVal(1)
+        Next
         For i As Integer = 0 To rowsAcc.Length - 1 Step +1                                      ' Looping through all accounts
             accVal = rowsAcc(j).ToString().Split(";")
             xAcc(j) = accVal(0)
-            yAcc(j) = accVal(1)
+            yAcc(j) = accVal(1) / yTot * 100                                                    ' Get correct percentage
             j += 1
         Next i
 
@@ -599,8 +601,17 @@ Public Class App
         seriesAcc = "chNet"                                                                     ' Unique chart name
         chNet.Series.Add(seriesAcc)
         chNet.Series(seriesAcc).Points.DataBindXY(xAcc, yAcc)
+        chNet.Series(seriesAcc).LabelFormat = "{0.00} %"
+        chNet.Series(seriesAcc)("PieLabelStyle") = "outside"
+        chNet.Series(seriesAcc).BorderColor = System.Drawing.Color.Gray
+        chNet.Series(seriesAcc).Font() = New Font("Calibri", 10, FontStyle.Bold)
+        chNet.Series(seriesAcc).LabelForeColor = Color.Gray
         chNet.Series(seriesAcc).ChartType = DataVisualization.Charting.SeriesChartType.Pie      ' Define chart type
         chNet.Legends(0).Enabled = True                                                         ' Chart legend
+        chNet.Legends(0).Font() = New Font("Calibri", 12, FontStyle.Bold)
+        chNet.Legends(0).ForeColor() = Color.Gray
+        chNet.ChartAreas(0).Area3DStyle.Enable3D = True
+        chNet.ChartAreas(0).Area3DStyle.Inclination = 0
         For Each dp As DataPoint In chNet.Series(seriesAcc).Points
             If dp.YValues(0) = 0.0 Then
                 dp.LabelForeColor = Color.Transparent
@@ -655,8 +666,13 @@ Public Class App
         seriesTra = "chSpending"                                                                ' Unique chart name
         chSpending.Series.Add(seriesTra)
         chSpending.Series(seriesTra).Points.DataBindXY(xTra, yTra)
+        chSpending.Series(seriesTra).Font() = New Font("Calibri", 10, FontStyle.Bold)
+        chSpending.Series(seriesTra).BorderColor = System.Drawing.Color.Gray
+        chSpending.Series(seriesTra).LabelForeColor = Color.Black
         chSpending.Series(seriesTra).ChartType = DataVisualization.Charting.SeriesChartType.Doughnut ' Define chart type
         chSpending.Legends(0).Enabled = True                                                    ' Chart legend
+        chSpending.Legends(0).Font() = New Font("Calibri", 12, FontStyle.Bold)
+        chSpending.Legends(0).ForeColor() = Color.Gray
         For Each dp As DataPoint In chSpending.Series(seriesTra).Points
             If dp.YValues(0) = 0.0 Then
                 dp.LabelForeColor = Color.Transparent
@@ -674,6 +690,7 @@ Public Class App
         dtTrend.Columns.Add("outflow", GetType(Double))                                         ' Columns for DataTable
         dtTrend.Columns.Add("date", GetType(String))
         dtTrend.Columns.Add("category", GetType(String))
+        dtTrend.Columns.Add("sortDate", GetType(Date))                                          ' Extra column to sort by date (since it goes wrong with "date")
         Dim valExist As Boolean
         Dim l As Integer = 0
         Dim m As Integer = 0
@@ -686,7 +703,7 @@ Public Class App
                 If traVal(6) = "" Or dgvTransactions.Rows(i).Cells(4).Value.ToString = "No Subcategory" Then ' Transactions are sometimes "", in this case, change to 0
                 Else
                     If dtTrend.Rows.Count = 0 Then                                              ' First transaction loop
-                        dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                        ' Add row to DataTable in order "outflow/date/category"
+                        dtTrend.Rows.Add(traVal(6), traMonth, traVal(4), CDate(traMonth))       ' Add row to DataTable in order "outflow/date/category" & extra sortdate to sort correct
                     Else                                                                        ' If not first transaction
                         m = 0
                         valExist = False                                                        ' Reset valExist to false
@@ -700,7 +717,7 @@ Public Class App
                         End While
 
                         If valExist = False Then                                                ' If combo of date and subcategory does not exist:
-                            dtTrend.Rows.Add(traVal(6), traMonth, traVal(4))                    ' Add new line to DataTable
+                            dtTrend.Rows.Add(traVal(6), traMonth, traVal(4), CDate(traMonth))   ' Add new line to DataTable
                         End If
                     End If
 
@@ -737,14 +754,14 @@ Public Class App
                 If tfMatch = True Then                                                          ' If match, reset and search with next date
                     tfMatch = False
                 Else
-                    dtTrend.Rows.Add(0, arrDate(j), arrCat(i))                                  ' If no match, add as new row in DataTable
+                    dtTrend.Rows.Add(0, arrDate(j), arrCat(i), CDate(arrDate(j)))               ' If no match, add as new row in DataTable & extra column for sort
                     tfMatch = False                                                             ' Reset, moving to next category
                 End If
             Next
         Next
 
         Dim dv As DataView = New DataView(dtTrend)
-        dv.Sort = "date desc"
+        dv.Sort = "sortDate asc"                                                                ' Sort by date from extra column
 
         chTrend.Series.Clear()                                                                  ' Clear chart before fill so no exceptions are generated
         chTrend.Titles.Clear()
@@ -756,7 +773,13 @@ Public Class App
             chTrend.DataManipulator.Filter(DataVisualization.Charting.CompareMethod.EqualTo, 0, cs)   'Compare if equal to zero, filter out
             cs.ChartType = SeriesChartType.StackedColumn                                        ' Chart type
             'Dim dpcp As DataPointCustomProperties = New DataPointCustomProperties
+            For Each dp As DataPoint In cs.Points                                               ' Remove labels from chart 
+                dp.Tag = dp.Label
+                dp.Label = ""
+            Next
         Next
+        chTrend.Legends(0).Font() = New Font("Calibri", 12, FontStyle.Bold)
+        chTrend.Legends(0).ForeColor() = Color.Gray
     End Sub
     Private Sub lblSpendingButton_Click(sender As Object, e As EventArgs) Handles lblSpendingButton.Click   ' Navigate to other chart
         lblSpendingButton.Image = BasedBudgeting.My.Resources.Resources.selected                ' Change button picture
@@ -1177,6 +1200,4 @@ Public Class App
     End Sub
 End Class
 'TO DO
-' LOAD TRANSACTIONS AT BEGINNING
 ' DARK MODE
-' SELECT CORRECT COLOR SCREEN FOR CHARTS

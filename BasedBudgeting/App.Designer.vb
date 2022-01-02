@@ -184,11 +184,14 @@ Partial Class App
         Me.chNet.Location = New System.Drawing.Point(0, 0)
         Me.chNet.Margin = New System.Windows.Forms.Padding(0)
         Me.chNet.Name = "chNet"
-        Me.chNet.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
         Series1.ChartArea = "ChartArea1"
         Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie
+        Series1.CustomProperties = "PieLabelStyle=Outside"
+        Series1.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Series1.LabelFormat = "#%"
         Series1.Legend = "Legend1"
         Series1.Name = "Series1"
+        Series1.SmartLabelStyle.MaxMovingDistance = 300.0R
         Me.chNet.Series.Add(Series1)
         Me.chNet.Size = New System.Drawing.Size(869, 593)
         Me.chNet.TabIndex = 10
@@ -887,9 +890,9 @@ Partial Class App
         Me.chTrend.Location = New System.Drawing.Point(0, 0)
         Me.chTrend.Margin = New System.Windows.Forms.Padding(0)
         Me.chTrend.Name = "chTrend"
-        Me.chTrend.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
         Series2.ChartArea = "ChartArea1"
         Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn
+        Series2.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Series2.Legend = "Legend1"
         Series2.Name = "Series1"
         Me.chTrend.Series.Add(Series2)
@@ -910,9 +913,9 @@ Partial Class App
         Me.chSpending.Location = New System.Drawing.Point(0, 0)
         Me.chSpending.Margin = New System.Windows.Forms.Padding(0)
         Me.chSpending.Name = "chSpending"
-        Me.chSpending.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Berry
         Series3.ChartArea = "ChartArea1"
         Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut
+        Series3.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Series3.Legend = "Legend1"
         Series3.Name = "Series1"
         Me.chSpending.Series.Add(Series3)
@@ -1490,7 +1493,7 @@ Partial Class App
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.SystemColors.Window
+        Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(245, Byte), Integer), CType(CType(250, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(1264, 681)
         Me.Controls.Add(Me.pnlBudgetStatistics)
         Me.Controls.Add(Me.pnlAccountsTransaction)
