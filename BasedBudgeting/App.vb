@@ -387,6 +387,10 @@ Public Class App
             tbOutflow.Text = ""
             tbOutflow.Enabled = False
         End If
+
+        If cbCategory.Text <> "To Be Budgeted" Then
+            tbOutflow.Enabled = True
+        End If
     End Sub
     Private Sub btnAddTransaction_Click(sender As Object, e As EventArgs) Handles btnAddTransaction.Click   ' When transaction add button is clicked
         Dim traOutflow As Boolean = False
@@ -993,7 +997,9 @@ Public Class App
                     totValue += dgvTransactions.Rows(i).Cells(7).Value
                 End If
             Else
-                i = dgvTransactions.Rows.Count - 1
+                If traDate < premonth Then
+                    i = dgvTransactions.Rows.Count - 1
+                End If
             End If
         Next
         lblTotalInflowValue.Text = totValue.ToString("C")
@@ -1008,7 +1014,9 @@ Public Class App
                     totValue += dgvTransactions.Rows(i).Cells(6).Value
                 End If
             Else
-                i = dgvTransactions.Rows.Count - 1
+                If traDate < premonth Then
+                    i = dgvTransactions.Rows.Count - 1
+                End If
             End If
         Next
         lblTotalSpendingValue.Text = totValue.ToString("C")

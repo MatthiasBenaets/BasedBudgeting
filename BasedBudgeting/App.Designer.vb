@@ -1068,7 +1068,7 @@ Partial Class App
         'updateLabels
         '
         Me.updateLabels.Enabled = True
-        Me.updateLabels.Interval = 500
+        Me.updateLabels.Interval = 5000
         '
         'redDetector
         '
