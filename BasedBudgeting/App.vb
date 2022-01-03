@@ -99,25 +99,27 @@ Public Class App
         If My.Settings.startDate = "start" Then                                                 ' If no global date variable exist | used t reset dgvBudget for new month
             My.Settings.startDate = DateTime.Now.ToString("MMM yyyy")
             checkedDate = CType(My.Settings.startDate, DateTime)
-        ElseIf DateTime.Now.Year > checkedDate.Year Or DateTime.Now.Month > checkedDate.Month Then  ' Check if global date month is earlier than current date
-            Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\BasedData\" + checkedDate.ToString("MMM yyyy") + ".csv"))
-            For i As Integer = 0 To dgvBudget.Rows.Count - 1 Step +1                            ' Save dgvBudget
-                For j As Integer = 0 To dgvBudget.Columns.Count - 1 Step +1
-                    If j = dgvBudget.Columns.Count - 1 Then
-                        writer.Write(dgvBudget.Rows(i).Cells(j).Value)
-                    Else
-                        writer.Write(dgvBudget.Rows(i).Cells(j).Value & ";")
-                    End If
-                Next j
-                writer.WriteLine("")
-            Next i
-            writer.Close()
+        Else
+            If DateTime.Now.Year > checkedDate.Year Or DateTime.Now.Month > checkedDate.Month Then  ' Check if global date month is earlier than current date
+                Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\BasedData\" + checkedDate.ToString("MMM yyyy") + ".csv"))
+                For i As Integer = 0 To dgvBudget.Rows.Count - 1 Step +1                        ' Save dgvBudget
+                    For j As Integer = 0 To dgvBudget.Columns.Count - 1 Step +1
+                        If j = dgvBudget.Columns.Count - 1 Then
+                            writer.Write(dgvBudget.Rows(i).Cells(j).Value)
+                        Else
+                            writer.Write(dgvBudget.Rows(i).Cells(j).Value & ";")
+                        End If
+                    Next j
+                    writer.WriteLine("")
+                Next i
+                writer.Close()
 
-            My.Settings.startDate = DateTime.Now.ToString("MMM yyyy")                           ' Reset global dat to current date
+                My.Settings.startDate = DateTime.Now.ToString("MMM yyyy")                       ' Reset global dat to current date
 
-            For Each row As DataGridViewRow In dgvBudget.Rows
-                row.Cells(2).Value = 0                                                          ' Reset activity for new month
-            Next
+                For Each row As DataGridViewRow In dgvBudget.Rows
+                    row.Cells(2).Value = 0                                                      ' Reset activity for new month
+                Next
+            End If
         End If
 
         If dgvTransactions.Rows.Count <> 0 Then                                                 ' Check if navigation button should be available
@@ -342,9 +344,6 @@ Public Class App
     End Sub
     Private Sub dgvTransactions_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvTransactions.CellEndEdit
         Dim toDec As Decimal = 0
-        'If dgvTransactions.CurrentCell.Value = "" Then
-        'dgvTransactions.CurrentCell.Value = toDec.ToString
-        'End If
         If dgvTransactions.CurrentCell.ColumnIndex = 6 Then                                     ' After edit, change value to correct format
             If dgvTransactions.CurrentCell.Value Is Nothing Then
             Else
