@@ -499,6 +499,7 @@ Partial Class App
         '
         'btnAddTransaction
         '
+        Me.btnAddTransaction.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnAddTransaction.Location = New System.Drawing.Point(68, 439)
         Me.btnAddTransaction.Name = "btnAddTransaction"
         Me.btnAddTransaction.Size = New System.Drawing.Size(64, 20)

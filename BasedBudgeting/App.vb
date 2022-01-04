@@ -226,6 +226,12 @@ Public Class App
         Dim accounts(2)
         accounts(0) = InputBox("Name of account")                                               ' Inputbox to get info from user
         If accounts(0) <> "" Then                                                               ' If answer is canceled. Do nothing
+            For i As Integer = 0 To dgvAccounts.Rows.Count - 1
+                If dgvAccounts.Rows(i).Cells(0).Value.ToString = accounts(0).ToString Then
+                    MsgBox("Account already exits")
+                    Exit Sub
+                End If
+            Next
             accounts(1) = InputBox("Balance of " & accounts(0) & ".")
             If accounts(1) <> "" Then
                 dgvAccounts.Rows.Add(accounts)                                                  ' Add info to DataGridView
@@ -239,7 +245,13 @@ Public Class App
                     lblTotalBalance.Text = totDec.ToString("C")
                 Next
                 SaveAccounts()
+            Else
+                MsgBox("No balance value given")
+                Exit Sub
             End If
+        Else
+            MsgBox("No name given")
+            Exit Sub
         End If
     End Sub
     Private Sub pbPrevMonth_Click(sender As Object, e As EventArgs) Handles pbPrevMonth.Click   ' Show previous month budget
