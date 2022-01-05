@@ -96,12 +96,12 @@ Public Class App
             checkedDate = My.Settings.startDate                                                 ' Will further on be use to give correct document name
         End If
 
-        If My.Settings.startDate = "start" Then                                                 ' If no global date variable exist | used t reset dgvBudget for new month
+        If My.Settings.startDate = "start" Then                                                 ' If no global date variable exist | used to reset dgvBudget for new month
             My.Settings.startDate = DateTime.Now.ToString("MMM yyyy")
             checkedDate = CType(My.Settings.startDate, DateTime)
         Else
             If DateTime.Now.Year > checkedDate.Year Or DateTime.Now.Month > checkedDate.Month Then  ' Check if global date month is earlier than current date
-                Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\BasedData\" + checkedDate.ToString("MMM yyyy") + ".csv"))
+                Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\BasedData\" + checkedDate.ToString("MMM yyyy") + " Budget.csv"))
                 For i As Integer = 0 To dgvBudget.Rows.Count - 1 Step +1                        ' Save dgvBudget
                     For j As Integer = 0 To dgvBudget.Columns.Count - 1 Step +1
                         If j = dgvBudget.Columns.Count - 1 Then
@@ -113,6 +113,19 @@ Public Class App
                     writer.WriteLine("")
                 Next i
                 writer.Close()
+
+                Dim writer2 As New StreamWriter(CStr(roaming + "\BasedBudgeting\BasedData\" + checkedDate.ToString("MMM yyyy") + " Balance.csv"))
+                For i As Integer = 0 To dgvAccounts.Rows.Count - 1 Step +1                      ' save dgvAccounts
+                    For j As Integer = 0 To dgvAccounts.Columns.Count - 1 Step +1
+                        If j = dgvAccounts.Columns.Count - 1 Then
+                            writer.Write(dgvAccounts.Rows(i).Cells(j).Value)
+                        Else
+                            writer.Write(dgvAccounts.Rows(i).Cells(j).Value & ";")
+                        End If
+                    Next j
+                    writer2.WriteLine("")
+                Next i
+                writer2.Close()
 
                 My.Settings.startDate = DateTime.Now.ToString("MMM yyyy")                       ' Reset global dat to current date
 
@@ -137,8 +150,8 @@ Public Class App
         Next
     End Sub
     Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
-        SaveData()
         dgvDateChange(DateTime.Now.ToString("MMM yyyy").ToUpper())                              ' Reset dgvBudget back to present so it is saved correctly
+        SaveData()
         My.Settings.budgetName = txtTitle.Text
     End Sub
     Private Sub BtnBudget_Click(sender As Object, e As EventArgs) Handles btnBudget.Click       ' When Budget menu is selected
@@ -223,7 +236,7 @@ Public Class App
         dgvBudget.Rows.Add("", "", "", "", "S")
     End Sub
 
-    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles pbAddAccount.Click   ' When Add Account buttin is clicked
+    Private Sub pbAddAccount_Click(sender As Object, e As EventArgs) Handles pbAddAccount.Click ' When Add Account buttin is clicked
         Dim accounts(2)
         accounts(0) = InputBox("Name of account")                                               ' Inputbox to get info from user
         If accounts(0) <> "" Then                                                               ' If answer is canceled. Do nothing
@@ -354,6 +367,7 @@ Public Class App
             dgvBudget.Rows(e.RowIndex - indexCount).Cells(3).Value = totAvailable
         Next
         dgvBudget.Refresh()                                                                     ' Precaution visual bug
+        SaveBudget()
     End Sub
     Private Sub dgvTransactions_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvTransactions.CellEndEdit
         Dim toDec As Decimal = 0
@@ -404,7 +418,7 @@ Public Class App
             tbOutflow.Enabled = True
         End If
     End Sub
-    Private Sub PictureBox1_Click_1(sender As Object, e As EventArgs) Handles pbAddTransaction.Click ' When transaction add button is clicked
+    Private Sub pbAddTransaction_Click(sender As Object, e As EventArgs) Handles pbAddTransaction.Click   ' When transaction add button is clicked
         Dim traOutflow As Boolean = False
         Dim traInflow As Boolean = False
         Dim traTransfer As Boolean = False
@@ -952,11 +966,13 @@ Public Class App
             lblToBeBudgetedValue.Visible = False
             pbArrow.Visible = False
             btnAddCategory.Visible = False
+            pbAddAccount.Visible = False
         Else
             lblToBeBudgeted.Visible = True
             lblToBeBudgetedValue.Visible = True
             pbArrow.Visible = True
             btnAddCategory.Visible = True
+            pbAddAccount.Visible = True
         End If
     End Sub
     Private Sub updateLabels_Tick(sender As Object, e As EventArgs) Handles updateLabels.Tick
@@ -1064,7 +1080,7 @@ Public Class App
         Dim conDate As DateTime = CDate(lblDate.Text)                                           ' Check if document exist
         Dim downDate As String = conDate.AddMonths(-1).ToString("MMM yyyy").ToUpper()
         Dim upDate As String = conDate.AddMonths(+1).ToString("MMM yyyy").ToUpper()
-        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + downDate + ".csv") Then
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + downDate + " Budget.csv") Then
             pbPrevMonth.Visible = True
         Else
             pbPrevMonth.Visible = False
@@ -1073,7 +1089,7 @@ Public Class App
             pbNextMonth.Visible = False
         ElseIf upDate = DateTime.Now.ToString("MMM yyyy").ToUpper() Then
             pbNextMonth.Visible = True
-        ElseIf My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + upDate + ".csv") Then
+        ElseIf My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + upDate + " Budget.csv") Then
             pbNextMonth.Visible = True
         Else
             pbNextMonth.Visible = False
@@ -1184,10 +1200,11 @@ Public Class App
     End Sub
     Private Sub dgvDateChange(dateMonth As String)                                              ' Used to change datagridview if other month is selected
         dgvBudget.Rows.Clear()
+        dgvAccounts.Rows.Clear()
         Dim rows() As String
         Dim values() As String
-        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + dateMonth + ".csv") Then  ' If saved budget file exists
-            rows = File.ReadAllLines(roaming + "\BasedBudgeting\BasedData\" + dateMonth + ".csv")
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + dateMonth + " Budget.csv") Then  ' If saved budget file exists
+            rows = File.ReadAllLines(roaming + "\BasedBudgeting\BasedData\" + dateMonth + " Budget.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
                 values = rows(i).ToString().Split(";")                                          ' Split values at ";"
                 Dim row(values.Length - 1) As String
@@ -1224,6 +1241,32 @@ Public Class App
                 End If
             Next
         Next
+
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\BasedData\" + dateMonth + " Balance.csv") Then
+            rows = File.ReadAllLines(roaming + "\BasedBudgeting\BasedData\" + dateMonth + " Balance.csv")
+            For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
+                values = rows(i).ToString().Split(";")                                          ' Split values at ";"
+                Dim row(values.Length - 1) As String
+
+                For j As Integer = 0 To values.Length - 1 Step +1
+                    row(j) = values(j).Trim()
+                Next j
+                dgvAccounts.Rows.Add(row)                                                       ' Add row to datagridview
+                dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal)
+            Next i
+        ElseIf dateMonth = DateTime.Now.ToString("MMM yyyy").ToUpper Then
+            rows = File.ReadAllLines(roaming + "\BasedBudgeting\accounts.csv")
+            For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
+                values = rows(i).ToString().Split(";")                                          ' Split values at ";"
+                Dim row(values.Length - 1) As String
+
+                For j As Integer = 0 To values.Length - 1 Step +1
+                    row(j) = values(j).Trim()
+                Next j
+                dgvAccounts.Rows.Add(row)                                                       ' Add row to datagridview
+                dgvAccounts.Rows(i).Cells(1).Value = CType(dgvAccounts.Rows(i).Cells(1).Value, Decimal)
+            Next i
+        End If
     End Sub
     Private Sub dgvTransactions_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles dgvTransactions.UserDeletingRow  ' When a row get deleted
         Dim checkDate As DateTime
