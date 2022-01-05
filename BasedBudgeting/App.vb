@@ -269,13 +269,23 @@ Public Class App
         End If
     End Sub
     Private Sub pbPrevMonth_Click(sender As Object, e As EventArgs) Handles pbPrevMonth.Click   ' Show previous month budget
+        Dim toDec As Decimal
         lblDate.Text = CDate(lblDate.Text).AddMonths(-1).ToString("MMM yyyy").ToUpper()
         dgvDateChange(lblDate.Text)
+        For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+            toDec += CType(dgvAccounts.Rows(j).Cells(1).Value, Decimal)
+            lblTotalBalance.Text = toDec.ToString("C")
+        Next
     End Sub
 
     Private Sub pbNextMonth_Click(sender As Object, e As EventArgs) Handles pbNextMonth.Click   ' Show next or current month duget
+        Dim toDec As Decimal
         lblDate.Text = CDate(lblDate.Text).AddMonths(+1).ToString("MMM yyyy").ToUpper()
         dgvDateChange(lblDate.Text)
+        For j As Integer = 0 To dgvAccounts.Rows.Count - 1
+            toDec += CType(dgvAccounts.Rows(j).Cells(1).Value, Decimal)
+            lblTotalBalance.Text = toDec.ToString("C")
+        Next
     End Sub
     Private Sub dgvAccounts_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvAccounts.CellEndEdit
         SaveAccounts()

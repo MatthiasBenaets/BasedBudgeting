@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BasedBudgeting.exe" size="169952">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="BasedBudgeting.exe" size="175072">
       <assemblyIdentity name="BasedBudgeting" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>hpzycdGgcTluq+5L96HeJfq1lHuDbv5APVFQq6k5Coc=</dsig:DigestValue>
+        <dsig:DigestValue>udhSapzwB16FamE7zC8JGmTvC4bykpt4OtVhL030olw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
