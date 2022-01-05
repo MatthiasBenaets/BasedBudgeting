@@ -222,7 +222,8 @@ Public Class App
         dgvBudget.Rows(test).DefaultCellStyle.BackColor = Color.FromArgb(230, 245, 250)         ' Change background 
         dgvBudget.Rows.Add("", "", "", "", "S")
     End Sub
-    Private Sub btnAddAccount_Click(sender As Object, e As EventArgs) Handles btnAddAccount.Click   ' When Add Account buttin is clicked
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles pbAddAccount.Click   ' When Add Account buttin is clicked
         Dim accounts(2)
         accounts(0) = InputBox("Name of account")                                               ' Inputbox to get info from user
         If accounts(0) <> "" Then                                                               ' If answer is canceled. Do nothing
@@ -403,7 +404,7 @@ Public Class App
             tbOutflow.Enabled = True
         End If
     End Sub
-    Private Sub btnAddTransaction_Click(sender As Object, e As EventArgs) Handles btnAddTransaction.Click   ' When transaction add button is clicked
+    Private Sub PictureBox1_Click_1(sender As Object, e As EventArgs) Handles pbAddTransaction.Click ' When transaction add button is clicked
         Dim traOutflow As Boolean = False
         Dim traInflow As Boolean = False
         Dim traTransfer As Boolean = False
@@ -1337,5 +1338,4 @@ Public Class App
     End Sub
 End Class
 'TO DO
-' FIX FIRST START WITH EXISTING MONTHLY DOCUMENT INCORRECTLY SAVING
 ' DARK MODE
