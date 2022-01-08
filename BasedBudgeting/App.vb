@@ -118,9 +118,9 @@ Public Class App
                 For i As Integer = 0 To dgvAccounts.Rows.Count - 1 Step +1                      ' save dgvAccounts
                     For j As Integer = 0 To dgvAccounts.Columns.Count - 1 Step +1
                         If j = dgvAccounts.Columns.Count - 1 Then
-                            writer.Write(dgvAccounts.Rows(i).Cells(j).Value)
+                            writer2.Write(dgvAccounts.Rows(i).Cells(j).Value)
                         Else
-                            writer.Write(dgvAccounts.Rows(i).Cells(j).Value & ";")
+                            writer2.Write(dgvAccounts.Rows(i).Cells(j).Value & ";")
                         End If
                     Next j
                     writer2.WriteLine("")
@@ -955,6 +955,10 @@ Public Class App
                 cbPayeeFilter.Items.Add(dgvAccounts.Rows(i).Cells(0).Value.ToString)
             Next
         End If
+
+        cbCategoryFilter.Items.Add("To Be Budgeted")                                            ' Add items to combobox of transaction filter
+        cbCategoryFilter.Items.Add("Transfer")
+        cbSubcategoryFilter.Items.Add("No Subcategory")
     End Sub
     Private Sub checkVariables_Tick(sender As Object, e As EventArgs) Handles checkVariables.Tick   ' Ticker every 0.5 second
         If dgvTransactions.Rows.Count = 0 Then                                                  ' Check if there are transactions to show reports
@@ -1147,66 +1151,66 @@ Public Class App
         Next
     End Sub
     Private Sub cbAccountFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbAccountFilter.TextChanged  ' Transaction filter
-        For Each row As DataGridViewRow In dgvTransactions.Rows                                 ' For every row in transactions
-            If filtering = False Then                                                           ' Loop to check there is already a filter active
-                row.Visible = True
-                filtering = True
-                dtpDateFilter.Enabled = False
-            End If
-            If row.Cells(0).Value.ToString <> cbAccountFilter.Text Then                         ' Hide rows that are not filtered
-                row.Visible = False
-            End If
-        Next
+        checkFilter.Stop()                                                                      ' Resets the ticker to allow user to type
+        checkFilter.Start()                                                                     ' Half second lag to be user friendly
     End Sub
     Private Sub dtpDateFilter_ValueChanged(sender As Object, e As EventArgs) Handles dtpDateFilter.ValueChanged ' Transaction filter
-        Dim conDateFilter As String
-        Dim conDate As String
-        For Each row As DataGridViewRow In dgvTransactions.Rows
-            row.Visible = True
-            filtering = True
-            conDate = CDate(row.Cells(1).Value).ToString("MM yyyy")                             ' Convert to month year string to compare
-            conDateFilter = CDate(dtpDateFilter.Text).ToString("MM yyyy")
-            If conDateFilter <> conDate Then                                                    ' Make rows with other months invisible
-                row.Visible = False
-            End If
-        Next
+        filtering = True
     End Sub
     Private Sub cbPayeeFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayeeFilter.TextChanged  ' Transaction filter
-        For Each row As DataGridViewRow In dgvTransactions.Rows                                 ' For every row in transactions
-            If filtering = False Then                                                           ' Loop to check there is already a filter active
-                row.Visible = True
-                filtering = True
-                dtpDateFilter.Enabled = False
-            End If
-            If row.Cells(2).Value.ToString <> cbPayeeFilter.Text Then                           ' Hide rows that are not filtered
-                row.Visible = False
-            End If
-        Next
+        checkFilter.Stop()
+        checkFilter.Start()
     End Sub
     Private Sub cbCategoryFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbCategoryFilter.TextChanged    ' Transaction filter
-        For Each row As DataGridViewRow In dgvTransactions.Rows
-            If filtering = False Then
-                row.Visible = True
-                filtering = True
-                dtpDateFilter.Enabled = False
-            End If
-            If row.Cells(3).Value.ToString <> cbCategoryFilter.Text Then
-                row.Visible = False
-            End If
-        Next
-
+        checkFilter.Stop()
+        checkFilter.Start()
     End Sub
     Private Sub cbSubcategoryFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbSubcategoryFilter.TextChanged  ' Transaction filter
-        For Each row As DataGridViewRow In dgvTransactions.Rows
-            If filtering = False Then
-                row.Visible = True
-                filtering = True
-                dtpDateFilter.Enabled = False
-            End If
-            If row.Cells(4).Value.ToString <> cbSubcategoryFilter.Text Then
-                row.Visible = False
-            End If
-        Next
+        checkFilter.Stop()
+        checkFilter.Start()
+    End Sub
+    Private Sub tbMemoFilter_TextChanged(sender As Object, e As EventArgs) Handles tbMemoFilter.TextChanged ' Memo filter
+        checkFilter.Stop()
+        checkFilter.Start()
+    End Sub
+    Private Sub checkFilter_Tick(sender As Object, e As EventArgs) Handles checkFilter.Tick     ' Ticker to update transaction filter
+        Dim conDateFilter As String
+        Dim conDate As String
+        If cbAccountFilter.Text <> "" Or cbPayeeFilter.Text <> "" Or cbCategoryFilter.Text <> "" Or cbSubcategoryFilter.Text <> "" Or tbMemoFilter.Text <> "" Then  ' When filtering
+            For Each row As DataGridViewRow In dgvTransactions.Rows                             ' For each row in the data grid view
+                If row.Cells(0).Value.ToString.ToLower.StartsWith(cbAccountFilter.Text.ToLower) Or cbAccountFilter.Text.ToString = "" Then  ' Check if string start with value or is empty
+                    If row.Cells(2).Value.ToString.ToLower.StartsWith(cbPayeeFilter.Text.ToLower) Or cbPayeeFilter.Text.ToString = "" Then
+                        If row.Cells(3).Value.ToString.ToLower.StartsWith(cbCategoryFilter.Text.ToLower) Or cbCategoryFilter.Text.ToString = "" Then
+                            If row.Cells(4).Value.ToString.ToLower.StartsWith(cbSubcategoryFilter.Text.ToLower) Or cbSubcategoryFilter.Text.ToString = "" Then
+                                If row.Cells(5).Value.ToString.ToLower.StartsWith(tbMemoFilter.Text.ToLower) Or tbMemoFilter.Text.ToString = "" Then
+                                    If filtering = True Then                                    ' Date picker always has value so first check if it is actually being filtered
+                                        conDate = CDate(row.Cells(1).Value).ToString("MM yyyy") ' Compare months to eachother
+                                        conDateFilter = CDate(dtpDateFilter.Text).ToString("MM yyyy")
+                                        If conDateFilter <> conDate Then
+                                            row.Visible = False
+                                        Else
+                                            row.Visible = True
+                                        End If
+                                    Else
+                                        row.Visible = True
+                                    End If
+                                Else row.Visible = False
+                                End If
+                            Else row.Visible = False
+                            End If
+                        Else row.Visible = False
+                        End If
+                    Else row.Visible = False
+                    End If
+                Else
+                    row.Visible = False
+                End If
+            Next
+        ElseIf cbAccountFilter.Text = "" And cbPayeeFilter.Text.ToLower = "" And cbCategoryFilter.Text = "" And cbSubcategoryFilter.Text = "" And tbMemoFilter.Text = "" And filtering = False Then ' Check if nothing is being filtered
+            For Each row As DataGridViewRow In dgvTransactions.Rows
+                row.Visible = True                                                              ' Show all rows
+            Next
+        End If
     End Sub
     Private Sub dgvDateChange(dateMonth As String)                                              ' Used to change datagridview if other month is selected
         dgvBudget.Rows.Clear()
@@ -1389,6 +1393,33 @@ Public Class App
             Next
         End If
     End Sub
+    Private Sub dgvAccounts_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles dgvAccounts.UserDeletingRow  ' Event when selected row is deleted
+        Dim finalCheck As DialogResult = MsgBox("Are you sure you want to delete " + dgvAccounts.CurrentRow.Cells(0).Value.ToString, MessageBoxButtons.YesNo)
+        If finalCheck = DialogResult.No Then                                                    ' Check if user reall wants to delete the account
+            e.Cancel = True                                                                     ' cancel even and exit sub
+            Exit Sub
+        End If
+    End Sub
+    Private Sub dgvAccounts_UserDeletedRow(sender As Object, e As DataGridViewRowEventArgs) Handles dgvAccounts.UserDeletedRow  ' If user is sure they want to delete account
+
+        Dim toDec As Decimal = 0
+        For j As Integer = 0 To dgvAccounts.Rows.Count - 1                                      ' Update total balance
+            toDec += dgvAccounts.Rows(j).Cells(1).Value
+            lblTotalBalance.Text = toDec.ToString("C")
+        Next
+        dgvAccounts.Refresh()
+
+        Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\accounts.csv"))          ' Insta save data since for some reason saveAccounts()
+        For i As Integer = 0 To dgvAccounts.Rows.Count - 1 Step +1                              ' makes deleted row reappear for some reason
+            For j As Integer = 0 To dgvAccounts.Columns.Count - 1 Step +1                       ' No flipping clue why...
+                If j = dgvAccounts.Columns.Count - 1 Then
+                    writer.Write(dgvAccounts.Rows(i).Cells(j).Value)
+                Else
+                    writer.Write(dgvAccounts.Rows(i).Cells(j).Value & ";")
+                End If
+            Next j
+            writer.WriteLine("")
+        Next i
+        writer.Close()
+    End Sub
 End Class
-'TO DO
-' DARK MODE

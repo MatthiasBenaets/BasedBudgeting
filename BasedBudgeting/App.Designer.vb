@@ -74,6 +74,7 @@ Partial Class App
         Me.lblTotalSpending = New System.Windows.Forms.Label()
         Me.lblIncluded = New System.Windows.Forms.Label()
         Me.pnlAccountsTransaction = New System.Windows.Forms.Panel()
+        Me.pbAddTransaction = New System.Windows.Forms.PictureBox()
         Me.tbInflow = New System.Windows.Forms.TextBox()
         Me.tbOutflow = New System.Windows.Forms.TextBox()
         Me.tbMemo = New System.Windows.Forms.TextBox()
@@ -100,6 +101,7 @@ Partial Class App
         Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column8 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.pnlAccountsFilter = New System.Windows.Forms.Panel()
+        Me.tbMemoFilter = New System.Windows.Forms.TextBox()
         Me.btnResetTransaction = New System.Windows.Forms.Button()
         Me.dtpDateFilter = New System.Windows.Forms.DateTimePicker()
         Me.cbSubcategoryFilter = New System.Windows.Forms.ComboBox()
@@ -130,29 +132,30 @@ Partial Class App
         Me.lblBudget = New System.Windows.Forms.Label()
         Me.lblTotalBalance = New System.Windows.Forms.Label()
         Me.pnlMenu = New System.Windows.Forms.Panel()
+        Me.pbAddAccount = New System.Windows.Forms.PictureBox()
         Me.pnlWorkingBalance = New System.Windows.Forms.Panel()
         Me.lblWorkingBalanceValue = New System.Windows.Forms.Label()
         Me.lblWorkingBalance = New System.Windows.Forms.Label()
         Me.lblAllAccounts = New System.Windows.Forms.Label()
+        Me.pbArrow2 = New System.Windows.Forms.PictureBox()
         Me.pnlToBeBudgeted = New System.Windows.Forms.Panel()
         Me.lblToBeBudgeted = New System.Windows.Forms.Label()
+        Me.pbArrow = New System.Windows.Forms.PictureBox()
+        Me.pbNextMonth = New System.Windows.Forms.PictureBox()
+        Me.pbPrevMonth = New System.Windows.Forms.PictureBox()
         Me.lblDate = New System.Windows.Forms.Label()
         Me.lblToBeBudgetedValue = New System.Windows.Forms.Label()
         Me.pnlReports = New System.Windows.Forms.Panel()
         Me.lblSpendingTrendButton = New System.Windows.Forms.Label()
+        Me.lblSpendingButton = New System.Windows.Forms.Label()
         Me.lblNetWorthButton = New System.Windows.Forms.Label()
         Me.pnlNavigation = New System.Windows.Forms.Panel()
-        Me.pbArrow = New System.Windows.Forms.PictureBox()
-        Me.pbNextMonth = New System.Windows.Forms.PictureBox()
-        Me.pbPrevMonth = New System.Windows.Forms.PictureBox()
-        Me.lblSpendingButton = New System.Windows.Forms.Label()
-        Me.pbArrow2 = New System.Windows.Forms.PictureBox()
-        Me.pbAddAccount = New System.Windows.Forms.PictureBox()
-        Me.pbAddTransaction = New System.Windows.Forms.PictureBox()
+        Me.checkFilter = New System.Windows.Forms.Timer(Me.components)
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetStatistics.SuspendLayout()
         Me.pnlReportsStatistics.SuspendLayout()
         Me.pnlAccountsTransaction.SuspendLayout()
+        CType(Me.pbAddTransaction, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvTransactions, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlAccountsFilter.SuspendLayout()
         Me.pnlReportsCharts.SuspendLayout()
@@ -162,16 +165,15 @@ Partial Class App
         Me.pnlBudgetControl.SuspendLayout()
         CType(Me.dgvAccounts, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlMenu.SuspendLayout()
+        CType(Me.pbAddAccount, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlWorkingBalance.SuspendLayout()
+        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlToBeBudgeted.SuspendLayout()
-        Me.pnlReports.SuspendLayout()
-        Me.pnlNavigation.SuspendLayout()
         CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbNextMonth, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.pbPrevMonth, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAddAccount, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.pbAddTransaction, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.pnlReports.SuspendLayout()
+        Me.pnlNavigation.SuspendLayout()
         Me.SuspendLayout()
         '
         'chNet
@@ -499,6 +501,16 @@ Partial Class App
         Me.pnlAccountsTransaction.TabIndex = 3
         Me.pnlAccountsTransaction.Visible = False
         '
+        'pbAddTransaction
+        '
+        Me.pbAddTransaction.Image = Global.BasedBudgeting.My.Resources.Resources.addtransaction
+        Me.pbAddTransaction.Location = New System.Drawing.Point(46, 442)
+        Me.pbAddTransaction.Name = "pbAddTransaction"
+        Me.pbAddTransaction.Size = New System.Drawing.Size(106, 23)
+        Me.pbAddTransaction.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbAddTransaction.TabIndex = 21
+        Me.pbAddTransaction.TabStop = False
+        '
         'tbInflow
         '
         Me.tbInflow.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -793,6 +805,7 @@ Partial Class App
         '
         Me.pnlAccountsFilter.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pnlAccountsFilter.Controls.Add(Me.tbMemoFilter)
         Me.pnlAccountsFilter.Controls.Add(Me.btnResetTransaction)
         Me.pnlAccountsFilter.Controls.Add(Me.dtpDateFilter)
         Me.pnlAccountsFilter.Controls.Add(Me.cbSubcategoryFilter)
@@ -805,11 +818,18 @@ Partial Class App
         Me.pnlAccountsFilter.TabIndex = 9
         Me.pnlAccountsFilter.Visible = False
         '
+        'tbMemoFilter
+        '
+        Me.tbMemoFilter.Location = New System.Drawing.Point(526, -1)
+        Me.tbMemoFilter.Name = "tbMemoFilter"
+        Me.tbMemoFilter.Size = New System.Drawing.Size(100, 20)
+        Me.tbMemoFilter.TabIndex = 6
+        '
         'btnResetTransaction
         '
         Me.btnResetTransaction.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnResetTransaction.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnResetTransaction.Location = New System.Drawing.Point(577, -2)
+        Me.btnResetTransaction.Location = New System.Drawing.Point(625, -2)
         Me.btnResetTransaction.Margin = New System.Windows.Forms.Padding(0)
         Me.btnResetTransaction.Name = "btnResetTransaction"
         Me.btnResetTransaction.Size = New System.Drawing.Size(112, 21)
@@ -822,7 +842,7 @@ Partial Class App
         Me.dtpDateFilter.CustomFormat = "MM yyyy"
         Me.dtpDateFilter.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.dtpDateFilter.Format = System.Windows.Forms.DateTimePickerFormat.Custom
-        Me.dtpDateFilter.Location = New System.Drawing.Point(130, -1)
+        Me.dtpDateFilter.Location = New System.Drawing.Point(117, -1)
         Me.dtpDateFilter.MinDate = New Date(1900, 1, 1, 0, 0, 0, 0)
         Me.dtpDateFilter.Name = "dtpDateFilter"
         Me.dtpDateFilter.Size = New System.Drawing.Size(113, 21)
@@ -832,27 +852,27 @@ Partial Class App
         '
         Me.cbSubcategoryFilter.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbSubcategoryFilter.FormattingEnabled = True
-        Me.cbSubcategoryFilter.Location = New System.Drawing.Point(465, -1)
+        Me.cbSubcategoryFilter.Location = New System.Drawing.Point(427, -1)
         Me.cbSubcategoryFilter.Name = "cbSubcategoryFilter"
-        Me.cbSubcategoryFilter.Size = New System.Drawing.Size(113, 21)
+        Me.cbSubcategoryFilter.Size = New System.Drawing.Size(100, 21)
         Me.cbSubcategoryFilter.TabIndex = 3
         '
         'cbCategoryFilter
         '
         Me.cbCategoryFilter.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbCategoryFilter.FormattingEnabled = True
-        Me.cbCategoryFilter.Location = New System.Drawing.Point(353, -1)
+        Me.cbCategoryFilter.Location = New System.Drawing.Point(328, -1)
         Me.cbCategoryFilter.Name = "cbCategoryFilter"
-        Me.cbCategoryFilter.Size = New System.Drawing.Size(113, 21)
+        Me.cbCategoryFilter.Size = New System.Drawing.Size(100, 21)
         Me.cbCategoryFilter.TabIndex = 2
         '
         'cbPayeeFilter
         '
         Me.cbPayeeFilter.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbPayeeFilter.FormattingEnabled = True
-        Me.cbPayeeFilter.Location = New System.Drawing.Point(242, -1)
+        Me.cbPayeeFilter.Location = New System.Drawing.Point(229, -1)
         Me.cbPayeeFilter.Name = "cbPayeeFilter"
-        Me.cbPayeeFilter.Size = New System.Drawing.Size(113, 21)
+        Me.cbPayeeFilter.Size = New System.Drawing.Size(100, 21)
         Me.cbPayeeFilter.TabIndex = 1
         '
         'cbAccountFilter
@@ -861,7 +881,7 @@ Partial Class App
         Me.cbAccountFilter.FormattingEnabled = True
         Me.cbAccountFilter.Location = New System.Drawing.Point(18, -1)
         Me.cbAccountFilter.Name = "cbAccountFilter"
-        Me.cbAccountFilter.Size = New System.Drawing.Size(113, 21)
+        Me.cbAccountFilter.Size = New System.Drawing.Size(100, 21)
         Me.cbAccountFilter.TabIndex = 0
         '
         'pnlReportsCharts
@@ -1174,13 +1194,12 @@ Partial Class App
         DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle20.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
         DataGridViewCellStyle20.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle20.ForeColor = System.Drawing.Color.White
+        DataGridViewCellStyle20.ForeColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
         DataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
         DataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.White
         DataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
         Me.dgvAccounts.RowHeadersDefaultCellStyle = DataGridViewCellStyle20
-        Me.dgvAccounts.RowHeadersVisible = False
-        Me.dgvAccounts.RowHeadersWidth = 4
+        Me.dgvAccounts.RowHeadersWidth = 10
         DataGridViewCellStyle21.BackColor = System.Drawing.Color.FromArgb(CType(CType(45, Byte), Integer), CType(CType(150, Byte), Integer), CType(CType(175, Byte), Integer))
         DataGridViewCellStyle21.Font = New System.Drawing.Font("Calibri", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle21.ForeColor = System.Drawing.Color.White
@@ -1253,6 +1272,17 @@ Partial Class App
         Me.pnlMenu.Size = New System.Drawing.Size(300, 681)
         Me.pnlMenu.TabIndex = 0
         '
+        'pbAddAccount
+        '
+        Me.pbAddAccount.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbAddAccount.Image = Global.BasedBudgeting.My.Resources.Resources.addaccount
+        Me.pbAddAccount.Location = New System.Drawing.Point(7, 203)
+        Me.pbAddAccount.Name = "pbAddAccount"
+        Me.pbAddAccount.Size = New System.Drawing.Size(100, 22)
+        Me.pbAddAccount.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbAddAccount.TabIndex = 8
+        Me.pbAddAccount.TabStop = False
+        '
         'pnlWorkingBalance
         '
         Me.pnlWorkingBalance.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -1308,6 +1338,18 @@ Partial Class App
         Me.lblAllAccounts.TabIndex = 1
         Me.lblAllAccounts.Text = "All Accounts"
         '
+        'pbArrow2
+        '
+        Me.pbArrow2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.pbArrow2.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
+        Me.pbArrow2.Location = New System.Drawing.Point(1, 16)
+        Me.pbArrow2.Name = "pbArrow2"
+        Me.pbArrow2.Size = New System.Drawing.Size(221, 53)
+        Me.pbArrow2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbArrow2.TabIndex = 0
+        Me.pbArrow2.TabStop = False
+        '
         'pnlToBeBudgeted
         '
         Me.pnlToBeBudgeted.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -1336,6 +1378,42 @@ Partial Class App
         Me.lblToBeBudgeted.Size = New System.Drawing.Size(119, 63)
         Me.lblToBeBudgeted.TabIndex = 2
         Me.lblToBeBudgeted.Text = "To Be Budgeted"
+        '
+        'pbArrow
+        '
+        Me.pbArrow.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
+        Me.pbArrow.Location = New System.Drawing.Point(532, -1)
+        Me.pbArrow.Name = "pbArrow"
+        Me.pbArrow.Size = New System.Drawing.Size(204, 80)
+        Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbArrow.TabIndex = 1
+        Me.pbArrow.TabStop = False
+        '
+        'pbNextMonth
+        '
+        Me.pbNextMonth.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbNextMonth.Image = Global.BasedBudgeting.My.Resources.Resources.nextmonth
+        Me.pbNextMonth.Location = New System.Drawing.Point(91, 24)
+        Me.pbNextMonth.Name = "pbNextMonth"
+        Me.pbNextMonth.Size = New System.Drawing.Size(34, 34)
+        Me.pbNextMonth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbNextMonth.TabIndex = 5
+        Me.pbNextMonth.TabStop = False
+        Me.pbNextMonth.Visible = False
+        '
+        'pbPrevMonth
+        '
+        Me.pbPrevMonth.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.pbPrevMonth.Image = Global.BasedBudgeting.My.Resources.Resources.prevmonth
+        Me.pbPrevMonth.Location = New System.Drawing.Point(316, 24)
+        Me.pbPrevMonth.Name = "pbPrevMonth"
+        Me.pbPrevMonth.Size = New System.Drawing.Size(34, 34)
+        Me.pbPrevMonth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.pbPrevMonth.TabIndex = 4
+        Me.pbPrevMonth.TabStop = False
+        Me.pbPrevMonth.Visible = False
         '
         'lblDate
         '
@@ -1394,6 +1472,20 @@ Partial Class App
         Me.lblSpendingTrendButton.Text = "Spending Trend"
         Me.lblSpendingTrendButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         '
+        'lblSpendingButton
+        '
+        Me.lblSpendingButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
+        Me.lblSpendingButton.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.lblSpendingButton.Font = New System.Drawing.Font("Calibri", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSpendingButton.ForeColor = System.Drawing.Color.White
+        Me.lblSpendingButton.Image = CType(resources.GetObject("lblSpendingButton.Image"), System.Drawing.Image)
+        Me.lblSpendingButton.Location = New System.Drawing.Point(4, 11)
+        Me.lblSpendingButton.Name = "lblSpendingButton"
+        Me.lblSpendingButton.Size = New System.Drawing.Size(211, 64)
+        Me.lblSpendingButton.TabIndex = 1
+        Me.lblSpendingButton.Text = "Spending "
+        Me.lblSpendingButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'lblNetWorthButton
         '
         Me.lblNetWorthButton.Cursor = System.Windows.Forms.Cursors.Hand
@@ -1419,88 +1511,10 @@ Partial Class App
         Me.pnlNavigation.Size = New System.Drawing.Size(964, 88)
         Me.pnlNavigation.TabIndex = 1
         '
-        'pbArrow
+        'checkFilter
         '
-        Me.pbArrow.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pbArrow.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow.Location = New System.Drawing.Point(532, -1)
-        Me.pbArrow.Name = "pbArrow"
-        Me.pbArrow.Size = New System.Drawing.Size(204, 80)
-        Me.pbArrow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbArrow.TabIndex = 1
-        Me.pbArrow.TabStop = False
-        '
-        'pbNextMonth
-        '
-        Me.pbNextMonth.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbNextMonth.Image = Global.BasedBudgeting.My.Resources.Resources.nextmonth
-        Me.pbNextMonth.Location = New System.Drawing.Point(91, 24)
-        Me.pbNextMonth.Name = "pbNextMonth"
-        Me.pbNextMonth.Size = New System.Drawing.Size(34, 34)
-        Me.pbNextMonth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbNextMonth.TabIndex = 5
-        Me.pbNextMonth.TabStop = False
-        Me.pbNextMonth.Visible = False
-        '
-        'pbPrevMonth
-        '
-        Me.pbPrevMonth.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbPrevMonth.Image = Global.BasedBudgeting.My.Resources.Resources.prevmonth
-        Me.pbPrevMonth.Location = New System.Drawing.Point(316, 24)
-        Me.pbPrevMonth.Name = "pbPrevMonth"
-        Me.pbPrevMonth.Size = New System.Drawing.Size(34, 34)
-        Me.pbPrevMonth.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbPrevMonth.TabIndex = 4
-        Me.pbPrevMonth.TabStop = False
-        Me.pbPrevMonth.Visible = False
-        '
-        'lblSpendingButton
-        '
-        Me.lblSpendingButton.BackColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(50, Byte), Integer), CType(CType(65, Byte), Integer))
-        Me.lblSpendingButton.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.lblSpendingButton.Font = New System.Drawing.Font("Calibri", 21.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblSpendingButton.ForeColor = System.Drawing.Color.White
-        Me.lblSpendingButton.Image = CType(resources.GetObject("lblSpendingButton.Image"), System.Drawing.Image)
-        Me.lblSpendingButton.Location = New System.Drawing.Point(4, 11)
-        Me.lblSpendingButton.Name = "lblSpendingButton"
-        Me.lblSpendingButton.Size = New System.Drawing.Size(211, 64)
-        Me.lblSpendingButton.TabIndex = 1
-        Me.lblSpendingButton.Text = "Spending "
-        Me.lblSpendingButton.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'pbArrow2
-        '
-        Me.pbArrow2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.pbArrow2.Image = Global.BasedBudgeting.My.Resources.Resources.arrow
-        Me.pbArrow2.Location = New System.Drawing.Point(1, 16)
-        Me.pbArrow2.Name = "pbArrow2"
-        Me.pbArrow2.Size = New System.Drawing.Size(221, 53)
-        Me.pbArrow2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbArrow2.TabIndex = 0
-        Me.pbArrow2.TabStop = False
-        '
-        'pbAddAccount
-        '
-        Me.pbAddAccount.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.pbAddAccount.Image = Global.BasedBudgeting.My.Resources.Resources.addaccount
-        Me.pbAddAccount.Location = New System.Drawing.Point(7, 203)
-        Me.pbAddAccount.Name = "pbAddAccount"
-        Me.pbAddAccount.Size = New System.Drawing.Size(100, 22)
-        Me.pbAddAccount.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbAddAccount.TabIndex = 8
-        Me.pbAddAccount.TabStop = False
-        '
-        'pbAddTransaction
-        '
-        Me.pbAddTransaction.Image = Global.BasedBudgeting.My.Resources.Resources.addtransaction
-        Me.pbAddTransaction.Location = New System.Drawing.Point(46, 442)
-        Me.pbAddTransaction.Name = "pbAddTransaction"
-        Me.pbAddTransaction.Size = New System.Drawing.Size(106, 23)
-        Me.pbAddTransaction.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.pbAddTransaction.TabIndex = 21
-        Me.pbAddTransaction.TabStop = False
+        Me.checkFilter.Enabled = True
+        Me.checkFilter.Interval = 500
         '
         'App
         '
@@ -1527,8 +1541,10 @@ Partial Class App
         Me.pnlReportsStatistics.ResumeLayout(False)
         Me.pnlAccountsTransaction.ResumeLayout(False)
         Me.pnlAccountsTransaction.PerformLayout()
+        CType(Me.pbAddTransaction, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dgvTransactions, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlAccountsFilter.ResumeLayout(False)
+        Me.pnlAccountsFilter.PerformLayout()
         Me.pnlReportsCharts.ResumeLayout(False)
         CType(Me.chTrend, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.chSpending, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1537,19 +1553,18 @@ Partial Class App
         CType(Me.dgvAccounts, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlMenu.ResumeLayout(False)
         Me.pnlMenu.PerformLayout()
+        CType(Me.pbAddAccount, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlWorkingBalance.ResumeLayout(False)
         Me.pnlWorkingBalance.PerformLayout()
+        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlToBeBudgeted.ResumeLayout(False)
         Me.pnlToBeBudgeted.PerformLayout()
-        Me.pnlReports.ResumeLayout(False)
-        Me.pnlNavigation.ResumeLayout(False)
-        Me.pnlNavigation.PerformLayout()
         CType(Me.pbArrow, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbNextMonth, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.pbPrevMonth, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbArrow2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAddAccount, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.pbAddTransaction, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlReports.ResumeLayout(False)
+        Me.pnlNavigation.ResumeLayout(False)
+        Me.pnlNavigation.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1649,4 +1664,6 @@ Partial Class App
     Friend WithEvents lblSpendingTrendButton As Label
     Friend WithEvents pbAddAccount As PictureBox
     Friend WithEvents pbAddTransaction As PictureBox
+    Friend WithEvents tbMemoFilter As TextBox
+    Friend WithEvents checkFilter As Timer
 End Class
