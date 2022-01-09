@@ -42,6 +42,11 @@ BasedBudgeting
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:BasedBudgeting.My.Resources.Resources.mun">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:BasedBudgeting.My.Resources.Resources.nextmonth">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
@@ -53,6 +58,11 @@ BasedBudgeting
 </summary>
 </member>
 <member name="P:BasedBudgeting.My.Resources.Resources.selected">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:BasedBudgeting.My.Resources.Resources.sun">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>

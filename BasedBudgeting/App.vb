@@ -2,11 +2,23 @@
 Public Class App
     Dim roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
     Dim filtering = False
+    Dim lightBlue As Color = Color.FromArgb(230, 245, 250)                                      ' All colors
+    Dim Blue As Color = Color.FromArgb(45, 150, 175)
+    Dim darkBlue As Color = Color.FromArgb(0, 90, 120)
+    Dim darkerBlue As Color = Color.FromArgb(0, 50, 65)
+    Dim Dark As Color = Color.FromArgb(40, 40, 40)
+    Dim Darker As Color = Color.FromArgb(34, 34, 34)
+    Dim Darkest As Color = Color.FromArgb(30, 30, 30)
+    Dim Black As Color = Color.FromArgb(18, 18, 18)
+    Dim darkMode As Boolean = False
     Private Sub App_Load(sender As Object, e As EventArgs) Handles MyBase.Load                  ' When applications loads
         Me.lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()                           ' Print correct date
         Me.lblDateValue.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()
         Me.dtpDate.Value = DateTime.Now                                                         ' Update DateTimePicker to current date
         txtTitle.Text = My.Settings.budgetName
+        dgvBudget.EnableHeadersVisualStyles = False
+        dgvTransactions.EnableHeadersVisualStyles = False
+        dgvAccounts.EnableHeadersVisualStyles = False                                           ' Make it available to change header color
 
         If System.IO.Directory.Exists(roaming + "\BasedBudgeting") Then                         ' Check if BasedData exist, if not create it and run SaveTransaction
         Else
@@ -155,9 +167,16 @@ Public Class App
         My.Settings.budgetName = txtTitle.Text
     End Sub
     Private Sub BtnBudget_Click(sender As Object, e As EventArgs) Handles btnBudget.Click       ' When Budget menu is selected
-        btnBudget.BackColor = Color.FromArgb(0, 90, 120)                                        ' Change Button Colors depending on selected menu
-        btnReports.BackColor = Color.FromArgb(45, 150, 175)
-        btnAccounts.BackColor = Color.FromArgb(45, 150, 175)
+        If darkMode = False Then
+            btnBudget.BackColor = darkBlue                                                      ' Change Button Colors depending on selected menu
+            btnReports.BackColor = Blue
+            btnAccounts.BackColor = Blue
+        ElseIf darkMode = True Then
+            btnBudget.BackColor = Darkest
+            btnReports.BackColor = Dark
+            btnAccounts.BackColor = Dark
+        End If
+
         pnlBudgetStatistics.Visible = True                                                      ' Show correct panels for selected menu
         pnlBudgetControl.Visible = True
         pnlToBeBudgeted.Visible = True
@@ -173,9 +192,16 @@ Public Class App
         dgvBudget.Refresh()
     End Sub
     Private Sub BtnReports_Click(sender As Object, e As EventArgs) Handles btnReports.Click     ' When Reports button is selected
-        btnBudget.BackColor = Color.FromArgb(45, 150, 175)                                      ' Change Button Colors depending on selected menu
-        btnReports.BackColor = Color.FromArgb(0, 90, 120)
-        btnAccounts.BackColor = Color.FromArgb(45, 150, 175)
+        If darkMode = False Then
+            btnBudget.BackColor = Blue                                                          ' Change Button Colors depending on selected menu
+            btnReports.BackColor = darkBlue
+            btnAccounts.BackColor = Blue
+        ElseIf darkMode = True Then
+            btnBudget.BackColor = Dark
+            btnReports.BackColor = Darkest
+            btnAccounts.BackColor = Dark
+        End If
+
         pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
         pnlBudgetControl.Visible = False
         pnlToBeBudgeted.Visible = False
@@ -204,9 +230,16 @@ Public Class App
         t.ForeColor = Color.Gray
     End Sub
     Private Sub BtnAccounts_Click(sender As Object, e As EventArgs) Handles btnAccounts.Click   ' When Accounts button is selected
-        btnBudget.BackColor = Color.FromArgb(45, 150, 175)                                      ' Change Button Colors depending on selected menu
-        btnReports.BackColor = Color.FromArgb(45, 150, 175)
-        btnAccounts.BackColor = Color.FromArgb(0, 90, 120)
+        If darkMode = False Then
+            btnBudget.BackColor = Blue                                                          ' Change Button Colors depending on selected menu
+            btnReports.BackColor = Blue
+            btnAccounts.BackColor = darkBlue
+        ElseIf darkMode = True Then
+            btnBudget.BackColor = Dark
+            btnReports.BackColor = Dark
+            btnAccounts.BackColor = Darkest
+        End If
+
         pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
         pnlBudgetControl.Visible = False
         pnlToBeBudgeted.Visible = False
@@ -1137,7 +1170,13 @@ Public Class App
             If row.Cells(0).Value.ToString <> "" Then                                           ' Only do for  subcategories that have filled category name
                 If row.Cells(3).Value = 0 And row.Cells(4).Value.ToString = "S" Then            ' If available value = 0  than default
                     row.Cells(3).Style.ForeColor = Color.FromArgb(0, 50, 65)
-                    row.Cells(3).Style.BackColor = Color.White
+                    If darkMode = False Then
+                        row.Cells(3).Style.ForeColor = darkerBlue
+                        row.Cells(3).Style.BackColor = Color.White
+                    ElseIf darkMode = True Then
+                        row.Cells(3).Style.ForeColor = Color.White
+                        row.Cells(3).Style.BackColor = Black
+                    End If
                 Else
                     If row.Cells(3).Value > 0 And row.Cells(4).Value.ToString = "S" Then        ' If negative
                         row.Cells(3).Style.ForeColor = Color.White
@@ -1421,5 +1460,383 @@ Public Class App
             writer.WriteLine("")
         Next i
         writer.Close()
+    End Sub
+
+    Private Sub pbDarkmode_Click(sender As Object, e As EventArgs) Handles pbDarkmode.Click            ' Dark Mode
+        Dim j As Integer = 0
+
+        If darkMode = False Then                                                    ' If dark mode is on or  off
+            darkMode = True
+            pbDarkmode.Image = BasedBudgeting.My.Resources.Resources.mun
+            pbDarkmode.BackColor = Dark
+
+            BackColor = Black
+            pnlMenu.BackColor = Dark                                                            ' Menu
+            txtTitle.BackColor = Dark
+            If btnBudget.BackColor = darkBlue Then
+                btnBudget.BackColor = Darkest
+                btnReports.BackColor = Dark
+                btnAccounts.BackColor = Dark
+            ElseIf btnReports.BackColor = darkBlue Then
+                btnBudget.BackColor = Dark
+                btnReports.BackColor = Darkest
+                btnAccounts.BackColor = Dark
+            ElseIf btnAccounts.BackColor = darkBlue Then
+                btnBudget.BackColor = Dark
+                btnReports.BackColor = Dark
+                btnAccounts.BackColor = Darkest
+            End If
+            pbAddAccount.BackColor = Dark
+            lblBudget.BackColor = Dark
+            lblTotalBalance.BackColor = Dark
+            dgvAccounts.BackgroundColor = Dark
+            dgvAccounts.DefaultCellStyle.BackColor = Dark
+            dgvAccounts.ColumnHeadersDefaultCellStyle.BackColor = Dark
+            dgvAccounts.RowHeadersDefaultCellStyle.BackColor = Darkest
+            dgvAccounts.EnableHeadersVisualStyles = False
+            dgvAccounts.DefaultCellStyle.SelectionBackColor = Dark
+
+            For Each row As DataGridViewRow In dgvAccounts.Rows
+                dgvAccounts.Rows(j).DefaultCellStyle.BackColor = Dark
+                j += 1
+            Next
+
+            pnlNavigation.BackColor = Darker                                                    ' Top navigation bar
+            pnlToBeBudgeted.BackColor = Darker
+            pnlReports.BackColor = Darker
+            pnlWorkingBalance.BackColor = Darker
+            pbPrevMonth.BackColor = Darker
+            pbNextMonth.BackColor = Darker
+            lblDate.BackColor = Darker
+            pbArrow.BackColor = Darker
+            lblToBeBudgetedValue.BackColor = Darker
+            pbArrow2.BackColor = Darker
+            lblWorkingBalance.BackColor = Darker
+            lblWorkingBalanceValue.BackColor = Darker
+            lblSpendingButton.BackColor = Darker
+            lblNetWorthButton.BackColor = Darker
+            lblSpendingTrendButton.BackColor = Darker
+
+            pnlBudgetStatistics.BackColor = Darkest                                             ' All right panels
+            lblTotalBudgeted.BackColor = Darkest
+            lblTotalBudgeted.ForeColor = Color.White
+            lblTotalBudgetedValue.BackColor = Darkest
+            lblTotalBudgetedValue.ForeColor = Color.White
+            lblTotalActivity.BackColor = Darkest
+            lblTotalActivity.ForeColor = Color.White
+            lblTotalActivityValue.BackColor = Darkest
+            lblTotalActivityValue.ForeColor = Color.White
+            lblTotalAvailable.BackColor = Darkest
+            lblTotalAvailable.ForeColor = Color.White
+            lblTotalAvailableValue.BackColor = Darkest
+            lblTotalAvailableValue.ForeColor = Color.White
+            lblTotalInflow.BackColor = Darkest
+            lblTotalInflow.ForeColor = Color.White
+            lblTotalInflowValue.BackColor = Darkest
+            lblTotalInflowValue.ForeColor = Color.White
+            pnlReportsStatistics.BackColor = Darkest
+            lblDateValue.BackColor = Darkest
+            lblDateValue.ForeColor = Color.White
+            lblIncluded.BackColor = Darkest
+            lblIncluded.ForeColor = Color.White
+            lblTotalSpending.BackColor = Darkest
+            lblTotalSpending.ForeColor = Color.White
+            lblTotalSpendingValue.BackColor = Darkest
+            lblTotalSpendingValue.ForeColor = Color.White
+            lblPeriod.BackColor = Darkest
+            lblPeriod.ForeColor = Color.White
+            lblAverageSpending.BackColor = Darkest
+            lblAverageSpending.ForeColor = Color.White
+            lblAverageSpendingValue.BackColor = Darkest
+            lblAverageSpendingValue.ForeColor = Color.White
+            lblPeriod2.BackColor = Darkest
+            lblPeriod2.ForeColor = Color.White
+            pnlAccountsTransaction.BackColor = Darkest
+            lblAccount.BackColor = Darkest
+            lblAccount.ForeColor = Color.White
+            cbAccount.BackColor = Darkest
+            lblDate2.BackColor = Darkest
+            lblDate2.ForeColor = Color.White
+            dtpDate.BackColor = Darkest
+            lblPayee.BackColor = Darkest
+            lblPayee.ForeColor = Color.White
+            cbPayee.BackColor = Darkest
+            lblCategory.BackColor = Darkest
+            lblCategory.ForeColor = Color.White
+            cbCategory.BackColor = Darkest
+            lblSubcategory.BackColor = Darkest
+            lblSubcategory.ForeColor = Color.White
+            cbSubcategory.BackColor = Darkest
+            lblMemo.BackColor = Darkest
+            lblMemo.ForeColor = Color.White
+            tbMemo.BackColor = Darkest
+            lblOutflow.BackColor = Darkest
+            lblOutflow.ForeColor = Color.White
+            tbOutflow.BackColor = Darkest
+            lblInflow.BackColor = Darkest
+            lblInflow.ForeColor = Color.White
+            tbInflow.BackColor = Darkest
+            pbAddTransaction.BackColor = Darkest
+
+            pnlBudgetControl.BackColor = Darkest                                                ' control and filter
+            pnlAccountsFilter.BackColor = Darkest
+            cbAccountFilter.BackColor = Darkest
+            cbAccountFilter.ForeColor = Color.White
+            cbPayeeFilter.BackColor = Darkest
+            cbPayeeFilter.ForeColor = Color.White
+            cbCategoryFilter.BackColor = Darkest
+            cbCategoryFilter.ForeColor = Color.White
+            cbSubcategoryFilter.BackColor = Darkest
+            cbSubcategoryFilter.ForeColor = Color.White
+            tbMemoFilter.BackColor = Darkest
+            tbMemoFilter.ForeColor = Color.White
+            btnResetTransaction.ForeColor = Color.White
+
+            dgvBudget.BackgroundColor = Black                                                   ' dgvBudget
+            dgvBudget.ColumnHeadersDefaultCellStyle.BackColor = Black
+            dgvBudget.ColumnHeadersDefaultCellStyle.ForeColor = Color.White
+            dgvBudget.RowHeadersDefaultCellStyle.BackColor = Black
+            dgvBudget.RowHeadersDefaultCellStyle.ForeColor = Color.White
+            dgvBudget.RowHeadersDefaultCellStyle.SelectionBackColor = Black
+            dgvBudget.GridColor = Dark
+            dgvBudget.EnableHeadersVisualStyles = False
+            dgvBudget.DefaultCellStyle.SelectionBackColor = Dark
+            dgvBudget.DefaultCellStyle.SelectionForeColor = Color.White
+
+            j = 0
+            For Each row As DataGridViewRow In dgvBudget.Rows
+                If dgvBudget.Rows(j).Cells(4).Value.ToString = "C" Then
+                    dgvBudget.Rows(j).DefaultCellStyle.BackColor = Dark
+                    dgvBudget.Rows(j).DefaultCellStyle.ForeColor = Color.White
+                ElseIf dgvBudget.Rows(j).Cells(4).Value.ToString = "S" Then
+                    dgvBudget.Rows(j).DefaultCellStyle.BackColor = Black
+                    dgvBudget.Rows(j).DefaultCellStyle.ForeColor = Color.White
+                End If
+                j += 1
+            Next
+
+            dgvTransactions.BackgroundColor = Black                                             ' dgvTransactions
+            dgvTransactions.ColumnHeadersDefaultCellStyle.BackColor = Black
+            dgvTransactions.ColumnHeadersDefaultCellStyle.ForeColor = Color.White
+            dgvTransactions.RowHeadersDefaultCellStyle.BackColor = Black
+            dgvTransactions.RowHeadersDefaultCellStyle.ForeColor = Color.White
+            dgvTransactions.RowHeadersDefaultCellStyle.SelectionBackColor = Dark
+            dgvTransactions.RowHeadersDefaultCellStyle.SelectionForeColor = Color.White
+            dgvTransactions.GridColor = Dark
+            dgvTransactions.EnableHeadersVisualStyles = False
+            dgvTransactions.DefaultCellStyle.SelectionBackColor = Dark
+            dgvTransactions.DefaultCellStyle.SelectionForeColor = Color.White
+            j = 0
+            For Each row As DataGridViewRow In dgvTransactions.Rows
+                dgvTransactions.Rows(j).DefaultCellStyle.BackColor = Black
+                dgvTransactions.Rows(j).DefaultCellStyle.ForeColor = Color.White
+                j += 1
+            Next
+
+            Dim seriesNet As String = Nothing                                                   ' Charts
+            chSpending.BackColor = Black
+            chSpending.ChartAreas(0).BackColor = Black
+            chSpending.Legends(0).BackColor = Black
+            chNet.BackColor = Black
+            chNet.ChartAreas(0).BackColor = Black
+            chNet.Legends(0).BackColor = Black
+            chTrend.BackColor = Black
+            chTrend.ChartAreas(0).BackColor = Black
+            chTrend.ChartAreas(0).AxisX.LineColor = Color.Gray
+            chTrend.ChartAreas(0).AxisY.LineColor = Color.Gray
+            chTrend.ChartAreas(0).AxisX.MajorGrid.LineColor = Color.Gray
+            chTrend.ChartAreas(0).AxisY.MajorGrid.LineColor = Color.Gray
+            chTrend.ChartAreas(0).AxisX.MajorTickMark.LineColor = Color.Gray
+            chTrend.ChartAreas(0).AxisY.MajorTickMark.LineColor = Color.Gray
+            chTrend.ChartAreas(0).AxisX.LabelStyle.ForeColor = Color.Gray
+            chTrend.ChartAreas(0).AxisY.LabelStyle.ForeColor = Color.Gray
+            chTrend.Legends(0).BackColor = Black
+        ElseIf darkMode = True Then
+            darkMode = False
+            pbDarkmode.Image = BasedBudgeting.My.Resources.Resources.sun
+            pbDarkmode.BackColor = Blue
+
+            BackColor = Color.White
+            pnlMenu.BackColor = Blue
+            txtTitle.BackColor = Blue
+            If btnBudget.BackColor = Darkest Then
+                btnBudget.BackColor = darkBlue
+                btnReports.BackColor = Blue
+                btnAccounts.BackColor = Blue
+            ElseIf btnReports.BackColor = Darkest Then
+                btnBudget.BackColor = Blue
+                btnReports.BackColor = darkBlue
+                btnAccounts.BackColor = Blue
+            ElseIf btnAccounts.BackColor = Darkest Then
+                btnBudget.BackColor = Blue
+                btnReports.BackColor = Blue
+                btnAccounts.BackColor = darkBlue
+            End If
+            pbAddAccount.BackColor = Blue
+            lblBudget.BackColor = Blue
+            lblTotalBalance.BackColor = Blue
+            dgvAccounts.BackgroundColor = Blue
+            dgvAccounts.DefaultCellStyle.BackColor = Blue
+            dgvAccounts.ColumnHeadersDefaultCellStyle.BackColor = Blue
+            dgvAccounts.RowHeadersDefaultCellStyle.BackColor = darkBlue
+            dgvAccounts.EnableHeadersVisualStyles = False
+            dgvAccounts.DefaultCellStyle.SelectionBackColor = Blue
+
+            For Each row As DataGridViewRow In dgvAccounts.Rows
+                dgvAccounts.Rows(j).DefaultCellStyle.BackColor = Blue
+                j += 1
+            Next
+
+            pnlNavigation.BackColor = darkerBlue
+            pnlToBeBudgeted.BackColor = darkerBlue
+            pnlReports.BackColor = darkerBlue
+            pnlWorkingBalance.BackColor = darkerBlue
+            pbPrevMonth.BackColor = darkerBlue
+            pbNextMonth.BackColor = darkerBlue
+            lblDate.BackColor = darkerBlue
+            pbArrow.BackColor = darkerBlue
+            lblToBeBudgetedValue.BackColor = darkerBlue
+            pbArrow2.BackColor = darkerBlue
+            lblWorkingBalance.BackColor = darkerBlue
+            lblWorkingBalanceValue.BackColor = darkerBlue
+            lblSpendingButton.BackColor = darkerBlue
+            lblNetWorthButton.BackColor = darkerBlue
+            lblSpendingTrendButton.BackColor = darkerBlue
+
+            pnlBudgetStatistics.BackColor = lightBlue
+            lblTotalBudgeted.BackColor = lightBlue
+            lblTotalBudgeted.ForeColor = darkerBlue
+            lblTotalBudgetedValue.BackColor = lightBlue
+            lblTotalBudgetedValue.ForeColor = darkerBlue
+            lblTotalActivity.BackColor = lightBlue
+            lblTotalActivity.ForeColor = darkerBlue
+            lblTotalActivityValue.BackColor = lightBlue
+            lblTotalActivityValue.ForeColor = darkerBlue
+            lblTotalAvailable.BackColor = lightBlue
+            lblTotalAvailable.ForeColor = darkerBlue
+            lblTotalAvailableValue.BackColor = lightBlue
+            lblTotalAvailableValue.ForeColor = darkerBlue
+            lblTotalInflow.BackColor = lightBlue
+            lblTotalInflow.ForeColor = darkerBlue
+            lblTotalInflowValue.BackColor = lightBlue
+            lblTotalInflowValue.ForeColor = darkerBlue
+            pnlReportsStatistics.BackColor = lightBlue
+            lblDateValue.BackColor = lightBlue
+            lblDateValue.ForeColor = darkerBlue
+            lblIncluded.BackColor = lightBlue
+            lblIncluded.ForeColor = darkerBlue
+            lblTotalSpending.BackColor = lightBlue
+            lblTotalSpending.ForeColor = darkerBlue
+            lblTotalSpendingValue.BackColor = lightBlue
+            lblTotalSpendingValue.ForeColor = darkerBlue
+            lblPeriod.BackColor = lightBlue
+            lblPeriod.ForeColor = darkerBlue
+            lblAverageSpending.BackColor = lightBlue
+            lblAverageSpending.ForeColor = darkerBlue
+            lblAverageSpendingValue.BackColor = lightBlue
+            lblAverageSpendingValue.ForeColor = darkerBlue
+            lblPeriod2.BackColor = lightBlue
+            lblPeriod2.ForeColor = darkerBlue
+            pnlAccountsTransaction.BackColor = lightBlue
+            lblAccount.BackColor = lightBlue
+            lblAccount.ForeColor = darkerBlue
+            cbAccount.BackColor = Color.White
+            lblDate2.BackColor = lightBlue
+            lblDate2.ForeColor = darkerBlue
+            dtpDate.BackColor = Color.White
+            lblPayee.BackColor = lightBlue
+            lblPayee.ForeColor = darkerBlue
+            cbPayee.BackColor = Color.White
+            lblCategory.BackColor = lightBlue
+            lblCategory.ForeColor = darkerBlue
+            cbCategory.BackColor = Color.White
+            lblSubcategory.BackColor = lightBlue
+            lblSubcategory.ForeColor = darkerBlue
+            cbSubcategory.BackColor = Color.White
+            lblMemo.BackColor = lightBlue
+            lblMemo.ForeColor = darkerBlue
+            tbMemo.BackColor = Color.White
+            lblOutflow.BackColor = lightBlue
+            lblOutflow.ForeColor = darkerBlue
+            tbOutflow.BackColor = Color.White
+            lblInflow.BackColor = lightBlue
+            lblInflow.ForeColor = darkerBlue
+            tbInflow.BackColor = Color.White
+            pbAddTransaction.BackColor = lightBlue
+
+            pnlBudgetControl.BackColor = Color.White
+            pnlAccountsFilter.BackColor = Color.White
+            cbAccountFilter.BackColor = Color.White
+            cbAccountFilter.ForeColor = darkerBlue
+            cbPayeeFilter.BackColor = Color.White
+            cbPayeeFilter.ForeColor = darkerBlue
+            cbCategoryFilter.BackColor = Color.White
+            cbCategoryFilter.ForeColor = darkerBlue
+            cbSubcategoryFilter.BackColor = Color.White
+            cbSubcategoryFilter.ForeColor = darkerBlue
+            tbMemoFilter.BackColor = Color.White
+            tbMemoFilter.ForeColor = darkerBlue
+            btnResetTransaction.ForeColor = darkerBlue
+
+            dgvBudget.BackgroundColor = Color.White
+            dgvBudget.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.Control
+            dgvBudget.ColumnHeadersDefaultCellStyle.ForeColor = darkerBlue
+            dgvBudget.RowHeadersDefaultCellStyle.BackColor = SystemColors.Control
+            dgvBudget.RowHeadersDefaultCellStyle.ForeColor = darkerBlue
+            dgvBudget.RowHeadersDefaultCellStyle.SelectionBackColor = lightBlue
+            dgvBudget.GridColor = Color.LightGray
+            dgvBudget.EnableHeadersVisualStyles = False
+            dgvBudget.DefaultCellStyle.SelectionBackColor = lightBlue
+            dgvBudget.DefaultCellStyle.SelectionForeColor = darkerBlue
+
+            j = 0
+            For Each row As DataGridViewRow In dgvBudget.Rows
+                If dgvBudget.Rows(j).Cells(4).Value.ToString = "C" Then
+                    dgvBudget.Rows(j).DefaultCellStyle.BackColor = lightBlue
+                    dgvBudget.Rows(j).DefaultCellStyle.ForeColor = darkerBlue
+                ElseIf dgvBudget.Rows(j).Cells(4).Value.ToString = "S" Then
+                    dgvBudget.Rows(j).DefaultCellStyle.BackColor = Color.White
+                    dgvBudget.Rows(j).DefaultCellStyle.ForeColor = darkerBlue
+                End If
+                j += 1
+            Next
+
+            dgvTransactions.BackgroundColor = Color.White
+            dgvTransactions.ColumnHeadersDefaultCellStyle.BackColor = SystemColors.Control
+            dgvTransactions.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray
+            dgvTransactions.RowHeadersDefaultCellStyle.BackColor = SystemColors.Control
+            dgvTransactions.RowHeadersDefaultCellStyle.ForeColor = Color.Gray
+            dgvTransactions.RowHeadersDefaultCellStyle.SelectionBackColor = lightBlue
+            dgvTransactions.RowHeadersDefaultCellStyle.SelectionForeColor = Color.Gray
+            dgvTransactions.GridColor = Color.LightGray
+            dgvTransactions.EnableHeadersVisualStyles = False
+            dgvTransactions.DefaultCellStyle.SelectionBackColor = lightBlue
+            dgvTransactions.DefaultCellStyle.SelectionForeColor = Color.Gray
+            j = 0
+            For Each row As DataGridViewRow In dgvTransactions.Rows
+                dgvTransactions.Rows(j).DefaultCellStyle.BackColor = Color.White
+                dgvTransactions.Rows(j).DefaultCellStyle.ForeColor = Color.Gray
+                j += 1
+            Next
+
+            chSpending.BackColor = Color.White
+            chSpending.ChartAreas(0).BackColor = Color.White
+            chSpending.Legends(0).BackColor = Color.White
+            chNet.BackColor = Color.White
+            chNet.ChartAreas(0).BackColor = Color.White
+            chNet.Legends(0).BackColor = Color.White
+            chTrend.BackColor = Color.White
+            chTrend.ChartAreas(0).BackColor = Color.White
+            chTrend.ChartAreas(0).AxisX.LineColor = Color.Black
+            chTrend.ChartAreas(0).AxisY.LineColor = Color.Black
+            chTrend.ChartAreas(0).AxisX.MajorGrid.LineColor = Color.Black
+            chTrend.ChartAreas(0).AxisY.MajorGrid.LineColor = Color.Black
+            chTrend.ChartAreas(0).AxisX.MajorTickMark.LineColor = Color.Black
+            chTrend.ChartAreas(0).AxisY.MajorTickMark.LineColor = Color.Black
+            chTrend.ChartAreas(0).AxisX.LabelStyle.ForeColor = Color.Black
+            chTrend.ChartAreas(0).AxisY.LabelStyle.ForeColor = Color.Black
+            chTrend.Legends(0).BackColor = Color.White
+        End If
+
     End Sub
 End Class
