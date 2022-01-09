@@ -1,4 +1,5 @@
 ﻿Imports System.Windows.Forms.DataVisualization.Charting
+Imports System.Reflection
 Public Class App
     Dim roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)
     Dim filtering = False
@@ -19,6 +20,11 @@ Public Class App
         dgvBudget.EnableHeadersVisualStyles = False
         dgvTransactions.EnableHeadersVisualStyles = False
         dgvAccounts.EnableHeadersVisualStyles = False                                           ' Make it available to change header color
+
+        DoubleBuffered = True                                                                   ' Smooth DataGridView
+        Dim systemType As Type = dgvBudget.GetType()                                            ' Used to stop flicker from darkmode
+        Dim propertyInfo As PropertyInfo = systemType.GetProperty("DoubleBuffered", BindingFlags.Instance Or BindingFlags.NonPublic)
+        propertyInfo.SetValue(dgvBudget, True, Nothing)
 
         If System.IO.Directory.Exists(roaming + "\BasedBudgeting") Then                         ' Check if BasedData exist, if not create it and run SaveTransaction
         Else
@@ -326,8 +332,10 @@ Public Class App
     Dim cellVal As Decimal                                                                      ' Variable for when you double click a cell
     Dim cellVal2 As Decimal
     Private Sub dgvBudget_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellDoubleClick
-        cellVal = CType(dgvBudget.Rows(e.RowIndex).Cells(1).Value, Decimal)                     ' Give above variables a value
-        cellVal2 = CType(dgvBudget.Rows(e.RowIndex).Cells(2).Value, Decimal)
+        If dgvBudget.Rows(e.RowIndex).Cells(1).Value.ToString <> "" Then
+            cellVal = CType(dgvBudget.Rows(e.RowIndex).Cells(1).Value, Decimal)                     ' Give above variables a value
+            cellVal2 = CType(dgvBudget.Rows(e.RowIndex).Cells(2).Value, Decimal)
+        End If
     End Sub
     Private Sub dgvBudget_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvBudget.CellEndEdit  ' Used to automatically add rows in dgvBudget and update total available
         If dgvBudget.CurrentCell.RowIndex = 0 Then
@@ -1462,10 +1470,10 @@ Public Class App
         writer.Close()
     End Sub
 
-    Private Sub pbDarkmode_Click(sender As Object, e As EventArgs) Handles pbDarkmode.Click            ' Dark Mode
+    Private Sub pbDarkmode_Click(sender As Object, e As EventArgs) Handles pbDarkmode.Click     ' Dark Mode
         Dim j As Integer = 0
 
-        If darkMode = False Then                                                    ' If dark mode is on or  off
+        If darkMode = False Then                                                                ' If dark mode is on or  off
             darkMode = True
             pbDarkmode.Image = BasedBudgeting.My.Resources.Resources.mun
             pbDarkmode.BackColor = Dark
@@ -1836,6 +1844,12 @@ Public Class App
             chTrend.ChartAreas(0).AxisX.LabelStyle.ForeColor = Color.Black
             chTrend.ChartAreas(0).AxisY.LabelStyle.ForeColor = Color.Black
             chTrend.Legends(0).BackColor = Color.White
+
+            dgvBudget.Refresh()
+            dgvBudget.Update()
+
+            dgvTransactions.Refresh()
+            dgvTransactions.Update()
         End If
 
     End Sub
