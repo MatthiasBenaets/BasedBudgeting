@@ -39,7 +39,7 @@ Public Class App
 
         Dim rows() As String
         Dim values() As String
-        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\transactions.csv") Then  ' If saved transaction file exists
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\transactions.csv") Then ' If saved transaction file exists
             rows = File.ReadAllLines(roaming + "\BasedBudgeting\transactions.csv")
             For i As Integer = 0 To rows.Length - 1 Step +1                                     ' Loop through all rows
                 values = rows(i).ToString().Split(";")                                          ' Split values at ";"
@@ -74,6 +74,10 @@ Public Class App
                 Next j
                 dgvBudget.Rows.Add(row)                                                         ' Add row to datagridview
             Next i
+        End If
+
+        If My.Computer.FileSystem.FileExists(roaming + "\BasedBudgeting\notes.txt") Then        ' Load existing notes
+            rtbNotes.Text = System.IO.File.ReadAllText(roaming + "\BasedBudgeting\notes.txt")
         End If
 
         For i As Integer = 0 To dgvBudget.Rows.Count - 1                                        ' Give category row a background color
@@ -177,10 +181,12 @@ Public Class App
             btnBudget.BackColor = darkBlue                                                      ' Change Button Colors depending on selected menu
             btnReports.BackColor = Blue
             btnAccounts.BackColor = Blue
+            btnNotes.BackColor = Blue
         ElseIf darkMode = True Then
             btnBudget.BackColor = Darkest
             btnReports.BackColor = Dark
             btnAccounts.BackColor = Dark
+            btnNotes.BackColor = Dark
         End If
 
         pnlBudgetStatistics.Visible = True                                                      ' Show correct panels for selected menu
@@ -195,6 +201,8 @@ Public Class App
         pnlReports.Visible = False
         dgvBudget.Visible = False                                                               ' Visual bug fix
         dgvBudget.Visible = True
+        pnlNotes.Visible = False
+        pnlNotesNav.Visible = False
         dgvBudget.Refresh()
     End Sub
     Private Sub BtnReports_Click(sender As Object, e As EventArgs) Handles btnReports.Click     ' When Reports button is selected
@@ -202,10 +210,12 @@ Public Class App
             btnBudget.BackColor = Blue                                                          ' Change Button Colors depending on selected menu
             btnReports.BackColor = darkBlue
             btnAccounts.BackColor = Blue
+            btnNotes.BackColor = Blue
         ElseIf darkMode = True Then
             btnBudget.BackColor = Dark
             btnReports.BackColor = Darkest
             btnAccounts.BackColor = Dark
+            btnNotes.BackColor = Dark
         End If
 
         pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
@@ -219,6 +229,8 @@ Public Class App
         dgvTransactions.Visible = False
         pnlWorkingBalance.Visible = False
         pnlReports.Visible = True
+        pnlNotes.Visible = False
+        pnlNotesNav.Visible = False
 
         populateCharts()
 
@@ -240,10 +252,12 @@ Public Class App
             btnBudget.BackColor = Blue                                                          ' Change Button Colors depending on selected menu
             btnReports.BackColor = Blue
             btnAccounts.BackColor = darkBlue
+            btnNotes.BackColor = Blue
         ElseIf darkMode = True Then
             btnBudget.BackColor = Dark
             btnReports.BackColor = Dark
             btnAccounts.BackColor = Darkest
+            btnNotes.BackColor = Dark
         End If
 
         pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
@@ -257,8 +271,37 @@ Public Class App
         dgvTransactions.Visible = True
         pnlWorkingBalance.Visible = True
         pnlReports.Visible = False
+        pnlNotes.Visible = False
+        pnlNotesNav.Visible = False
         checkCombobox()
         dgvTransactions.Refresh()                                                               ' Precaution visual bug
+    End Sub
+    Private Sub btnNotes_Click(sender As Object, e As EventArgs) Handles btnNotes.Click
+        If darkMode = False Then
+            btnBudget.BackColor = Blue                                                          ' Change Button Colors depending on selected menu
+            btnReports.BackColor = Blue
+            btnAccounts.BackColor = Blue
+            btnNotes.BackColor = darkBlue
+        ElseIf darkMode = True Then
+            btnBudget.BackColor = Dark
+            btnReports.BackColor = Dark
+            btnAccounts.BackColor = Dark
+            btnNotes.BackColor = Darkest
+        End If
+
+        pnlBudgetStatistics.Visible = False                                                     ' Show correct panels for selected menu
+        pnlBudgetControl.Visible = False
+        pnlToBeBudgeted.Visible = False
+        pnlReportsStatistics.Visible = False
+        pnlReportsCharts.Visible = False
+        pnlAccountsTransaction.Visible = False
+        pnlAccountsFilter.Visible = False
+        dgvTransactions.Visible = False
+        pnlWorkingBalance.Visible = False
+        pnlReports.Visible = False
+        dgvBudget.Visible = False
+        pnlNotes.Visible = True
+        pnlNotesNav.Visible = True
     End Sub
     Private Sub btnAddCategory_Click(sender As Object, e As EventArgs) Handles btnAddCategory.Click ' Add category at end of dgvBudget
         Dim strCat As String
@@ -419,6 +462,11 @@ Public Class App
         Next
         dgvBudget.Refresh()                                                                     ' Precaution visual bug
         SaveBudget()
+    End Sub
+    Private Sub dgvBudget_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles dgvBudget.UserDeletingRow ' When user tries to delete a row
+        If dgvBudget.CurrentRow.Cells(0).Value.ToString = "" And dgvBudget.CurrentRow.Cells(1).Value.ToString = "" Then ' Check if row is not empty used to add new subcategories
+            e.Cancel = True
+        End If
     End Sub
     Private Sub dgvTransactions_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvTransactions.CellEndEdit
         Dim toDec As Decimal = 0
@@ -892,10 +940,11 @@ Public Class App
         chNet.Visible = False
         chTrend.Visible = True
     End Sub
-    Private Sub SaveData()
+    Private Sub SaveData()                                                                      ' Save everything
         SaveBudget()
         SaveAccounts()
         SaveTransaction()
+        SaveNotes()
     End Sub
     Private Sub SaveBudget()
         Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\budget.csv"))
@@ -937,6 +986,11 @@ Public Class App
             Next j
             writer.WriteLine("")                                                                ' Next line
         Next i
+        writer.Close()
+    End Sub
+    Private Sub SaveNotes()                                                                     ' Save Notes
+        Dim writer As New StreamWriter(CStr(roaming + "\BasedBudgeting\notes.txt"))
+        writer.WriteLine(rtbNotes.Text)
         writer.Close()
     End Sub
     Private Sub checkCombobox()
@@ -1485,14 +1539,22 @@ Public Class App
                 btnBudget.BackColor = Darkest
                 btnReports.BackColor = Dark
                 btnAccounts.BackColor = Dark
+                btnNotes.BackColor = Dark
             ElseIf btnReports.BackColor = darkBlue Then
                 btnBudget.BackColor = Dark
                 btnReports.BackColor = Darkest
                 btnAccounts.BackColor = Dark
+                btnNotes.BackColor = Dark
             ElseIf btnAccounts.BackColor = darkBlue Then
                 btnBudget.BackColor = Dark
                 btnReports.BackColor = Dark
                 btnAccounts.BackColor = Darkest
+                btnNotes.BackColor = Dark
+            ElseIf btnNotes.BackColor = darkBlue Then
+                btnBudget.BackColor = Dark
+                btnReports.BackColor = Dark
+                btnAccounts.BackColor = Dark
+                btnNotes.BackColor = Darkest
             End If
             pbAddAccount.BackColor = Dark
             lblBudget.BackColor = Dark
@@ -1659,6 +1721,11 @@ Public Class App
             chTrend.ChartAreas(0).AxisX.LabelStyle.ForeColor = Color.Gray
             chTrend.ChartAreas(0).AxisY.LabelStyle.ForeColor = Color.Gray
             chTrend.Legends(0).BackColor = Black
+
+            pnlNotes.BackColor = Black
+            pnlNotesNav.BackColor = Darker
+            rtbNotes.BackColor = Black
+            rtbNotes.ForeColor = Color.White
         ElseIf darkMode = True Then
             darkMode = False
             pbDarkmode.Image = BasedBudgeting.My.Resources.Resources.sun
@@ -1671,14 +1738,22 @@ Public Class App
                 btnBudget.BackColor = darkBlue
                 btnReports.BackColor = Blue
                 btnAccounts.BackColor = Blue
+                btnNotes.BackColor = Blue
             ElseIf btnReports.BackColor = Darkest Then
                 btnBudget.BackColor = Blue
                 btnReports.BackColor = darkBlue
                 btnAccounts.BackColor = Blue
+                btnNotes.BackColor = Blue
             ElseIf btnAccounts.BackColor = Darkest Then
                 btnBudget.BackColor = Blue
                 btnReports.BackColor = Blue
                 btnAccounts.BackColor = darkBlue
+                btnNotes.BackColor = Blue
+            ElseIf btnNotes.BackColor = Darkest Then
+                btnBudget.BackColor = Blue
+                btnReports.BackColor = Blue
+                btnAccounts.BackColor = Blue
+                btnNotes.BackColor = darkBlue
             End If
             pbAddAccount.BackColor = Blue
             lblBudget.BackColor = Blue
@@ -1845,12 +1920,10 @@ Public Class App
             chTrend.ChartAreas(0).AxisY.LabelStyle.ForeColor = Color.Black
             chTrend.Legends(0).BackColor = Color.White
 
-            dgvBudget.Refresh()
-            dgvBudget.Update()
-
-            dgvTransactions.Refresh()
-            dgvTransactions.Update()
+            pnlNotes.BackColor = Color.White
+            pnlNotesNav.BackColor = darkerBlue
+            rtbNotes.BackColor = Color.White
+            rtbNotes.ForeColor = darkerBlue
         End If
-
     End Sub
 End Class
