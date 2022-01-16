@@ -870,6 +870,7 @@ Partial Class App
         '
         'cbSubcategoryFilter
         '
+        Me.cbSubcategoryFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbSubcategoryFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cbSubcategoryFilter.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbSubcategoryFilter.FormattingEnabled = True
@@ -880,6 +881,7 @@ Partial Class App
         '
         'cbCategoryFilter
         '
+        Me.cbCategoryFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbCategoryFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cbCategoryFilter.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbCategoryFilter.FormattingEnabled = True
@@ -900,6 +902,7 @@ Partial Class App
         '
         'cbAccountFilter
         '
+        Me.cbAccountFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbAccountFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.cbAccountFilter.Font = New System.Drawing.Font("Calibri", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbAccountFilter.FormattingEnabled = True
@@ -1098,7 +1101,7 @@ Partial Class App
         'updateLabels
         '
         Me.updateLabels.Enabled = True
-        Me.updateLabels.Interval = 500
+        Me.updateLabels.Interval = 200
         '
         'redDetector
         '
@@ -1574,6 +1577,7 @@ Partial Class App
         Me.pbDarkmode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.pbDarkmode.TabIndex = 26
         Me.pbDarkmode.TabStop = False
+        Me.pbDarkmode.Visible = False
         '
         'pnlNotes
         '
