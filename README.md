@@ -55,8 +55,7 @@ Either take the blue pill and live in ignorance and debt, or take the red pill a
 <br></br>
 ##  🕹️Usage
 <br>
-<img src="src\README\BudgetGuide.png" alt="Based Budgeting" width="98%"></img>
-<table style="width:100%"><tr><td style="text-align:center"><b>Budget Menu</td></tr></table>
+<img src="src\README\BudgetGuide.png" alt="Budget Menu" width="97%"></img>
 
 ### **Guide Legend**
 1. Add an account and its balance to your budget. It's quite important that you use the correct decimal separator (eg. period vs comma).
@@ -72,14 +71,11 @@ Either take the blue pill and live in ignorance and debt, or take the red pill a
 11. Save transactions.
 12. Filter to search in transactions. Due to some limitations, if you want to filter by multiple items, filter by date first. You can filter by: Account / Date / Payee / Category/ Subcategory / Memo
 
-<img src="src\README\Report1Guide.png" alt="Based Budgeting" width="49%"></img>
-<img src="src\README\Report3Guide.png" alt="Based Budgeting" width="49%"></img>
-<table style="width:100%"><tr style="text-align:center"><td style="width:50%"><b>Spending Current Month</td><td style="width:50%"><b>Spending Trend of the last year</td> </tr></table>
-<img src="src\README\Report2Guide.png" alt="Based Budgeting" width="49%"></img>
-<img src="src\README\NotesGuide.png" alt="Based Budgeting" width="49%"></img>
-<table style="width:100%"><tr style="text-align:center"><td style="width:50%" ><b>Total Net Worth</td><td style="width:50%"><b>Notes</td> </tr></table>
-<img src="src\README\TransactionsGuide.png" alt="Based Budgeting" width="98%"></img>
-<table style="width:100%"><tr><td style="text-align:center"><b>Transaction Menu</td></tr></table>
+<img src="src\README\Report1Guide.png" alt="Based Budgeting" width="48%"></img>
+<img src="src\README\Report3Guide.png" alt="Based Budgeting" width="48%"></img>
+<img src="src\README\Report2Guide.png" alt="Based Budgeting" width="48%"></img>
+<img src="src\README\NotesGuide.png" alt="Based Budgeting" width="48%"></img>
+<img src="src\README\TransactionsGuide.png" alt="Based Budgeting" width="97%"></img>
 <br></br>
 
 ##  🧩Components
