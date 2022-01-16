@@ -150,12 +150,12 @@ Partial Class App
         Me.lblSpendingButton = New System.Windows.Forms.Label()
         Me.lblNetWorthButton = New System.Windows.Forms.Label()
         Me.pnlNavigation = New System.Windows.Forms.Panel()
+        Me.pnlNotesNav = New System.Windows.Forms.Panel()
+        Me.lblNotes = New System.Windows.Forms.Label()
         Me.checkFilter = New System.Windows.Forms.Timer(Me.components)
         Me.pbDarkmode = New System.Windows.Forms.PictureBox()
         Me.pnlNotes = New System.Windows.Forms.Panel()
         Me.rtbNotes = New System.Windows.Forms.RichTextBox()
-        Me.lblNotes = New System.Windows.Forms.Label()
-        Me.pnlNotesNav = New System.Windows.Forms.Panel()
         CType(Me.chNet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBudgetStatistics.SuspendLayout()
         Me.pnlReportsStatistics.SuspendLayout()
@@ -179,9 +179,9 @@ Partial Class App
         CType(Me.pbPrevMonth, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlReports.SuspendLayout()
         Me.pnlNavigation.SuspendLayout()
+        Me.pnlNotesNav.SuspendLayout()
         CType(Me.pbDarkmode, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlNotes.SuspendLayout()
-        Me.pnlNotesNav.SuspendLayout()
         Me.SuspendLayout()
         '
         'chNet
@@ -1533,6 +1533,31 @@ Partial Class App
         Me.pnlNavigation.Size = New System.Drawing.Size(964, 88)
         Me.pnlNavigation.TabIndex = 1
         '
+        'pnlNotesNav
+        '
+        Me.pnlNotesNav.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.pnlNotesNav.Controls.Add(Me.lblNotes)
+        Me.pnlNotesNav.Location = New System.Drawing.Point(3, 2)
+        Me.pnlNotesNav.Name = "pnlNotesNav"
+        Me.pnlNotesNav.Size = New System.Drawing.Size(962, 83)
+        Me.pnlNotesNav.TabIndex = 28
+        Me.pnlNotesNav.Visible = False
+        '
+        'lblNotes
+        '
+        Me.lblNotes.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblNotes.AutoSize = True
+        Me.lblNotes.Font = New System.Drawing.Font("Calibri", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblNotes.ForeColor = System.Drawing.Color.White
+        Me.lblNotes.Location = New System.Drawing.Point(839, 18)
+        Me.lblNotes.Name = "lblNotes"
+        Me.lblNotes.Size = New System.Drawing.Size(111, 45)
+        Me.lblNotes.TabIndex = 0
+        Me.lblNotes.Text = "Notes"
+        Me.lblNotes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
         'checkFilter
         '
         Me.checkFilter.Enabled = True
@@ -1576,31 +1601,6 @@ Partial Class App
         Me.rtbNotes.Size = New System.Drawing.Size(952, 583)
         Me.rtbNotes.TabIndex = 0
         Me.rtbNotes.Text = ""
-        '
-        'lblNotes
-        '
-        Me.lblNotes.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblNotes.AutoSize = True
-        Me.lblNotes.Font = New System.Drawing.Font("Calibri", 27.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblNotes.ForeColor = System.Drawing.Color.White
-        Me.lblNotes.Location = New System.Drawing.Point(839, 18)
-        Me.lblNotes.Name = "lblNotes"
-        Me.lblNotes.Size = New System.Drawing.Size(111, 45)
-        Me.lblNotes.TabIndex = 0
-        Me.lblNotes.Text = "Notes"
-        Me.lblNotes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'pnlNotesNav
-        '
-        Me.pnlNotesNav.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pnlNotesNav.Controls.Add(Me.lblNotes)
-        Me.pnlNotesNav.Location = New System.Drawing.Point(3, 2)
-        Me.pnlNotesNav.Name = "pnlNotesNav"
-        Me.pnlNotesNav.Size = New System.Drawing.Size(962, 83)
-        Me.pnlNotesNav.TabIndex = 28
-        Me.pnlNotesNav.Visible = False
         '
         'App
         '
@@ -1653,10 +1653,10 @@ Partial Class App
         Me.pnlReports.ResumeLayout(False)
         Me.pnlNavigation.ResumeLayout(False)
         Me.pnlNavigation.PerformLayout()
-        CType(Me.pbDarkmode, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pnlNotes.ResumeLayout(False)
         Me.pnlNotesNav.ResumeLayout(False)
         Me.pnlNotesNav.PerformLayout()
+        CType(Me.pbDarkmode, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlNotes.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

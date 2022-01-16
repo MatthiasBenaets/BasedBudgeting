@@ -12,6 +12,7 @@ Public Class App
     Dim Darkest As Color = Color.FromArgb(30, 30, 30)
     Dim Black As Color = Color.FromArgb(18, 18, 18)
     Dim darkMode As Boolean = False
+    Dim decimalSeparator As String = Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator   ' Decimal separator for user culture
     Private Sub App_Load(sender As Object, e As EventArgs) Handles MyBase.Load                  ' When applications loads
         Me.lblDate.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()                           ' Print correct date
         Me.lblDateValue.Text = DateTime.Now.ToString("MMM yyyy").ToUpper()
@@ -328,23 +329,25 @@ Public Class App
                     Exit Sub
                 End If
             Next
-            accounts(1) = InputBox("Balance of " & accounts(0) & ".")
-            If accounts(1) <> "" Then
-                dgvAccounts.Rows.Add(accounts)                                                  ' Add info to DataGridView
+            Dim valid = False
+            While valid = False
+                accounts(1) = InputBox("Balance of " & accounts(0) & "? Use correct decimal seperator")
+                If IsNumeric(accounts(1)) Then
+                    dgvAccounts.Rows.Add(accounts)                                                  ' Add info to DataGridView
 
-                For i As Integer = 0 To dgvAccounts.Rows.Count - 1                              ' Add up total balance and change format of added account balance
-                    Dim toDec As Decimal
-                    Dim totDec As Decimal
-                    toDec = dgvAccounts.Rows(i).Cells(1).Value
-                    dgvAccounts.Rows(i).Cells(1).Value = toDec.ToString("C")
-                    totDec += dgvAccounts.Rows(i).Cells(1).Value
-                    lblTotalBalance.Text = totDec.ToString("C")
-                Next
-                SaveAccounts()
-            Else
-                MsgBox("No balance value given")
-                Exit Sub
-            End If
+                    For i As Integer = 0 To dgvAccounts.Rows.Count - 1                              ' Add up total balance and change format of added account balance
+                        Dim toDec As Decimal
+                        Dim totDec As Decimal
+                        toDec = dgvAccounts.Rows(i).Cells(1).Value
+                        dgvAccounts.Rows(i).Cells(1).Value = toDec.ToString("C")
+                        totDec += dgvAccounts.Rows(i).Cells(1).Value
+                        lblTotalBalance.Text = totDec.ToString("C")
+                    Next
+                    SaveAccounts()
+                Else
+                    MsgBox("No correct balance value given")
+                End If
+            End While
         Else
             MsgBox("No name given")
             Exit Sub
@@ -523,6 +526,7 @@ Public Class App
         Dim traTransfer As Boolean = False
         Dim toDec As Decimal
         Dim i = 0
+
         If dgvTransactions.Rows.Count = 0 Then                                                  ' Loop to check where in DataGridView data needs to be stored
             i = 0                                                                               ' If no transactions, will inserted at x=0
         Else
@@ -548,7 +552,6 @@ Public Class App
                 MsgBox("Transaction value not a number")
             End If
             btnReports.Visible = True
-
 
             For j As Integer = 0 To dgvAccounts.Rows.Count - 1
                 If cbPayee.Text = dgvAccounts.Rows(j).Cells(0).Value.ToString Then              ' If cbPayee is a category, it is a transfer
@@ -1523,7 +1526,40 @@ Public Class App
         Next i
         writer.Close()
     End Sub
+    Private Sub tbInflow_KeyPress(sender As Object, e As KeyPressEventArgs) Handles tbInflow.KeyPress   ' When pressing keys in textbox
+        decimalHandling(sender, e)
+    End Sub
+    Private Sub tbOutflow_KeyPress(sender As Object, e As KeyPressEventArgs) Handles tbOutflow.KeyPress ' When pressing keys in textbox
+        decimalHandling(sender, e)
+    End Sub
 
+    Private Sub decimalHandling(sender As Object, e As KeyPressEventArgs)                       ' Limit input options to decimal number
+        Dim dot As Integer, ch As String
+
+        If Not Char.IsDigit(e.KeyChar) Then e.Handled = True
+        'If e.KeyChar = "-" And tbOutflow.SelectionStart = 0 Then e.Handled = False             ' Allow negative number
+        If e.KeyChar = Chr(46) Then e.KeyChar = decimalSeparator                                ' Numpad comma/dot/del becomes seperator
+        If e.KeyChar = decimalSeparator And sender.Text.IndexOf(decimalSeparator) = -1 Then e.Handled = False ' Allow single decimal point
+
+        dot = sender.Text.IndexOf(decimalSeparator)
+        If dot > -1 Then                                                                        ' Only allow 2 decimal places
+            ch = sender.Text.Substring(dot + 1)
+            If ch.Length > 1 Then e.Handled = True
+        End If
+
+        'If e.KeyChar = Chr(13) Then tbOutflow.Focus()                                          ' Enter key moves to specified control, or:
+        'If e.KeyChar = Chr(13) Then GetNextControl(TextBox1, True).Focus()                     ' Enter key moves to next control in Tab order
+        If e.KeyChar = Chr(8) Then e.Handled = False                                            ' Allow Backspace
+    End Sub
+    Private Sub dgvBudget_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles dgvBudget.CellValidating   ' Check cell validity (value)
+        If e.ColumnIndex > 0 Then                                                               ' For all cells other than category name
+            If dgvBudget.IsCurrentCellDirty Then                                                ' Only edited cells
+                If Not IsNumeric(e.FormattedValue) Then                                         ' Only numeric values allowed
+                    e.Cancel = True
+                End If
+            End If
+        End If
+    End Sub
     Private Sub pbDarkmode_Click(sender As Object, e As EventArgs) Handles pbDarkmode.Click     ' Dark Mode
         Dim j As Integer = 0
 
