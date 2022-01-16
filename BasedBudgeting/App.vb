@@ -344,6 +344,7 @@ Public Class App
                         lblTotalBalance.Text = totDec.ToString("C")
                     Next
                     SaveAccounts()
+                    valid = True
                 Else
                     MsgBox("No correct balance value given")
                 End If
