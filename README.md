@@ -69,7 +69,7 @@ Either take the blue pill and live in ignorance and debt, or take the red pill a
 9. Available space to add personal notes about your budget.
 10. Navigation buttons for Reports tab.
 11. Save transactions.
-12. Filter to search in transactions. Due to some limitations, if you want to filter by multiple items, filter by date first. You can filter by: Account / Date / Payee / Category/ Subcategory / Memo
+12. Filter to search in transactions. You can filter by: Account / Date / Payee / Category/ Subcategory / Memo.
 
 <img src="src\README\Report1Guide.png" alt="Based Budgeting" width="48%"></img>
 <img src="src\README\Report3Guide.png" alt="Based Budgeting" width="48%"></img>

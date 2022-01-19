@@ -692,12 +692,14 @@ Public Class App
             cbSubcategory.Text = "No Subcategory"
             cbSubcategory.Enabled = False
             tbMemo.Text = "Transfer"
+            tbInflow.Enabled = False
         Else                                                                                    ' Remove limitations if changing back to external payee
             cbCategory.Enabled = True
             cbCategory.Items.Remove("Transfer")
             cbCategory.Text = ""
             cbSubcategory.Items.Remove("No Subcategory")
             cbSubcategory.Text = ""
+            tbInflow.Enabled = True
         End If
     End Sub
     Private Sub tbOutflow_TextChanged(sender As Object, e As EventArgs) Handles tbOutflow.TextChanged   ' When textinput from outflow changes
@@ -1270,6 +1272,16 @@ Public Class App
         checkFilter.Start()                                                                     ' Half second lag to be user friendly
     End Sub
     Private Sub dtpDateFilter_ValueChanged(sender As Object, e As EventArgs) Handles dtpDateFilter.ValueChanged ' Transaction filter
+        Dim conDateFilter As String
+        Dim conDate As String
+        For Each row As DataGridViewRow In dgvTransactions.Rows
+            row.Visible = True
+            conDate = CDate(row.Cells(1).Value).ToString("MM yyyy")                             ' Convert to month year string to compare
+            conDateFilter = CDate(dtpDateFilter.Text).ToString("MM yyyy")
+            If conDateFilter <> conDate Then                                                    ' Make rows with other months invisible
+                row.Visible = False
+            End If
+        Next
         filtering = True
     End Sub
     Private Sub cbPayeeFilter_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbPayeeFilter.TextChanged  ' Transaction filter
