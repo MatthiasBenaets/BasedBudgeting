@@ -173,7 +173,7 @@ Public Class App
             lblTotalBalance.Text = toDec.ToString("C")
         Next
     End Sub
-    Private Sub App_Closed(sender As Object, e As EventArgs) Handles MyBase.Closed              ' When application closes
+    Private Sub App_Closing(sender As Object, e As EventArgs) Handles MyBase.Closing             ' When application closes
         dgvDateChange(DateTime.Now.ToString("MMM yyyy").ToUpper())                              ' Reset dgvBudget back to present so it is saved correctly
         SaveData()
         My.Settings.budgetName = txtTitle.Text
@@ -640,6 +640,7 @@ Public Class App
 
             SaveTransaction()
             SaveAccounts()
+            SaveBudget()
 
             cbAccount.Items.Clear()                                                             ' Reset transaction menu to default
             dtpDate.Text = DateTime.Now
@@ -1519,6 +1520,15 @@ Public Class App
                 End If
             Next
         End If
+
+        Dim toDec As Decimal = 0
+        For j As Integer = 0 To dgvAccounts.Rows.Count - 1                                      ' Update total balance
+            toDec += dgvAccounts.Rows(j).Cells(1).Value
+            lblTotalBalance.Text = toDec.ToString("C")
+        Next
+        dgvAccounts.Refresh()
+
+        SaveData()
     End Sub
     Private Sub dgvAccounts_UserDeletingRow(sender As Object, e As DataGridViewRowCancelEventArgs) Handles dgvAccounts.UserDeletingRow  ' Event when selected row is deleted
         Dim finalCheck As DialogResult = MsgBox("Are you sure you want to delete " + dgvAccounts.CurrentRow.Cells(0).Value.ToString, MessageBoxButtons.YesNo)
@@ -1548,6 +1558,8 @@ Public Class App
             writer.WriteLine("")
         Next i
         writer.Close()
+
+        SaveAccounts()
     End Sub
     Private Sub tbInflow_KeyPress(sender As Object, e As KeyPressEventArgs) Handles tbInflow.KeyPress   ' When pressing keys in textbox
         decimalHandling(sender, e)
@@ -1582,7 +1594,6 @@ Public Class App
                 End If
             End If
         End If
-
     End Sub
     'Private Sub pbDarkmode_Click(sender As Object, e As EventArgs) Handles pbDarkmode.Click     ' Dark Mode
     '    Dim j As Integer = 0
