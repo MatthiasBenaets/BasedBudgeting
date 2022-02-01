@@ -153,8 +153,10 @@ Public Class App
                 My.Settings.startDate = DateTime.Now.ToString("MMM yyyy")                       ' Reset global dat to current date
 
                 For Each row As DataGridViewRow In dgvBudget.Rows
-                    row.Cells(1).Value = 0
-                    row.Cells(2).Value = 0                                                      ' Reset activity & budget for new month
+                    If row.Cells(0).Value.ToString <> "" Then
+                        row.Cells(1).Value = 0
+                        row.Cells(2).Value = 0                                                      ' Reset activity & budget for new month
+                    End If
                 Next
             End If
         End If
