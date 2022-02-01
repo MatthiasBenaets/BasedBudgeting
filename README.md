@@ -12,7 +12,7 @@
     </a>
     <span> · </span>
     <a href="https://github.com/matthiasbenaets/basedbudgeting/releases/">
-      Download
+      Releases
     </a>
     <span> · </span>
     <a href="https://github.com/matthiasbenaets/basedbudgeting/issues">
@@ -105,7 +105,7 @@ Either take the blue pill and live in ignorance and debt, or take the red pill a
 <br></br>
 ##  ⌛Download
 ### **[Releases](https://github.com/MatthiasBenaets/BasedBudgeting/releases)**
-### **[Latest Version](https://github.com/MatthiasBenaets/BasedBudgeting/releases/tag/v1.2.1)**
+### **[Latest Version](https://github.com/MatthiasBenaets/BasedBudgeting/releases/tag/v1.2.2)**
 There is the possiblity that Windows will show a message that says something like:
 
 **Windows protected your PC**
